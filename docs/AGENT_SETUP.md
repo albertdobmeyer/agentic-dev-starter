@@ -153,6 +153,10 @@ The human may place revised documents in the repo after a planning session.
 | CLAUDE.md exceeds 200 lines | Move detail to docs/, keep CLAUDE.md as index |
 | Tech stack changes | Update CLAUDE.md immediately |
 
+### Team Usage
+
+If multiple developers are working on feature branches simultaneously, see [TEAM_GUIDE.md](TEAM_GUIDE.md) for the team workflow — branch ownership, PR review protocol, constitution governance, and shared vs per-dev file conventions.
+
 ---
 
 ## REFERENCE: DOCUMENT FLOW

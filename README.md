@@ -166,6 +166,19 @@ Optional:
 
 ---
 
+## Teams
+
+Using this with a team of developers on feature branches? See the [Team Guide](docs/TEAM_GUIDE.md) for:
+
+- Lead setup and developer onboarding
+- Feature branch workflow with Spec-Kit's numbered branches
+- PR review protocol against constitution and vision
+- Constitution governance (who can change what)
+- Cost control with token meters and session budgets
+- Shared vs per-dev file ownership
+
+---
+
 ## Documentation
 
 | Document | Purpose |
@@ -175,6 +188,7 @@ Optional:
 | [CONSTITUTION_TEMPLATE.md](docs/CONSTITUTION_TEMPLATE.md) | Full template with all 9 articles |
 | [HANDOFF_FORMAT.md](docs/HANDOFF_FORMAT.md) | Reference for what good handoff docs look like |
 | [AGENT_SETUP.md](docs/AGENT_SETUP.md) | How Claude Code uses the handoff docs to build |
+| [TEAM_GUIDE.md](docs/TEAM_GUIDE.md) | Multi-developer workflow and team lead guide |
 | [FAQ.md](docs/FAQ.md) | Common questions |
 
 ---

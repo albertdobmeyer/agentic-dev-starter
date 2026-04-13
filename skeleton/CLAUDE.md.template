@@ -27,3 +27,7 @@ Read the handoff documents above. Help the human complete them through structure
 
 **If handoff docs are complete:**
 Follow the Spec-Kit workflow: `constitution > specify > clarify > plan > tasks > implement`. The slash commands in `.claude/commands/` guide each step.
+
+<!-- For team projects with multiple developers on feature branches:
+     see docs/TEAM_GUIDE.md in the agentic-dev-starter repo for branch
+     workflow, PR review protocol, and constitution governance. -->
