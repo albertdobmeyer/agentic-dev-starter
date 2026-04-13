@@ -64,6 +64,65 @@ def copy_tree(src_dir: Path, dest_dir: Path) -> int:
     return count
 
 
+def check_prerequisites() -> None:
+    """Check that required tools are available. Warns but does not abort (except Python version)."""
+
+    # --- Python version ---
+    if sys.version_info < (3, 10):
+        print(
+            f"[error] Python {sys.version_info.major}.{sys.version_info.minor} detected. "
+            f"Python 3.10+ is required.",
+            file=sys.stderr,
+        )
+        sys.exit(1)
+
+    # --- Bash availability (needed for Spec-Kit scripts) ---
+    bash_found = False
+    try:
+        result = subprocess.run(
+            ["bash", "--version"],
+            capture_output=True,
+            timeout=5,
+            text=True,
+        )
+        if result.returncode == 0:
+            bash_found = True
+    except (FileNotFoundError, subprocess.TimeoutExpired, OSError):
+        pass
+
+    # On Windows, check common Git Bash locations if not found on PATH
+    if not bash_found and os.name == "nt":
+        git_bash_paths = [Path(r"C:\Program Files\Git\bin\bash.exe")]
+        pf = os.environ.get("PROGRAMFILES")
+        if pf:
+            candidate = Path(pf) / "Git" / "bin" / "bash.exe"
+            if candidate not in git_bash_paths:
+                git_bash_paths.insert(0, candidate)
+        for bash_path in git_bash_paths:
+            if bash_path.exists():
+                bash_found = True
+                break
+
+    if not bash_found:
+        print("[warn] bash not found.", file=sys.stderr)
+        print(
+            "  Spec-Kit scripts (.specify/scripts/bash/) require bash.",
+            file=sys.stderr,
+        )
+        if os.name == "nt":
+            print(
+                "  On Windows, install Git for Windows (includes Git Bash):",
+                file=sys.stderr,
+            )
+            print("    https://gitforwindows.org/", file=sys.stderr)
+        else:
+            print(
+                "  Install bash via your system package manager.",
+                file=sys.stderr,
+            )
+        print(file=sys.stderr)
+
+
 def find_specify() -> str | None:
     """Check if specify CLI is available. Returns path or None."""
     # Try `specify init --help` (lightweight, doesn't render Rich UI)
@@ -173,6 +232,9 @@ def init_project(
     force: bool = False,
 ) -> None:
     """Initialize a new project at the target directory."""
+
+    # --- Prerequisites ---
+    check_prerequisites()
 
     # --- Validate ---
     if target.exists() and any(target.iterdir()) and not force:
