@@ -12,15 +12,21 @@ A tool that initializes new project repos with handoff document skeletons, a con
 
 ## What This Is
 
-This repo is a **tool that sets up OTHER repos**. You don't copy it into your project. You run `init.py` once, it creates your project directory with everything you need, and you never touch this repo again.
+**Two tools, symbiotic:**
 
-**What it replaces:** `specify init` (which requires the Spec-Kit CLI, downloads from GitHub, and fails on many Windows setups). This bundles everything locally — no network, no installs, no dependencies beyond Python.
+- **[GitHub Spec-Kit](https://github.com/github/spec-kit)** is the build workflow engine — it manages feature branches, spec directories, quality gates, and the `specify → clarify → plan → tasks → implement` progression. It supports 25+ AI agents and has an extension/preset ecosystem.
+- **agentic-dev-starter** is the planning methodology layer — it adds anti-flattening (Articles 3-7), experience fidelity scenarios, depth classification, handoff documents (VISION, ARCHITECTURE, CONSTITUTION, SCOPE), and a constitution template that Spec-Kit doesn't provide.
+
+This repo is a **tool that sets up OTHER repos**. You run `init.py` once — it calls `specify init` for the Spec-Kit engine, then layers on the anti-flattening methodology. If Spec-Kit CLI isn't installed yet, bundled assets keep things working until you install it.
 
 ---
 
 ## Quick Start
 
 ```bash
+# Step 0: Install Spec-Kit CLI (recommended — the build workflow engine)
+uv tool install specify-cli
+
 # Step 1: Clone this repo (one time)
 git clone https://github.com/albertdobmeyer/agentic-dev-starter.git
 
@@ -34,7 +40,9 @@ cd my-project
 claude
 ```
 
-That's it. Claude Code reads CLAUDE.md and knows the methodology, the rules, and how to help you plan.
+`init.py` calls `specify init` under the hood for the Spec-Kit engine, then adds the handoff documents and constitution. If `specify` isn't installed yet, bundled assets are used as a fallback — but **installing Spec-Kit CLI is recommended** for the full workflow with branch management, quality gates, and the extension/preset ecosystem.
+
+**Don't have `uv`?** Install it: `curl -LsSf https://astral.sh/uv/install.sh | sh` (macOS/Linux) or `powershell -c "irm https://astral.sh/uv/install.ps1 | iex"` (Windows).
 
 ---
 
@@ -144,7 +152,7 @@ Optional:
 
 - **Python 3.10+** (no pip packages needed — stdlib only)
 - **git** (optional, for `git init`)
-- That's it. No Spec-Kit CLI, no npm, no uv, no network access.
+- **Spec-Kit CLI** (recommended): `uv tool install specify-cli` — provides the full workflow engine with branch management, quality gates, extensions, and presets. Without it, bundled assets provide the core workflow but you miss the broader ecosystem.
 
 ---
 
@@ -154,7 +162,7 @@ Optional:
 
 **AI agents:** Optimized for Claude Code. Also works with GitHub Copilot, Cursor, Windsurf, and any Spec-Kit-compatible agent (change the slash command directory convention as needed).
 
-**Using with Spec-Kit CLI:** If you already have `specify-cli` installed, everything still works. The bundled assets are identical to what `specify init` installs. You can use either the bundled slash commands or Spec-Kit's CLI — they produce the same results.
+**Using with Spec-Kit CLI (recommended):** `init.py` automatically detects and uses `specify init` when the CLI is installed. This gives you the full Spec-Kit engine: auto-numbered feature branches, 4-level template resolution (overrides → presets → extensions → core), quality gate checklists, and support for the extension/preset ecosystem. The bundled assets are a fallback for environments where the CLI can't be installed.
 
 ---
 

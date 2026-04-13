@@ -25,16 +25,38 @@ Your job:
 
 ---
 
-## SETUP: WHAT'S ALREADY DONE
+## SETUP: CHECK YOUR TOOLS
 
-If this project was initialized by `init.py` from [agentic-dev-starter](https://github.com/albertdobmeyer/agentic-dev-starter), the following is already in place:
+### Spec-Kit CLI (Recommended)
+
+The Spec-Kit CLI is the build workflow engine — it manages feature branches, spec directories, quality gates, and the extension/preset ecosystem. Check if it's installed:
+
+```bash
+specify check
+```
+
+If not installed, install it:
+
+```bash
+uv tool install specify-cli
+```
+
+If `init.py` already ran with the CLI available, `.specify/` and `.claude/commands/` are fully set up. If init.py used bundled assets (CLI wasn't available), you can upgrade by running:
+
+```bash
+specify init . --ai claude --force
+```
+
+This will replace the bundled assets with the full Spec-Kit installation, including extension/preset support.
+
+### What's Already In Place
+
+Whether set up by `specify init` or bundled assets, you should have:
 
 - `.specify/templates/` — Spec-Kit templates for specs, plans, tasks, checklists
 - `.specify/scripts/` — Shell scripts for branch and spec file management
 - `.specify/memory/constitution.md` — Constitution loaded into Spec-Kit memory
 - `.claude/commands/speckit.*.md` — Slash commands for the full Spec-Kit workflow
-
-**No additional installation is needed.** Skip directly to "Feed the Handoff Documents" below.
 
 ### Optional: Token Meter
 
