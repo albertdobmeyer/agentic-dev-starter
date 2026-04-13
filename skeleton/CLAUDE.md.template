@@ -1,0 +1,29 @@
+# {{PROJECT_NAME}}
+
+{{PROJECT_DESCRIPTION}}
+
+## Handoff Documents
+
+- @VISION.md — what we're building and why
+- @ARCHITECTURE.md — tech stack, modules, data model, data flow
+- @CONSTITUTION.md — hard rules (anti-flattening, depth tags, testing discipline)
+- @SCOPE.md — what we're NOT building
+
+## Rules
+
+- Test-first: write the test BEFORE the implementation. No exceptions.
+- Commit on green: every commit leaves the full test suite passing.
+- Constitution authority: CONSTITUTION.md rules are non-negotiable.
+- Log every simplification at the moment it happens (Article 5).
+- When unclear, ask the human. Don't guess.
+- Derive tasks from user BEHAVIORS, not feature NAMES (Article 3).
+
+## Getting Started
+
+This project was initialized with [agentic-dev-starter](https://github.com/albertdobmeyer/agentic-dev-starter).
+
+**If handoff docs are still skeletal:**
+Read the handoff documents above. Help the human complete them through structured planning — push for experience fidelity scenarios, negative assertions, depth classifications, and filmable success criteria.
+
+**If handoff docs are complete:**
+Follow the Spec-Kit workflow: `constitution > specify > clarify > plan > tasks > implement`. The slash commands in `.claude/commands/` guide each step.

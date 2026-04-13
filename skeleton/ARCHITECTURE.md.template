@@ -1,0 +1,37 @@
+# ARCHITECTURE — {{PROJECT_NAME}}
+
+## Tech Stack
+
+<!-- Pin every version. "Latest" is not a version. -->
+
+| Layer | Technology | Version | Rationale |
+|---|---|---|---|
+| Runtime | | | |
+| Framework | | | |
+| Database | | | |
+| Testing | | | |
+
+## Module Boundaries
+
+<!-- Directory tree showing file/folder structure with brief annotations. -->
+
+```
+{{PROJECT_NAME}}/
+├── src/
+├── tests/
+├── CLAUDE.md
+├── .gitignore
+└── README.md
+```
+
+## Data Model
+
+<!-- Complete schemas for every entity. All fields, types, constraints. Never "add fields as needed." -->
+
+## Data Flow
+
+<!-- How data moves through the system. Entry points, storage, exit points. -->
+
+## Infrastructure Decisions
+
+<!-- What you chose AND what you didn't choose and why. -->
