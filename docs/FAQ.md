@@ -50,7 +50,7 @@ A: The methodology works for human teams too. Flattening happens whenever a rich
 ## Token Meter
 
 **Q: What is the token meter and why is it recommended?**
-A: [claude-code-token-meter](https://github.com/albertdobmeyer/claude-code-token-meter) monitors your Claude Code session's context growth and cost in real-time. It tells you when to write a handoff and `/clear`. Long sessions accumulate cost quadratically — the meter makes that visible.
+A: [agent-token-meter](https://github.com/albertdobmeyer/agent-token-meter) monitors your Claude Code session's context growth and cost in real-time. It tells you when to write a handoff and `/clear`. Long sessions accumulate cost quadratically — the meter makes that visible.
 
 **Q: Do I have to use the token meter?**
 A: No. The methodology works without it.

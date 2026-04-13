@@ -63,10 +63,10 @@ Whether set up by `specify init` or bundled assets, you should have:
 A burn-rate monitor that tracks context growth and cost. Run in a split terminal pane:
 
 ```bash
-npx claude-code-token-meter
+npx agent-token-meter
 ```
 
-Source: https://github.com/albertdobmeyer/claude-code-token-meter
+Source: https://github.com/albertdobmeyer/agent-token-meter
 
 ---
 

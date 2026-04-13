@@ -28,7 +28,7 @@ This repo is a **tool that sets up OTHER repos**. You run `init.py` once — it 
 uv tool install specify-cli
 
 # Step 1: Clone this repo (one time)
-git clone https://github.com/albertdobmeyer/agentic-dev-starter.git
+git clone --recurse-submodules https://github.com/albertdobmeyer/agentic-dev-starter.git
 
 # Step 2: Initialize your project
 python agentic-dev-starter/init.py ./my-project \
@@ -185,4 +185,4 @@ Optional:
 
 **Codified from:** Test-first development and CLAUDE.md best practices by Boris Cherny (Anthropic). Spec-driven workflow by GitHub's [Spec-Kit](https://github.com/github/spec-kit) (MIT License).
 
-**Companion tool:** [claude-code-token-meter](https://github.com/albertdobmeyer/claude-code-token-meter) — burn-rate monitor that tells you when to write a handoff and `/clear`.
+**Companion tool:** [agent-token-meter](https://github.com/albertdobmeyer/agent-token-meter) (bundled as `token-meter/` submodule) — burn-rate monitor that tells you when to write a handoff and `/clear`.

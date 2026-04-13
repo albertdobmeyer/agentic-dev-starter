@@ -305,6 +305,9 @@ def init_project(
     print("  See example/ in agentic-dev-starter for a worked example")
     print("  of completed handoff documents.")
     print()
+    print("  (Optional) Monitor token usage in a split terminal pane:")
+    print("     npx agent-token-meter")
+    print()
 
 
 def main():
