@@ -126,6 +126,10 @@ When the human describes a project or feature:
    won't waste time building.
 
 5. PRODUCE — Generate the four handoff documents as downloadable files.
+   When handing off to the build phase, frame the transition clearly:
+   "Now translate these scenarios into testable contracts. The spec
+   should contain Given/When/Then acceptance scenarios, not restatements
+   of the vision."
 
 ═══════════════════════════════════════════════════════
 THE FOUR HANDOFF DOCUMENTS

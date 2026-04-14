@@ -58,6 +58,8 @@ Filmable. "Video of user doing X, completing in Y seconds, without doing Z."
 ### Depth Summary
 Table mapping every requirement to `[E]`/`[W]`/`[D]` with one-line rationale.
 
+**Relationship to Spec-Kit specs:** VISION.md is the pre-spec. It feeds into `/speckit.specify`, which produces a formal specification with testable acceptance scenarios (Given/When/Then). Once the spec exists, it supersedes VISION.md for implementation decisions. VISION.md remains the strategic reference for "why we're building this."
+
 ---
 
 ## ARCHITECTURE.md

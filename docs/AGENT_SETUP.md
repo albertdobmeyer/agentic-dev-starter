@@ -82,6 +82,8 @@ cp CONSTITUTION.md .specify/memory/constitution.md
 
 ### 2. Specify
 
+**The purpose of /specify is not to describe the feature — it's to translate your design into testable contracts.** If you already have a detailed plan from a design discussion, /specify is where you formalize that plan into assertions the test suite can verify.
+
 VISION.md captures product intent and strategic framing. The /specify step converts that intent into testable contracts. Once generated, the specification becomes the operational source of truth for implementation and validation.
 
 **Supersession rule:** VISION.md is the input. The spec is the output. Where they conflict on testable requirements, the spec wins.
@@ -165,9 +167,18 @@ The human may place revised documents in the repo after a planning session.
 | CLAUDE.md exceeds 200 lines | Move detail to docs/, keep CLAUDE.md as index |
 | Tech stack changes | Update CLAUDE.md immediately |
 
+### Solo vs Team Mode
+
+The Spec-Kit templates include sections for multi-developer workflows (parallel team strategy, developer assignment, PR review protocol). For solo projects (1 human + 1 agent):
+
+- **Skip** team-specific template sections (developer assignment, parallel team strategy)
+- **Keep** the `[P]` parallel markers — they're useful for spawning sub-agents
+- **Keep** phase checkpoints — they provide "stop and validate" boundaries
+- **Simplify** the tasks template to phases and task lists only
+
 ### Team Usage
 
-If multiple developers are working on feature branches simultaneously, see [TEAM_GUIDE.md](TEAM_GUIDE.md) for the team workflow — branch ownership, PR review protocol, constitution governance, and shared vs per-dev file conventions.
+For team projects with multiple developers on feature branches, see [TEAM_GUIDE.md](TEAM_GUIDE.md) for the team workflow — branch ownership, PR review protocol, constitution governance, and shared vs per-dev file conventions.
 
 ---
 

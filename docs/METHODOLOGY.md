@@ -98,6 +98,8 @@ Article 7 catches → incoherent remediation after gaps are found
 
 Each article addresses a different stage. Together, they create structural pressure against flattening at every point where it typically occurs.
 
+**Parallel execution.** Tasks marked `[P]` in the task breakdown are candidates for delegated sub-agent execution. After parallel tasks complete, run the full test suite as merge validation before proceeding. This pattern halved implementation time in the first e2e validation run. See [FIELD_NOTES.md](FIELD_NOTES.md) for details.
+
 ---
 
 *Every article exists because its absence caused a specific, documented failure in a production build.*

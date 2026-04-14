@@ -4,7 +4,7 @@
 
 ## Handoff Documents
 
-- @VISION.md — what we're building and why
+- @VISION.md — what we're building and why (strategic intent — the spec supersedes this for testable requirements)
 - @ARCHITECTURE.md — tech stack, modules, data model, data flow
 - @CONSTITUTION.md — hard rules (anti-flattening, depth tags, testing discipline)
 - @SCOPE.md — what we're NOT building
