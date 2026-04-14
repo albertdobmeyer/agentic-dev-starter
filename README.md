@@ -1,44 +1,46 @@
-# agentic-dev-starter
+# project-dna
 
-**The #1 failure mode in AI-assisted development:** you describe a rich user experience. The agent decomposes it into tasks. Each task passes its test. But the result feels hollow — every component *works* in isolation, none of them *compose* into what you envisioned.
+Your team's developers use Claude Code without a shared contract for how the agent should work. Each dev has their own prompting habits, commit patterns, spec rigor. The agent behaves differently in every developer's hands. You can't review PRs against a standard that doesn't exist.
 
-This is **flattening**. This tool prevents it.
+**project-dna gives every agent on your team the same engineering contract.**
 
-Run `init.py` on any project directory. It generates a CLAUDE.md that encodes the full anti-flattening methodology — decision boundaries, depth classification, workflow phases, failure protocols — plus a constitution, handoff document skeletons, and [Spec-Kit](https://github.com/github/spec-kit) integration. Your agent reads CLAUDE.md and knows exactly how to work.
+Copy two files into any repo. Claude Code reads CLAUDE.md and bootstraps a complete spec-driven development environment — Spec-Kit workflow, handoff documents, constitution, sub-agent orchestration, self-audit loops. Same rules, every branch, every developer.
+
+## Setup
 
 ```bash
-# Install Spec-Kit CLI (recommended)
-uv tool install specify-cli
-
-# Clone this repo (one time)
-git clone --recurse-submodules https://github.com/albertdobmeyer/agentic-dev-starter.git
-
-# Initialize your project
-python agentic-dev-starter/init.py ./my-project \
-  --name "My Project" --describe "What it does"
+# Copy the two DNA files into your project
+cp project-dna/CLAUDE.md project-dna/CONSTITUTION.md ./my-project/
 
 # Open in Claude Code
 cd my-project && claude
+# Say: "Read CLAUDE.md"
 ```
 
-The generated project is self-contained. Your agent never needs to come back here.
+Claude Code reads CLAUDE.md, installs Spec-Kit, creates handoff document skeletons, and enters planning mode. You discuss what to build. It pushes for experience fidelity scenarios, negative assertions, depth tags, and filmable success criteria. Then it builds — test-first, with sub-agent delegation, self-audit loops, and critical pushback when you're wrong.
 
----
+## What the Agent Becomes
 
-**For teams:** [Team Guide](docs/TEAM_GUIDE.md) — lead setup, feature branches, PR review against constitution, cost control.
+| Without project-dna | With project-dna |
+|---|---|
+| Starts coding immediately | Plans first, builds second |
+| Guesses when unclear | Stops and asks |
+| Pleases the human | Pushes back when specs are violated |
+| One giant commit | Commits at phase boundaries |
+| Flattens `[D]` to `[W]` silently | Logs every simplification |
+| No merge awareness | Tasks decomposed for zero file overlap |
+| Declares "done" after first pass | Self-audits for completeness, spec fidelity, negative assertions |
 
-**How it was tested:** [Field Notes](docs/FIELD_NOTES.md) — 47 tasks, 259 tests, 5 methodology revisions from the first e2e build.
+## Deep Dives
 
-**Deep dives:** [Methodology](docs/METHODOLOGY.md) | [Constitution Template](docs/CONSTITUTION_TEMPLATE.md) | [Handoff Format](docs/HANDOFF_FORMAT.md) | [Planning Instructions](docs/PLANNING_INSTRUCTIONS.md) | [Agent Setup](docs/AGENT_SETUP.md) | [FAQ](docs/FAQ.md)
+For humans who want to understand why the rules exist:
 
-**Worked example:** [`example/`](example/) — completed planning documents from a real project.
+[Methodology](docs/METHODOLOGY.md) | [Team Guide](docs/TEAM_GUIDE.md) | [Field Notes](docs/FIELD_NOTES.md) | [Planning Instructions](docs/PLANNING_INSTRUCTIONS.md) | [Handoff Format](docs/HANDOFF_FORMAT.md) | [FAQ](docs/FAQ.md)
 
-**Options:** `--no-git` `--no-speckit` `--force` | **Requires:** Python 3.10+ | **Platforms:** Windows, macOS, Linux
-
-**Windows note:** Spec-Kit CLI has a known Rich rendering issue on some terminals. `init.py` auto-activates bundled assets as fallback — no functionality lost.
+[Worked example](example/) — completed planning documents from a real project.
 
 ---
 
 > Created by Albert Dobmeyer & Claude (Anthropic) — AKD AUTOMATION SOLUTIONS
-> Built on GitHub's [Spec-Kit](https://github.com/github/spec-kit) (MIT) and Claude Code best practices by Boris Cherny (Anthropic)
-> Licensed under [CC BY-SA 4.0](LICENSE) | Companion tool: [agent-token-meter](https://github.com/albertdobmeyer/agent-token-meter) (bundled as `token-meter/` submodule)
+> Built on [Spec-Kit](https://github.com/github/spec-kit) (MIT) + Claude Code best practices by Boris Cherny (Anthropic)
+> Licensed under [CC BY-SA 4.0](LICENSE) | Companion: [agent-token-meter](https://github.com/albertdobmeyer/agent-token-meter)
