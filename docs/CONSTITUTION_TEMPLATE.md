@@ -78,7 +78,7 @@ When flattening or drift is discovered post-build:
 
 ## Article 8: Git & Workflow Discipline
 
-- Commit after every completed task, not just every phase.
+- Commit per logical milestone, phase boundary, or independently reviewable work unit. Never batch more than one phase into a single commit.
 - Commit messages follow: `type: description` (feat, fix, docs, chore, test, refactor).
 - Never commit failing tests.
 - Main branch always works — every commit is green.

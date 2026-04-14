@@ -118,7 +118,9 @@ The [`example/`](example/) directory contains completed **planning** documents f
 
 ## Status
 
-The methodology and tooling are production-ready. The [agentic-bookmark-organizer](https://github.com/albertdobmeyer/agentic-bookmark-organizer) is currently going through the full build cycle — from the handoff docs in `example/` through the Spec-Kit workflow to working, tested code. When it completes, the example will be updated to show the complete planning-to-code story with git history, logged simplifications, and lessons learned.
+The methodology and tooling are production-ready. The first full e2e build ([agentic-bookmark-organizer](https://github.com/albertdobmeyer/agentic-bookmark-organizer)) produced 47 tasks, 259 tests, and 5 methodology revisions — documented in [Field Notes](docs/FIELD_NOTES.md). The example directory will be updated with the complete planning-to-code story when the build finishes.
+
+The methodology refines itself: every revision in the field notes traces back to a specific friction observed during live execution. See [docs/FIELD_NOTES.md](docs/FIELD_NOTES.md) for the evidence.
 
 **Windows note:** The Spec-Kit CLI has a known Rich library rendering issue on some Windows terminal configurations. `init.py` detects this and auto-activates bundled assets as a fallback. Your team won't lose functionality — expect a warning message on first run, not an error.
 
@@ -199,6 +201,7 @@ Using this with a team of developers on feature branches? See the [Team Guide](d
 | [HANDOFF_FORMAT.md](docs/HANDOFF_FORMAT.md) | Reference for what good handoff docs look like |
 | [AGENT_SETUP.md](docs/AGENT_SETUP.md) | How Claude Code uses the handoff docs to build |
 | [TEAM_GUIDE.md](docs/TEAM_GUIDE.md) | Multi-developer workflow and team lead guide |
+| [FIELD_NOTES.md](docs/FIELD_NOTES.md) | E2E validation findings — methodology revisions from live use |
 | [FAQ.md](docs/FAQ.md) | Common questions |
 
 ---

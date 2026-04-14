@@ -47,6 +47,18 @@ A: Ask: "Can a single component satisfy this?" If yes, it's `[W]`. If it require
 **Q: Is this only for AI-assisted development?**
 A: The methodology works for human teams too. Flattening happens whenever a rich experience is decomposed into tasks — by AI agents or by developers following a ticket board.
 
+**Q: My VISION.md already has scenarios and depth tags. Why does /specify ask for the same things?**
+A: VISION.md captures product intent — what the user experiences, aspirational scenarios, depth classifications. The /specify step translates that into testable contracts — Given/When/Then scenarios, measurable acceptance criteria, concrete success thresholds. VISION.md is the input; the spec is the output. Where they conflict on testable requirements, the spec wins. If you find yourself restating VISION.md verbatim in the spec, you're not refining enough — push for assertions an automated test suite can verify.
+
+**Q: The commit-per-task rule feels too granular. Can I batch commits?**
+A: Article 8 says "commit per logical milestone, phase boundary, or independently reviewable work unit." Committing per-phase or per logical group is fine. The rule prevents: (a) going a full day without committing, and (b) bundling unrelated changes across phases. A commit that covers 3 related tasks in the same phase is fine. A commit that spans two phases is not.
+
+**Q: How do I use the [P] markers on tasks?**
+A: Tasks marked `[P]` in the same phase are candidates for delegated sub-agent execution. Each targets a different file with no dependencies on incomplete tasks. In Claude Code, spawn sub-agents for `[P]` tasks in pairs or groups. Each agent writes to its assigned file independently, then you merge and run the test suite. This can halve implementation time for large phases.
+
+**Q: The Spec-Kit templates have "Developer A / Developer B" sections but I'm working solo. Can I skip those?**
+A: Yes. Team-oriented sections in Spec-Kit templates are designed for multi-developer coordination. For solo or 1-human + 1-agent projects, skip team strategy sections and focus on the task list and phase checkpoints.
+
 ## Token Meter
 
 **Q: What is the token meter and why is it recommended?**

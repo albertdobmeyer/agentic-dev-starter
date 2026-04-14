@@ -82,7 +82,11 @@ cp CONSTITUTION.md .specify/memory/constitution.md
 
 ### 2. Specify
 
-Read VISION.md and SCOPE.md. Use their contents as input for the specify step.
+VISION.md captures product intent and strategic framing. The /specify step converts that intent into testable contracts. Once generated, the specification becomes the operational source of truth for implementation and validation.
+
+**Supersession rule:** VISION.md is the input. The spec is the output. Where they conflict on testable requirements, the spec wins.
+
+Read VISION.md and SCOPE.md. Translate the vision into testable contracts — Given/When/Then scenarios, measurable acceptance criteria, concrete success thresholds. Don't restate VISION.md; refine it into something an automated test suite can verify.
 
 If the human invokes `/speckit.specify` — provide the vision and scope as context.
 
@@ -105,6 +109,14 @@ Cross-artifact consistency check. Run it. If issues trace back to handoff doc ga
 ### 6. Tasks
 
 Generate the task breakdown. Tasks that can run in parallel are marked `[P]`. Test tasks are ordered before implementation tasks.
+
+### Agent Parallelization
+
+Tasks marked `[P]` in the same phase are candidates for delegated sub-agent execution. Each `[P]` task targets a different file with no dependencies on incomplete tasks in the same phase.
+
+For Claude Code: spawn sub-agents for `[P]` tasks in pairs or groups. Each agent gets the task description, the project context (CLAUDE.md + relevant spec artifacts), and writes to its assigned file. Merge results when all agents complete, then run the full test suite to validate integration.
+
+This can halve implementation time for phases with many parallel tasks.
 
 ### 7. Implement
 

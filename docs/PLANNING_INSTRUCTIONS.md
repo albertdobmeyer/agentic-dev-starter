@@ -146,6 +146,10 @@ Contains:
   - SUCCESS CRITERION: Filmable verification
 - Depth markers: which experiences are [D] requirements
 Voice: Aspirational but precise. No implementation details.
+Note: VISION.md is the INPUT to the /specify step in the build phase.
+/specify translates the vision into testable contracts — the spec
+supersedes VISION.md for acceptance criteria. Write VISION.md for
+clarity of intent; Spec-Kit refines it into verifiable requirements.
 
 ARCHITECTURE.md
 ───────────────

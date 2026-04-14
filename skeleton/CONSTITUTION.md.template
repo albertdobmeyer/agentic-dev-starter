@@ -61,7 +61,7 @@
 
 ## Article 8: Git & Workflow Discipline
 
-- Commit after every completed task.
+- Commit per logical milestone, phase boundary, or independently reviewable work unit.
 - Commit messages follow: `type: description` (feat, fix, docs, chore, test, refactor).
 - Never commit failing tests. Main branch always works.
 
