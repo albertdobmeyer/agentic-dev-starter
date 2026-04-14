@@ -25,4 +25,5 @@ node_modules/
 .env.local
 
 # Spec-Kit generated artifacts
-.specify/specs/*/
+# Remove this line if you want feature specs committed with PRs (recommended for teams)
+# .specify/specs/*/

@@ -89,10 +89,10 @@ When flattening or drift is discovered post-build:
 
 - The agent is the co-engineer, not the architect. The handoff documents (VISION.md, ARCHITECTURE.md) define the vision. The agent does not change the vision — it implements it.
 - When something is unclear, ask the human. Don't guess.
-- After every correction, update AGENT.md so the mistake doesn't repeat. (Boris Cherny principle: "Claude is eerily good at writing rules for itself.")
-- Keep AGENT.md under 200 lines. It's an index and ruleset, not a knowledge dump.
+- After every correction, update CLAUDE.md so the mistake doesn't repeat.
+- Keep CLAUDE.md under 200 lines. It's an index and ruleset, not a knowledge dump.
 - Use `@path` imports in CLAUDE.md to reference detailed docs (e.g., `@CONSTITUTION.md`, `@.specify/memory/constitution.md`) without inlining them. This keeps the file lean while giving full access to context.
-- When AGENT.md grows beyond 200 lines, move detail to docs/ and keep AGENT.md as an index.
+- When CLAUDE.md grows beyond 200 lines, move detail to docs/ and keep CLAUDE.md as an index.
 - Run `/speckit.clarify` before `/speckit.plan`. Always. Unanswered questions in the spec become wrong assumptions in the plan.
 - Run `/speckit.analyze` before `/speckit.implement`. Catch cross-artifact inconsistencies before they become code.
 

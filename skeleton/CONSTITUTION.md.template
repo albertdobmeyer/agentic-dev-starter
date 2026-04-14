@@ -70,7 +70,10 @@
 - The agent is the co-engineer, not the architect. Handoff documents define the vision.
 - When unclear, ask the human. Don't guess.
 - After every correction, update CLAUDE.md so the mistake doesn't repeat.
-- Keep CLAUDE.md under 200 lines.
+- Keep CLAUDE.md under 200 lines. Use `@path` imports to reference detailed docs without inlining them.
+- When CLAUDE.md grows beyond 200 lines, move detail to docs/ and keep CLAUDE.md as an index.
+- Run `/speckit.clarify` before `/speckit.plan`. Unanswered questions become wrong assumptions.
+- Run `/speckit.analyze` before `/speckit.implement`. Catch inconsistencies before they become code.
 
 ---
 

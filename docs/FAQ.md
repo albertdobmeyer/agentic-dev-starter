@@ -12,7 +12,7 @@ A: No. You need Claude Code for building. For planning, you can either use Claud
 A: CONSTITUTION.md and VISION.md are the minimum. They give Claude Code enough to spec and build correctly. ARCHITECTURE.md adds value for any project with a tech stack decision. SCOPE.md prevents rabbit holes. For a quick prototype, you can also run `init.py` with `--no-speckit` to get just the handoff skeletons and CLAUDE.md.
 
 **Q: Can I use this with an existing project that already has code?**
-A: Yes. Run `init.py` with `--force` to initialize in a non-empty directory. It won't touch your existing files — it only adds new ones (handoff docs, CLAUDE.md, .specify/, .claude/commands/). If you already have a CLAUDE.md, back it up first.
+A: Yes. Run `init.py` with `--force` to initialize in a non-empty directory. **Warning:** `--force` will overwrite existing handoff documents (VISION.md, ARCHITECTURE.md, CONSTITUTION.md, SCOPE.md) and CLAUDE.md with fresh skeletons. Back up any customized files first. Your source code, tests, and other project files are not touched.
 
 ## Planning Phase
 

@@ -110,7 +110,7 @@ Each step reads the handoff documents, generates the appropriate artifacts, and 
 
 ## Worked Example
 
-The [`example/`](example/) directory contains completed handoff documents for a real project (agentic-bookmark-organizer). Use it as a reference when filling out your own documents.
+The [`example/`](example/) directory contains completed **planning** documents for a real project (agentic-bookmark-organizer). The project is currently going through the full build cycle; the example will be updated with the complete planning-to-code story when it finishes. Use the handoff docs as a reference when filling out your own.
 
 ---
 
