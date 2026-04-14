@@ -1,8 +1,10 @@
 # agentic-dev-starter
 
-**Set up any project for spec-driven, test-first, anti-flattening agentic development.**
+**The #1 failure mode in AI-assisted development:** you describe a rich user experience. The agent decomposes it into tasks. Each task passes its test. But the result feels hollow — every component *works* in isolation, none of them *compose* into what you envisioned.
 
-A tool that initializes new project repos with handoff document skeletons, a constitution, Spec-Kit integration, and Claude Code slash commands — so you start building with a methodology, not a blank file.
+This is called **flattening**, and it happens every time a spec gets decomposed without structural safeguards.
+
+**agentic-dev-starter** prevents it. It sets up your project with a constitution, handoff documents, and a build workflow that keeps the agent on track from spec to ship — so what gets built matches what you described.
 
 > Created by Albert Dobmeyer & Claude (Anthropic)
 > AKD AUTOMATION SOLUTIONS — Licensed under CC BY-SA 4.0
@@ -10,14 +12,14 @@ A tool that initializes new project repos with handoff document skeletons, a con
 
 ---
 
-## What This Is
+## How It Works
 
 **Two tools, symbiotic:**
 
-- **[GitHub Spec-Kit](https://github.com/github/spec-kit)** is the build workflow engine — it manages feature branches, spec directories, quality gates, and the `specify → clarify → plan → tasks → implement` progression. It supports 25+ AI agents and has an extension/preset ecosystem.
-- **agentic-dev-starter** is the planning methodology layer — it adds anti-flattening (Articles 3-7), experience fidelity scenarios, depth classification, handoff documents (VISION, ARCHITECTURE, CONSTITUTION, SCOPE), and a constitution template that Spec-Kit doesn't provide.
+- **[GitHub Spec-Kit](https://github.com/github/spec-kit)** is the build workflow engine — feature branches, spec directories, quality gates, and the `specify → clarify → plan → tasks → implement` progression. Supports 25+ AI agents.
+- **agentic-dev-starter** is the methodology layer on top — anti-flattening (Articles 3-7), experience fidelity scenarios, depth classification, handoff documents (VISION, ARCHITECTURE, CONSTITUTION, SCOPE), and a constitution template that Spec-Kit doesn't provide.
 
-This repo is a **tool that sets up OTHER repos**. You run `init.py` once — it calls `specify init` for the Spec-Kit engine, then layers on the anti-flattening methodology. If Spec-Kit CLI isn't installed yet, bundled assets keep things working until you install it.
+This repo is a **tool that sets up OTHER repos**. Run `init.py` once — it calls `specify init` for the Spec-Kit engine, then layers on the anti-flattening methodology. If Spec-Kit CLI isn't installed yet, bundled assets keep things working until you install it.
 
 ---
 
@@ -110,23 +112,31 @@ Each step reads the handoff documents, generates the appropriate artifacts, and 
 
 ## Worked Example
 
-The [`example/`](example/) directory contains completed **planning** documents for a real project (agentic-bookmark-organizer). The project is currently going through the full build cycle; the example will be updated with the complete planning-to-code story when it finishes. Use the handoff docs as a reference when filling out your own.
+The [`example/`](example/) directory contains completed **planning** documents for a real project (agentic-bookmark-organizer). Use the handoff docs as a reference when filling out your own.
 
 ---
 
-## The Anti-Flattening Methodology
+## Status
 
-The #1 failure mode in AI-assisted development: you describe a rich user experience, the agent decomposes it into tasks, each task passes its test, but the experience feels hollow. Every component *works* in isolation; none of them *compose* into what you envisioned.
+The methodology and tooling are production-ready. The [agentic-bookmark-organizer](https://github.com/albertdobmeyer/agentic-bookmark-organizer) is currently going through the full build cycle — from the handoff docs in `example/` through the Spec-Kit workflow to working, tested code. When it completes, the example will be updated to show the complete planning-to-code story with git history, logged simplifications, and lessons learned.
 
-This methodology prevents flattening through five structural articles in the constitution:
+**Windows note:** The Spec-Kit CLI has a known Rich library rendering issue on some Windows terminal configurations. `init.py` detects this and auto-activates bundled assets as a fallback. Your team won't lose functionality — expect a warning message on first run, not an error.
 
-- **Article 3: Anti-Flattening** — Experience fidelity scenarios with negative assertions
-- **Article 4: Depth Classification** — `[E]` Exists / `[W]` Works / `[D]` Delivers
-- **Article 5: Implementation Debt Tracking** — Every simplification logged at the moment it happens
-- **Article 6: Data-Without-Behavior Detection** — Every schema needs a trigger specification
-- **Article 7: Drift Remediation** — Don't patch gap-by-gap; write scenarios first
+---
 
-Full deep-dive: [docs/METHODOLOGY.md](docs/METHODOLOGY.md)
+## The Five Anti-Flattening Articles
+
+The constitution enforces five structural safeguards at every stage where flattening typically occurs:
+
+| Article | What It Catches | When |
+|---|---|---|
+| **3: Anti-Flattening** | Specs that describe system mechanics instead of user experience | Before tasks are derived |
+| **4: Depth Classification** | Ambiguous "done" definitions — `[E]` Exists / `[W]` Works / `[D]` Delivers | Before implementation |
+| **5: Debt Tracking** | Silent `[D]`→`[W]` downgrades that make flattening invisible | During implementation |
+| **6: Data-Without-Behavior** | Schemas that exist but never fire (no trigger specified) | Before the build |
+| **7: Drift Remediation** | Gap-by-gap patching that produces Frankenstein code | After gaps are found |
+
+Every article exists because its absence caused a specific, documented failure in a production build. Full deep-dive: [docs/METHODOLOGY.md](docs/METHODOLOGY.md)
 
 ---
 

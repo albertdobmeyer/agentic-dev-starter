@@ -266,4 +266,26 @@ Architecture evolution is inevitable. Handle it cleanly:
 
 ---
 
+## 10. When Feature Branches Conflict
+
+Two developers building related features will eventually produce merge conflicts. Handle them cleanly:
+
+### Prevention
+
+- **Spec-Kit's numbered branches isolate spec directories.** Dev A's `specs/001-auth/` never conflicts with Dev B's `specs/002-payments/`. Spec artifacts merge cleanly.
+- **Lead should sequence features with shared dependencies.** If two features touch the same data model or module, one should merge first. Plan this during feature assignment.
+- **Small, focused PRs.** One feature per branch. Don't bundle unrelated work. Smaller surface = fewer conflicts.
+
+### Resolution
+
+When conflicts happen despite prevention:
+
+1. **The second-to-merge developer resolves.** Whoever's PR is still open when the first one merges is responsible for rebasing and resolving.
+2. **Rebase on updated main, don't merge main into the feature branch.** This keeps the commit history clean.
+3. **If the conflict is architectural** (two features made incompatible design choices), escalate to the lead. Don't resolve by picking one side — the lead decides which pattern wins and may update ARCHITECTURE.md.
+4. **Re-run the full test suite after conflict resolution.** Constitution Article 1 — never commit on red.
+5. **If the conflict is in spec artifacts** (`specs/` directory): both specs are valid historical records. Merge both. The code is what needs reconciling, not the specs.
+
+---
+
 *Part of [agentic-dev-starter](../README.md). See also: [METHODOLOGY.md](METHODOLOGY.md), [AGENT_SETUP.md](AGENT_SETUP.md), [CONSTITUTION_TEMPLATE.md](CONSTITUTION_TEMPLATE.md).*
