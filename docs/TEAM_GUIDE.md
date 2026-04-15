@@ -17,15 +17,16 @@ The model is simple: **main is the contract**. The lead owns the handoff documen
 Run once at the start of the project:
 
 ```bash
-# 1. Initialize the project
-python agentic-dev-starter/init.py ./my-project \
-  --name "My Project" --describe "What it does"
+# 1. Copy the DNA files into your project
+cp project-dna/template/AGENT.md ./my-project/CLAUDE.md
+cp project-dna/template/CONSTITUTION.md ./my-project/
 
 # 2. Open in Claude Code
 cd my-project && claude
+# Say: "Read CLAUDE.md"
 ```
 
-Then complete the four handoff documents:
+The agent bootstraps Spec-Kit and creates handoff doc skeletons. Then complete the four handoff documents:
 
 | Document | What the lead writes |
 |----------|---------------------|
@@ -288,4 +289,4 @@ When conflicts happen despite prevention:
 
 ---
 
-*Part of [agentic-dev-starter](../README.md). See also: [METHODOLOGY.md](METHODOLOGY.md), [AGENT_SETUP.md](AGENT_SETUP.md), [CONSTITUTION_TEMPLATE.md](CONSTITUTION_TEMPLATE.md).*
+*Part of [project-dna](../README.md). See also: [METHODOLOGY.md](METHODOLOGY.md), [AGENT_SETUP.md](AGENT_SETUP.md), [CONSTITUTION_TEMPLATE.md](CONSTITUTION_TEMPLATE.md).*

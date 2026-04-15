@@ -1,4 +1,4 @@
-# Contributing to agentic-dev-starter
+# Contributing to project-dna
 
 Thanks for your interest in improving the methodology. This project welcomes contributions that strengthen the anti-flattening framework, add worked examples, improve documentation clarity, or extend compatibility with new CLI agents.
 
@@ -8,7 +8,7 @@ Thanks for your interest in improving the methodology. This project welcomes con
 - Projects built with this methodology that you can share as case studies (worked examples in `example/`)
 - Battle-tested improvements to the constitution articles based on production experience
 - Compatibility guides for AI agents not yet listed
-- Improvements to `init.py` (new flags, better defaults, platform support)
+- Improvements to the template files (AGENT.md, CONSTITUTION.md)
 
 **Welcome:**
 - Typo fixes, broken links, formatting improvements
@@ -18,8 +18,7 @@ Thanks for your interest in improving the methodology. This project welcomes con
 
 **Not in scope:**
 - Changes to Articles 3-7 that weaken the anti-flattening safeguards (these are structural, not stylistic)
-- Adding heavy dependencies to `init.py` (it must stay stdlib-only)
-- Replacing Spec-Kit with a different tool (the package is designed as a layer on top of Spec-Kit)
+- Replacing Spec-Kit with a different tool (the methodology is designed as a layer on top of Spec-Kit)
 
 ## How to Contribute
 

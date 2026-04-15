@@ -41,17 +41,11 @@ If not installed, install it:
 uv tool install specify-cli
 ```
 
-If `init.py` already ran with the CLI available, `.specify/` and `.claude/commands/` are fully set up. If init.py used bundled assets (CLI wasn't available), you can upgrade by running:
-
-```bash
-specify init . --ai claude --force
-```
-
-This will replace the bundled assets with the full Spec-Kit installation, including extension/preset support.
+If the bootstrap in AGENT.md already ran, `.specify/` and `.claude/commands/` should be set up.
 
 ### What's Already In Place
 
-Whether set up by `specify init` or bundled assets, you should have:
+After bootstrap, you should have:
 
 - `.specify/templates/` — Spec-Kit templates for specs, plans, tasks, checklists
 - `.specify/scripts/` — Shell scripts for branch and spec file management

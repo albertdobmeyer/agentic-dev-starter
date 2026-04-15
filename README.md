@@ -4,20 +4,21 @@ Your team's developers use Claude Code without a shared contract for how the age
 
 **project-dna gives every agent on your team the same engineering contract.**
 
-Copy two files into any repo. Claude Code reads CLAUDE.md and bootstraps a complete spec-driven development environment — Spec-Kit workflow, handoff documents, constitution, sub-agent orchestration, self-audit loops. Same rules, every branch, every developer.
+Copy two files into any repo. Your AI agent reads them and bootstraps a complete spec-driven development environment — Spec-Kit workflow, handoff documents, constitution, sub-agent orchestration, self-audit loops. Same rules, every branch, every developer.
 
 ## Setup
 
 ```bash
 # Copy the two DNA files into your project
-cp project-dna/CLAUDE.md project-dna/CONSTITUTION.md ./my-project/
+cp project-dna/template/AGENT.md ./my-project/CLAUDE.md    # rename to your agent's convention
+cp project-dna/template/CONSTITUTION.md ./my-project/
 
-# Open in Claude Code
+# Open in Claude Code (or your agent of choice)
 cd my-project && claude
 # Say: "Read CLAUDE.md"
 ```
 
-Claude Code reads CLAUDE.md, installs Spec-Kit, creates handoff document skeletons, and enters planning mode. You discuss what to build. It pushes for experience fidelity scenarios, negative assertions, depth tags, and filmable success criteria. Then it builds — test-first, with sub-agent delegation, self-audit loops, and critical pushback when you're wrong.
+The agent reads CLAUDE.md, installs Spec-Kit, creates handoff document skeletons, and enters planning mode. You discuss what to build. It pushes for experience fidelity scenarios, negative assertions, depth tags, and filmable success criteria. Then it builds — test-first, with sub-agent delegation, self-audit loops, and critical pushback when you're wrong.
 
 ## What the Agent Becomes
 

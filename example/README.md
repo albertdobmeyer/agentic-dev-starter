@@ -14,4 +14,4 @@ Use these files as a reference when filling out your own handoff documents. They
 
 **agentic-bookmark-organizer** takes a Chrome bookmarks HTML export (1,067 bookmarks across 126 folders), checks each URL for liveness, uses Ollama to semantically categorize them, and produces a cleaned, reorganized file ready to re-import.
 
-These handoff documents were produced by following the agentic-dev-starter planning methodology — specifically the PLANNING_INSTRUCTIONS.md guidance on experience fidelity scenarios and anti-flattening.
+These handoff documents were produced by following the project-dna planning methodology — specifically the PLANNING_INSTRUCTIONS.md guidance on experience fidelity scenarios and anti-flattening.

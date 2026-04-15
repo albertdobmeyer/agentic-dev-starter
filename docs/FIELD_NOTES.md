@@ -57,7 +57,7 @@ This preserves traceability (every phase boundary is a commit) without forcing m
 
 **Observed friction:** The Spec-Kit tasks template included "Parallel Team Strategy" and "Developer A / Developer B" sections that were irrelevant for a 1-human + 1-agent project. The agent called this "noise."
 
-**Root cause:** Spec-Kit templates are designed for multi-developer teams. The agentic-dev-starter methodology doesn't distinguish between solo and team usage modes at the template level.
+**Root cause:** Spec-Kit templates are designed for multi-developer teams. The project-dna methodology doesn't distinguish between solo and team usage modes at the template level.
 
 **Revision:** Documented that team-oriented template sections can be skipped for solo projects. The methodology now explicitly acknowledges both modes rather than assuming team usage.
 

@@ -3,16 +3,16 @@
 ## Getting Started
 
 **Q: Do I need to install Spec-Kit CLI (`specify-cli`)?**
-A: No. `init.py` bundles all Spec-Kit assets — commands, templates, and scripts. Everything is copied locally into your project. The Spec-Kit CLI is optional; if you have it installed, it works alongside the bundled assets.
+A: Not manually. The agent instructions in AGENT.md tell the agent to install Spec-Kit CLI via `uv tool install specify-cli` during bootstrap. If it's already installed, it just uses it.
 
 **Q: Do I need Claude Desktop AND Claude Code?**
 A: No. You need Claude Code for building. For planning, you can either use Claude Code directly ("Read CLAUDE.md, help me plan this project") or use Claude Desktop with the planning instructions pasted into Custom Instructions for a more structured planning experience. Both work.
 
 **Q: What if my project is small? Do I need all four handoff documents?**
-A: CONSTITUTION.md and VISION.md are the minimum. They give Claude Code enough to spec and build correctly. ARCHITECTURE.md adds value for any project with a tech stack decision. SCOPE.md prevents rabbit holes. For a quick prototype, you can also run `init.py` with `--no-speckit` to get just the handoff skeletons and CLAUDE.md.
+A: CONSTITUTION.md and VISION.md are the minimum. They give the agent enough to spec and build correctly. ARCHITECTURE.md adds value for any project with a tech stack decision. SCOPE.md prevents rabbit holes. The agent creates skeleton handoff docs during bootstrap if they don't exist.
 
 **Q: Can I use this with an existing project that already has code?**
-A: Yes. Run `init.py` with `--force` to initialize in a non-empty directory. **Warning:** `--force` will overwrite existing handoff documents (VISION.md, ARCHITECTURE.md, CONSTITUTION.md, SCOPE.md) and CLAUDE.md with fresh skeletons. Back up any customized files first. Your source code, tests, and other project files are not touched.
+A: Yes. Copy `template/AGENT.md` and `template/CONSTITUTION.md` into your project. The agent's bootstrap step only creates handoff doc skeletons if they don't already exist — your source code, tests, and other project files are not touched.
 
 ## Planning Phase
 
@@ -27,8 +27,8 @@ A: Yes. Use [HANDOFF_FORMAT.md](HANDOFF_FORMAT.md) as your structural reference 
 
 ## Building Phase
 
-**Q: How does init.py differ from `specify init`?**
-A: `init.py` produces the same project structure as `specify init --ai claude` but without requiring the Spec-Kit CLI, network access, or any pip packages. It bundles the assets locally and copies them. If you already have Spec-Kit CLI installed, everything is compatible — the slash commands and scripts are identical.
+**Q: How does the bootstrap differ from `specify init`?**
+A: The agent runs `specify init` as part of bootstrap. If Spec-Kit CLI isn't installed, the agent installs it via `uv tool install specify-cli`. If `specify init` fails (known Windows issue with Rich library), the agent tells you — the workflow still functions with manual branch management.
 
 **Q: Claude Code tries to plan instead of build. How do I stop it?**
 A: Make sure Claude Code reads [AGENT_SETUP.md](AGENT_SETUP.md), not the planning instructions. AGENT_SETUP.md explicitly frames Claude Code as the co-engineer: "Never improvise architecture. The handoff documents define the vision."
