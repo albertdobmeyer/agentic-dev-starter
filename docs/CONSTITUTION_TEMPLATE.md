@@ -4,7 +4,7 @@
 > **Created by:** Albert Dobmeyer & Claude (Anthropic)  
 > **Intellectual Property of** AKD AUTOMATION SOLUTIONS — Licensed under CC BY-SA 4.0.  
 > **Derived from:** The PROJECT DNA methodology — axioms extracted from multiple production builds where predictable failure modes were identified and structurally prevented.  
-> **Purpose:** Feed this into `/speckit.constitution` at the start of every new project. Customize the `{PROJECT-SPECIFIC}` sections per project. The rules above the project-specific section are universal — they apply to every build.  
+> **Purpose:** Feed this into `/speckit-constitution` at the start of every new project. Customize the `{PROJECT-SPECIFIC}` sections per project. The rules above the project-specific section are universal — they apply to every build.  
 > **Distribution:** OPEN-SOURCE — Licensed under CC BY-SA 4.0
 
 ---
@@ -93,8 +93,8 @@ When flattening or drift is discovered post-build:
 - Keep CLAUDE.md under 200 lines. It's an index and ruleset, not a knowledge dump.
 - Use `@path` imports in CLAUDE.md to reference detailed docs (e.g., `@CONSTITUTION.md`, `@.specify/memory/constitution.md`) without inlining them. This keeps the file lean while giving full access to context.
 - When CLAUDE.md grows beyond 200 lines, move detail to docs/ and keep CLAUDE.md as an index.
-- Run `/speckit.clarify` before `/speckit.plan`. Always. Unanswered questions in the spec become wrong assumptions in the plan.
-- Run `/speckit.analyze` before `/speckit.implement`. Catch cross-artifact inconsistencies before they become code.
+- Run `/speckit-clarify` before `/speckit-plan`. Always. Unanswered questions in the spec become wrong assumptions in the plan.
+- Run `/speckit-analyze` before `/speckit-implement`. Catch cross-artifact inconsistencies before they become code.
 
 ---
 
@@ -117,7 +117,7 @@ Add project-specific axioms here. Examples:
 
 ## Pre-Implementation Gate Checklist
 
-Before `/speckit.implement`, verify:
+Before `/speckit-implement`, verify:
 
 - [ ] Every core principle has an Experience Fidelity Scenario with 3+ negative assertions
 - [ ] Every scenario includes behavioral variation (happy path + edge case + error flow)
@@ -132,7 +132,7 @@ Before `/speckit.implement`, verify:
 - [ ] Non-goals are explicitly stated
 - [ ] All versions are pinned
 - [ ] Production threshold is defined (must-ship vs v1.1)
-- [ ] `/speckit.analyze` passes with no unresolved inconsistencies
+- [ ] `/speckit-analyze` passes with no unresolved inconsistencies
 
 ---
 

@@ -50,7 +50,7 @@ After bootstrap, you should have:
 - `.specify/templates/` — Spec-Kit templates for specs, plans, tasks, checklists
 - `.specify/scripts/` — Shell scripts for branch and spec file management
 - `.specify/memory/constitution.md` — Constitution loaded into Spec-Kit memory
-- `.claude/commands/speckit.*.md` — Slash commands for the full Spec-Kit workflow
+- `.claude/skills/speckit-*/SKILL.md` — Spec-Kit skills for the full workflow
 
 ### Optional: Token Meter
 
@@ -84,9 +84,9 @@ VISION.md captures product intent and strategic framing. The /specify step conve
 
 Read VISION.md and SCOPE.md. Translate the vision into testable contracts — Given/When/Then scenarios, measurable acceptance criteria, concrete success thresholds. Don't restate VISION.md; refine it into something an automated test suite can verify.
 
-If the human invokes `/speckit.specify` — provide the vision and scope as context.
+If the human invokes `/speckit-specify` — provide the vision and scope as context.
 
-If working autonomously — read `.claude/commands/speckit.specify.md` and follow its instructions, using VISION.md as the feature description and SCOPE.md as boundaries.
+If working autonomously — read `.claude/skills/speckit-specify/SKILL.md` and follow its instructions, using VISION.md as the feature description and SCOPE.md as boundaries.
 
 ### 3. Clarify (Optional for Thorough Handoff Bundles)
 
@@ -182,12 +182,12 @@ For team projects with multiple developers on feature branches, see [TEAM_GUIDE.
 HANDOFF DOCUMENTS                    SPEC-KIT WORKFLOW                    OUTPUT
 ────────────────                     ─────────────────                    ──────
 CONSTITUTION.md ───────────────────► .specify/memory/constitution.md
-VISION.md + SCOPE.md ──────────────► /speckit.specify ─────────────────► .specify/specs/001-*/spec.md
-                                     /speckit.clarify (optional) ──────► clarifications in spec
-ARCHITECTURE.md ───────────────────► /speckit.plan ────────────────────► plan.md, research.md, data-model.md
-                                     /speckit.analyze (optional) ──────► consistency validation
-                                     /speckit.tasks ───────────────────► tasks.md (test-first ordered)
-                                     /speckit.implement ───────────────► working, tested code
+VISION.md + SCOPE.md ──────────────► /speckit-specify ─────────────────► .specify/specs/001-*/spec.md
+                                     /speckit-clarify (optional) ──────► clarifications in spec
+ARCHITECTURE.md ───────────────────► /speckit-plan ────────────────────► plan.md, research.md, data-model.md
+                                     /speckit-analyze (optional) ──────► consistency validation
+                                     /speckit-tasks ───────────────────► tasks.md (test-first ordered)
+                                     /speckit-implement ───────────────► working, tested code
 ```
 
 ---

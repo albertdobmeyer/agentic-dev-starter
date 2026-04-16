@@ -87,23 +87,23 @@ Each feature follows the Spec-Kit progression:
 
 ```bash
 # 1. Create feature spec (auto-creates numbered branch + spec directory)
-/speckit.specify "Add user authentication with OAuth2"
+/speckit-specify "Add user authentication with OAuth2"
 # → Creates branch 001-user-auth
 # → Creates specs/001-user-auth/spec.md
 
 # 2. Clarify ambiguities (optional)
-/speckit.clarify
+/speckit-clarify
 
 # 3. Create technical plan
-/speckit.plan
+/speckit-plan
 # → Creates plan.md, research.md, data-model.md
 
 # 4. Break into tasks
-/speckit.tasks
+/speckit-tasks
 # → Creates tasks.md with test-first ordering
 
 # 5. Implement
-/speckit.implement
+/speckit-implement
 # → Build, test, commit on green
 
 # 6. Open PR to main
@@ -208,10 +208,10 @@ This prevents quadratic cost growth from bloated conversation history.
 ### When to Start New Sessions
 
 Natural handoff points in the Spec-Kit workflow:
-- After `/speckit.specify` completes → handoff, `/clear`
-- After `/speckit.plan` completes → handoff, `/clear`
-- After `/speckit.tasks` completes → handoff, `/clear`
-- During `/speckit.implement` — after completing each phase of tasks
+- After `/speckit-specify` completes → handoff, `/clear`
+- After `/speckit-plan` completes → handoff, `/clear`
+- After `/speckit-tasks` completes → handoff, `/clear`
+- During `/speckit-implement` — after completing each phase of tasks
 
 ### Lead Monitoring
 

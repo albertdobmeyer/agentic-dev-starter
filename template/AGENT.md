@@ -11,23 +11,29 @@ You are the **co-architect** of this project, not an implementation agent. You p
 
 If this project has no `.specify/` directory, set it up:
 
-1. **Spec-Kit CLI**: Check `specify check`. If not installed: `uv tool install specify-cli`. If `uv` not installed, tell the human: `curl -LsSf https://astral.sh/uv/install.sh | sh` (macOS/Linux) or `powershell -c "irm https://astral.sh/uv/install.ps1 | iex"` (Windows).
-2. **Initialize**: `specify init . --ai claude --force`. If this fails (Windows Rich library issue), tell the human — the workflow still functions, but branch management will be manual.
-3. **Handoff docs**: If VISION.md, ARCHITECTURE.md, SCOPE.md don't exist, create skeletons:
+1. **Prerequisites**: `uv` and `git` must be installed. If `uv` is missing, tell the human: `curl -LsSf https://astral.sh/uv/install.sh | sh` (macOS/Linux) or `powershell -c "irm https://astral.sh/uv/install.ps1 | iex"` (Windows). On Windows, PowerShell 7+ (`pwsh`) is also required — install from https://aka.ms/powershell if `pwsh --version` fails. Full prerequisites: https://github.com/github/spec-kit
+2. **Spec-Kit CLI**: Check `specify version`. If not installed or outdated, install the latest from source:
+   ```
+   LATEST=$(git ls-remote --tags --sort=-v:refname https://github.com/github/spec-kit.git 'refs/tags/v*' | head -1 | sed 's/.*refs\/tags\///')
+   uv tool install specify-cli --force --from "git+https://github.com/github/spec-kit.git@${LATEST}"
+   ```
+   On Windows, prefix all `specify` commands with `PYTHONIOENCODING=utf-8` to prevent Rich encoding crashes in non-UTF-8 terminals.
+3. **Initialize**: `specify init . --integration claude --force --offline`. This creates `.specify/`, `.claude/skills/`, templates, scripts, and the speckit workflow.
+4. **Handoff docs**: If VISION.md, ARCHITECTURE.md, SCOPE.md don't exist, create skeletons:
    - VISION.md — Problem statement, target users, experience fidelity scenarios (min 2, each with 3+ negative assertions, behavioral variation, filmable success criteria, depth tags)
    - ARCHITECTURE.md — Tech stack (pinned versions), module boundaries, complete data model, data flow
    - SCOPE.md — 8+ explicit non-goals (each prevents a rabbit hole)
-4. **Enter planning mode.** Do NOT write code until handoff docs are complete and the human confirms.
+5. **Enter planning mode.** Do NOT write code until handoff docs are complete and the human confirms.
 
 ## Workflow
 
 ```
 PLANNING:   VISION → ARCHITECTURE → CONSTITUTION (customize Art. 10) → SCOPE
-BUILDING:   /speckit.specify → /speckit.clarify → /speckit.plan → /speckit.tasks → /speckit.implement
+BUILDING:   /speckit-specify → /speckit-clarify → /speckit-plan → /speckit-tasks → /speckit-implement
 VERIFYING:  Self-audit loop after each implementation phase
 ```
 
-VISION.md is the input to /specify. The spec is the operational source of truth. /specify translates intent into testable contracts (Given/When/Then) — don't restate VISION.md, formalize it into assertions the test suite can verify.
+VISION.md is the input to /speckit-specify. The spec is the operational source of truth. /speckit-specify translates intent into testable contracts (Given/When/Then) — don't restate VISION.md, formalize it into assertions the test suite can verify.
 
 ### Model Selection
 
@@ -81,7 +87,7 @@ Match model capability to phase. Planning and adversarial review need heavy reas
 
 **Merge conflict prevention:**
 - Tasks marked `[P]` must have ZERO file overlap. If two tasks touch the same file → not parallel, remove `[P]`.
-- Shared data models defined in /speckit.plan BEFORE implementation. Sub-agents import models, they don't create them.
+- Shared data models defined in /speckit-plan BEFORE implementation. Sub-agents import models, they don't create them.
 - Each developer's feature branch has its own `specs/NNN-feature/` directory.
 - Changes to shared code (models, interfaces) → PR to main FIRST, then feature branches rebase.
 

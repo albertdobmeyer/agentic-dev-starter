@@ -34,7 +34,7 @@ A: The agent runs `specify init` as part of bootstrap. If Spec-Kit CLI isn't ins
 A: Make sure Claude Code reads [AGENT_SETUP.md](AGENT_SETUP.md), not the planning instructions. AGENT_SETUP.md explicitly frames Claude Code as the co-engineer: "Never improvise architecture. The handoff documents define the vision."
 
 **Q: Can I skip steps in the Spec-Kit workflow?**
-A: Yes. For well-specified handoff bundles, skip `/speckit.clarify` and `/speckit.analyze`. The minimum path: constitution → specify → plan → tasks → implement. The Pre-Implementation Gate Checklist in the constitution is the "ready to build?" test.
+A: Yes. For well-specified handoff bundles, skip `/speckit-clarify` and `/speckit-analyze`. The minimum path: constitution → specify → plan → tasks → implement. The Pre-Implementation Gate Checklist in the constitution is the "ready to build?" test.
 
 ## The Methodology
 

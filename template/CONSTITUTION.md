@@ -79,7 +79,7 @@
 - After every correction, update CLAUDE.md so the mistake doesn't repeat.
 - Keep CLAUDE.md under 200 lines. Use `@path` imports for detailed docs.
 - Self-audit loops run after every implementation phase. Gaps are fixed before proceeding.
-- Run `/speckit.clarify` before `/speckit.plan`. Unanswered questions become wrong assumptions.
+- Run `/speckit-clarify` before `/speckit-plan`. Unanswered questions become wrong assumptions.
 
 ---
 
