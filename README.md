@@ -9,10 +9,11 @@ Copy the template files into any repo. Your AI agent reads them and bootstraps a
 ## Setup
 
 ```bash
-# Copy the DNA files into your project
-cp project-dna/template/AGENT.md ./my-project/CLAUDE.md    # rename to your agent's convention
-cp project-dna/template/CONSTITUTION.md ./my-project/
-cp -r project-dna/template/skills/dna-* ./my-project/.claude/skills/
+# One-liner: copy all DNA files into your project
+mkdir -p ./my-project/.claude/skills && \
+  cp project-dna/template/AGENT.md ./my-project/CLAUDE.md && \
+  cp project-dna/template/CONSTITUTION.md ./my-project/ && \
+  cp -r project-dna/template/skills/dna-* ./my-project/.claude/skills/
 
 # Open in Claude Code (or your agent of choice)
 cd my-project && claude
