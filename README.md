@@ -4,21 +4,22 @@ Your team's developers use Claude Code without a shared contract for how the age
 
 **project-dna gives every agent on your team the same engineering contract.**
 
-Copy two files into any repo. Your AI agent reads them and bootstraps a complete spec-driven development environment — Spec-Kit workflow, handoff documents, constitution, sub-agent orchestration, self-audit loops. Same rules, every branch, every developer.
+Copy the template files into any repo. Your AI agent reads them and bootstraps a complete spec-driven development environment — Spec-Kit workflow, handoff documents, constitution, test enforcement, context management, and sub-agent orchestration. Same rules, every branch, every developer.
 
 ## Setup
 
 ```bash
-# Copy the two DNA files into your project
+# Copy the DNA files into your project
 cp project-dna/template/AGENT.md ./my-project/CLAUDE.md    # rename to your agent's convention
 cp project-dna/template/CONSTITUTION.md ./my-project/
+cp -r project-dna/template/skills/dna-* ./my-project/.claude/skills/
 
 # Open in Claude Code (or your agent of choice)
 cd my-project && claude
 # Say: "Read CLAUDE.md"
 ```
 
-The agent reads CLAUDE.md, installs Spec-Kit, creates handoff document skeletons, and enters planning mode. You discuss what to build. It pushes for experience fidelity scenarios, negative assertions, depth tags, and filmable success criteria. Then it builds — test-first, with sub-agent delegation, self-audit loops, and critical pushback when you're wrong.
+The agent reads CLAUDE.md, installs Spec-Kit, sets up enforcement skills, creates handoff document skeletons, and enters planning mode. You discuss what to build. It pushes for experience fidelity scenarios, negative assertions, depth tags, and filmable success criteria. Then it builds — test-first (enforced by `/dna-test-gate`), with token-aware handoffs (`/dna-context-check`), complexity decomposition (`/dna-decompose`), and scoped sub-agent delegation (`/dna-delegate`).
 
 ## What the Agent Becomes
 
@@ -27,10 +28,10 @@ The agent reads CLAUDE.md, installs Spec-Kit, creates handoff document skeletons
 | Starts coding immediately | Plans first, builds second |
 | Guesses when unclear | Stops and asks |
 | Pleases the human | Pushes back when specs are violated |
-| One giant commit | Commits at phase boundaries |
-| Flattens `[D]` to `[W]` silently | Logs every simplification |
-| No merge awareness | Tasks decomposed for zero file overlap |
-| Declares "done" after first pass | Self-audits for completeness, spec fidelity, negative assertions |
+| Tests are "optional" | `/dna-test-gate` — tests must exist and fail before implementation |
+| "Done" without proof | `/dna-verify` — built matches specced, or divergences are listed |
+| Blows past context limits | `/dna-context-check` — auto-handoff before the dumb zone |
+| Merge conflicts from parallel work | `/dna-decompose` + `/dna-delegate` — scoped sub-agents, zero file overlap |
 
 ## Deep Dives
 
