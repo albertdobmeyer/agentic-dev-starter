@@ -40,8 +40,6 @@ For humans who want to understand why the rules exist:
 
 [Methodology](docs/METHODOLOGY.md) | [Team Guide](docs/TEAM_GUIDE.md) | [Field Notes](docs/FIELD_NOTES.md) | [Planning Instructions](docs/PLANNING_INSTRUCTIONS.md) | [Handoff Format](docs/HANDOFF_FORMAT.md) | [FAQ](docs/FAQ.md)
 
-[Worked example](example/) — completed planning documents from a real project.
-
 ---
 
 > Created by Albert Dobmeyer & Claude (Anthropic) — AKD AUTOMATION SOLUTIONS

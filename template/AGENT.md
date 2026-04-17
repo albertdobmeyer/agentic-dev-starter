@@ -21,12 +21,29 @@ If this project has no `.specify/` directory, set it up:
    ```
    On Windows, prefix all `specify` commands with `PYTHONIOENCODING=utf-8` to prevent Rich encoding crashes in non-UTF-8 terminals.
 3. **Initialize**: `specify init . --integration claude --force --offline`. This creates `.specify/`, `.claude/skills/`, templates, scripts, and the speckit workflow.
-4. **DNA skills**: If `dna-test-gate`, `dna-context-check`, `dna-decompose`, `dna-delegate` are not in `.claude/skills/`, copy them from the project-dna template. These are the enforcement layer on top of Spec-Kit — test gates, context management, complexity decomposition, and sub-agent delegation.
-5. **Handoff docs**: If VISION.md, ARCHITECTURE.md, SCOPE.md don't exist, create skeletons:
+4. **Sync constitution**: `specify init` writes `.specify/memory/constitution.md` as a placeholder stub. The project-dna methodology uses root `CONSTITUTION.md` as canonical. Sync the real constitution so Spec-Kit tooling reads it:
+   ```
+   cp CONSTITUTION.md .specify/memory/constitution.md
+   ```
+   Re-run this every time CONSTITUTION.md is edited.
+5. **DNA skills**: Verify all 5 enforcement skills are in `.claude/skills/`: `dna-test-gate`, `dna-context-check`, `dna-decompose`, `dna-delegate`, `dna-verify`. If the human used the README one-liner, they're already present. If any are missing, tell the human to run:
+   ```
+   cp -r <path-to-project-dna>/template/skills/dna-* .claude/skills/
+   ```
+   These are the enforcement layer on top of Spec-Kit — test gates, context management, complexity decomposition, sub-agent delegation, and post-implementation verification.
+6. **Handoff docs**: If VISION.md, ARCHITECTURE.md, SCOPE.md don't exist, create skeletons:
    - VISION.md — Problem statement, target users, experience fidelity scenarios (min 2, each with 3+ negative assertions, behavioral variation, filmable success criteria, depth tags)
    - ARCHITECTURE.md — Tech stack (pinned versions), module boundaries, complete data model, data flow
    - SCOPE.md — 8+ explicit non-goals (each prevents a rabbit hole)
-6. **Enter planning mode.** Do NOT write code until handoff docs are complete and the human confirms.
+7. **Bootstrap self-audit** (zero-trust verification — do NOT skip): Before proceeding to planning, verify each item. Block on any failure and complete it before continuing.
+   - `.specify/` directory exists (created by step 3)
+   - `.specify/memory/constitution.md` does NOT contain `[PROJECT_NAME] Constitution` (Spec-Kit stub marker — indicates step 4 didn't run)
+   - `.claude/skills/` contains all 5 directories: `dna-test-gate`, `dna-context-check`, `dna-decompose`, `dna-delegate`, `dna-verify`
+   - Root `CONSTITUTION.md` exists and its Article 10 has been customized (not a placeholder)
+   - Root `VISION.md`, `ARCHITECTURE.md`, `SCOPE.md` exist (skeletons from step 6 are acceptable)
+
+   This audit matters because the DNA enforcement skills cannot gate what isn't installed. A silent bootstrap failure looks like a working project until the first `/dna-test-gate` call returns vacuous-pass or the first `/speckit-plan` reads stub constitution text.
+8. **Enter planning mode.** Do NOT write code until handoff docs are complete and the human confirms.
 
 ## Workflow
 
