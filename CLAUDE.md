@@ -1,28 +1,26 @@
-# project-dna
+# agentic-dev-starter
 
-This repo IS the methodology kit. It is not a project to build.
+This repo is a methodology kit — a "repo to set up repos." It is NOT a project to build.
 
-## What This Repo Contains
+## If an agent is reading this
 
-- `template/AGENT.md` — The agent instructions template. Users copy this into their project and rename it to match their agent's convention (e.g., `CLAUDE.md` for Claude Code).
-- `template/CONSTITUTION.md` — The engineering contract. Copied alongside AGENT.md.
-- `template/skills/dna-*/` — Enforcement skills (test gates, verification, context management, decomposition, delegation). Copied into `.claude/skills/` during bootstrap.
-- `docs/` — Deep dives on the methodology, team workflows, and field notes.
-- `example/` — Completed planning documents from a real project (agentic-bookmark-organizer).
-- `token-meter/` — Burn-rate monitor for Claude Code sessions. Integrates with `/dna-context-check`.
+You are in the kit repo itself. Do not bootstrap Spec-Kit, create `.specify/`, or write handoff documents *here*. That workflow happens in a *target* project after the kit is copied into it.
 
-## How to Help the Human
+Help the human understand and use the kit:
 
-The human is here to evaluate this methodology for their team. Help them understand:
+- **Setup one-liner** — see `README.md`. Copies `template/AGENT.md`, `template/CONSTITUTION.md`, and `template/skills/dna-*/` into a target project.
+- **How the agent behaves after setup** — `template/AGENT.md` is the agent protocol that unfolds in the target project (Spec-Kit install, DNA skills, bootstrap self-audit).
+- **The engineering contract** — `template/CONSTITUTION.md`. Articles 1–9 are universal; Article 10 is project-specific.
+- **Why the rules exist** — `docs/METHODOLOGY.md`.
+- **Team workflow** — `docs/TEAM_GUIDE.md`. Multi-dev branches, PR gates, merge-conflict prevention.
+- **Token-aware session discipline** — `docs/FAQ.md` + `template/skills/dna-context-check/SKILL.md`. Integrates with `npx agent-token-meter`.
 
-1. **What it does** — Template files + enforcement skills that, when copied into any repo, cause an AI agent to bootstrap a spec-driven development environment. The agent becomes a co-architect: plans first, builds test-first, pushes back on vague specs, manages its own context window, and delegates to sub-agents for parallel work without merge conflicts.
-2. **How to use it** — Copy `template/AGENT.md`, `template/CONSTITUTION.md`, and `template/skills/` into the target project. Rename AGENT.md to the agent's convention. Open the agent. Say "Read CLAUDE.md" (or equivalent).
-3. **Why it exists** — AI agents are brilliant juniors with amnesia. They flatten specs, skip tests, blow through context windows, and produce merge conflicts when parallelized. This methodology + enforcement layer prevents all four failure modes.
+## Philosophy
 
-Point them to `docs/METHODOLOGY.md` for the anti-flattening theory, `docs/TEAM_GUIDE.md` for multi-developer setup, and `example/` for what the output looks like.
+Zero infrastructure. Spec-Kit and agent-token-meter are NOT bundled — they install at bootstrap time against their latest versions. The repo stays a small seed that unfolds into a full environment when copied into a target project.
 
-## Do NOT
+## Do not, in this repo
 
-- Do not bootstrap Spec-Kit in this repo.
-- Do not create `.specify/` directories, handoff documents, or enter planning mode.
-- Do not treat `template/AGENT.md` as instructions for you — it is a template for other projects.
+- Do not run `specify init` or create `.specify/`.
+- Do not create `VISION.md`, `ARCHITECTURE.md`, `SCOPE.md`, or handoff documents at the root.
+- Do not treat `template/AGENT.md` as instructions for you — it is the template that becomes the target project's agent instructions.

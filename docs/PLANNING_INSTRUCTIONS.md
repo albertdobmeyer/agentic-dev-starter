@@ -11,7 +11,7 @@
 ### Claude Desktop Project (recommended for dedicated planning)
 1. Create a new Project in Claude Desktop
 2. Paste everything below the line into Custom Instructions
-3. Attach [CONSTITUTION_TEMPLATE.md](CONSTITUTION_TEMPLATE.md) as project knowledge
+3. Attach [template/CONSTITUTION.md](../template/CONSTITUTION.md) as project knowledge
 4. Start talking about what you want to build
 
 ### Claude Code
@@ -170,7 +170,7 @@ Voice: Technical, concrete, no ambiguity.
 CONSTITUTION.md
 ───────────────
 Hard rules. The project's axioms.
-Start from the CONSTITUTION_TEMPLATE.md which includes universal articles
+Start from `template/CONSTITUTION.md` which includes universal articles
 (testing, anti-flattening, depth classification, debt tracking, behavior
 specification, remediation, git discipline, agent conduct). Customize
 Article 10 with project-specific rules.

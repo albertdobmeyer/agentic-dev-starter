@@ -36,7 +36,7 @@ These findings were captured during the first complete end-to-end build using th
 
 This preserves traceability (every phase boundary is a commit) without forcing meaningless micro-commits. The rule now prevents the two real problems: going a full day without committing, and bundling unrelated changes across phases.
 
-**Resulting changes:** [CONSTITUTION_TEMPLATE.md](CONSTITUTION_TEMPLATE.md) Article 8, [skeleton/CONSTITUTION.md.template](../skeleton/CONSTITUTION.md.template) Article 8.
+**Resulting changes:** [template/CONSTITUTION.md](../template/CONSTITUTION.md) Article 8.
 
 ---
 

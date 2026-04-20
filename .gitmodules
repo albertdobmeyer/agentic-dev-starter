@@ -1,3 +1,0 @@
-[submodule "token-meter"]
-	path = token-meter
-	url = https://github.com/albertdobmeyer/agent-token-meter.git

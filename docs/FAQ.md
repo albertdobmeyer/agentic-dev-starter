@@ -23,7 +23,7 @@ A: Yes. The methodology eliminates ambiguity before producing handoff docs. If C
 A: For a straightforward project, 30-45 minutes. For complex projects with multiple user types, 1-2 hours.
 
 **Q: Can I write the handoff docs myself without Claude?**
-A: Yes. Use [HANDOFF_FORMAT.md](HANDOFF_FORMAT.md) as your structural reference and the [example/](../example/) directory as a model. Key requirements: VISION.md needs experience fidelity scenarios with 3+ negative assertions, CONSTITUTION.md needs a customized Article 10, SCOPE.md needs explicit non-goals.
+A: Yes. Use [HANDOFF_FORMAT.md](HANDOFF_FORMAT.md) as your structural reference. Key requirements: VISION.md needs experience fidelity scenarios with 3+ negative assertions, CONSTITUTION.md needs a customized Article 10, SCOPE.md needs explicit non-goals.
 
 ## Building Phase
 

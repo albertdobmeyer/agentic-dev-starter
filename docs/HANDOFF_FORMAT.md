@@ -1,6 +1,6 @@
 # Handoff Document Format Reference
 
-> Use this as a structural guide when writing handoff documents — whether Claude helps you write them or you write them yourself. See [example/](../example/) for completed examples.
+> Use this as a structural guide when writing handoff documents — whether Claude helps you write them or you write them yourself.
 
 ---
 
@@ -92,7 +92,7 @@ Hosting, database, auth approach. Include what you chose AND what you didn't cho
 
 **Purpose:** Hard rules that are never negotiated during implementation.
 
-**Structure:** Start from [CONSTITUTION_TEMPLATE.md](CONSTITUTION_TEMPLATE.md). Articles 1-9 are universal. Customize Article 10 with project-specific rules.
+**Structure:** Start from [template/CONSTITUTION.md](../template/CONSTITUTION.md). Articles 1-9 are universal. Customize Article 10 with project-specific rules.
 
 **Article 10 examples:**
 ```

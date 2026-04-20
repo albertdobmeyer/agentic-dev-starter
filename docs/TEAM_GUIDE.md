@@ -289,4 +289,4 @@ When conflicts happen despite prevention:
 
 ---
 
-*Part of [project-dna](../README.md). See also: [METHODOLOGY.md](METHODOLOGY.md), [AGENT_SETUP.md](AGENT_SETUP.md), [CONSTITUTION_TEMPLATE.md](CONSTITUTION_TEMPLATE.md).*
+*Part of [project-dna](../README.md). See also: [METHODOLOGY.md](METHODOLOGY.md), [AGENT_SETUP.md](AGENT_SETUP.md), [CONSTITUTION.md](../template/CONSTITUTION.md).*

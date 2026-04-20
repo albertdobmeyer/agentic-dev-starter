@@ -5,7 +5,7 @@ Thanks for your interest in improving the methodology. This project welcomes con
 ## What We're Looking For
 
 **High value:**
-- Projects built with this methodology that you can share as case studies (worked examples in `example/`)
+- Projects built with this methodology that you can share as case studies
 - Battle-tested improvements to the constitution articles based on production experience
 - Compatibility guides for AI agents not yet listed
 - Improvements to the template files (AGENT.md, CONSTITUTION.md)
