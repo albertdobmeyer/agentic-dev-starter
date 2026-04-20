@@ -19,11 +19,41 @@ Point your CLI agent at this repo. Tell it to set up a new project for your team
    ```
 
 3. Tell your agent what you want:
-   - *"Read CLAUDE.md. Set up a new project for my team."* — interactive unfold
+   - *"Read CLAUDE.md. Set up a new project for my team."* — interactive unfold, greenfield
+   - *"Read CLAUDE.md. Here's my existing VISION doc — set up a project around it."* — bring your own planning material (PRD, architecture diagram, etc.)
    - *"Read CLAUDE.md. Explain the methodology."* — guided tour of the why
    - *"Read CLAUDE.md. Show me the team workflow."* — multi-dev coordination
 
-No manual setup commands. The agent handles file scaffolding, Spec-Kit install (always latest), token-meter startup, the 5 DNA enforcement skills, Article 10 customization interview, handoff-doc authoring, `git init`, remote push, and the per-dev onboarding brief you send your team.
+No manual setup commands. The agent handles file scaffolding, Spec-Kit install (always latest), token-meter startup, the 5 DNA enforcement skills, Article 10 customization interview, handoff-doc authoring (gap-filling if you bring existing docs, full interview if greenfield), `git init`, remote push, and the per-dev onboarding brief you send your team.
+
+## How it unfolds
+
+```mermaid
+flowchart TD
+    A[Team lead clones the kit<br/>opens Claude Code]
+    B[Says: 'Set up a new project<br/>for my team']
+    C{Existing VISION /<br/>ARCH / PRD docs?}
+    D[Full greenfield interview]
+    E[Map existing docs<br/>to handoff format,<br/>fill gaps only]
+    F[Scaffold target project<br/>bootstrap Spec-Kit,<br/>token-meter, 5 DNA skills]
+    G[Article 10 interview<br/>+ co-author handoff docs]
+    H[Self-audit,<br/>git init, push to remote,<br/>dev-onboarding brief]
+    I[Each dev: clone repo,<br/>open Claude Code,<br/>'I'm a new dev, onboard me']
+    J[Dev onboarding:<br/>per-machine installs,<br/>handoff-doc walkthrough]
+    K[Feature loop:<br/>speckit-specify → tasks →<br/>dna-test-gate → implement<br/>or delegate → dna-verify → PR]
+
+    A --> B --> C
+    C -- No --> D --> F
+    C -- Yes/Partial --> E --> F
+    F --> G --> H --> I --> J --> K
+    K --> K
+
+    style C fill:#fef3c7,stroke:#d97706
+    style G fill:#fef3c7,stroke:#d97706
+    style K fill:#dcfce7,stroke:#16a34a
+```
+
+Yellow nodes are where the human does real thinking. Green is the ongoing per-feature loop where the enforcement skills (DNA) and Spec-Kit keep the team on rails.
 
 ## What your agent becomes
 

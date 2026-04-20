@@ -21,13 +21,17 @@ You are in the **meta repo**. You do NOT bootstrap Spec-Kit, create `.specify/`,
 
 Trigger phrases: *"set up a new project"*, *"create a new repo for my team"*, *"start a new project"*, similar.
 
-1. **Interview the human.** Ask in one message, wait for answers:
-   - Project name (kebab-case, 1–3 words)
-   - One-paragraph description of what it does
-   - Target team size and tech-literacy range (e.g., "3 juniors + 2 mids")
-   - Primary tech stack (language + framework + datastore)
-   - Output type (web app / API / CLI / library / service)
-   - 3–5 biggest quality risks or team pain points (feeds Article 10)
+1. **Check for existing material, then interview.** First ask: *"Before I interview you — do you already have a VISION, architecture, PRD, or planning document for this project?"*
+
+   - **YES (complete or substantial)**: Accept the material (paste or file path). Read it. Later, in step 7, do a **gap-filling pass** — map content into `docs/HANDOFF_FORMAT.md` structure and interview only for missing required elements (3+ negative assertions per scenario, depth tags, non-goals, behavior specs for automatic-behavior data, pinned versions). Skip the long interview.
+   - **PARTIAL**: Accept what exists. In step 7, interview only for the missing artifacts (e.g., has VISION, needs ARCHITECTURE + SCOPE).
+   - **NONE**: Run the full greenfield interview — ask in one message:
+     - Project name (kebab-case, 1–3 words)
+     - One-paragraph description of what it does
+     - Target team size and tech-literacy range (e.g., "3 juniors + 2 mids")
+     - Primary tech stack (language + framework + datastore)
+     - Output type (web app / API / CLI / library / service)
+     - 3–5 biggest quality risks or team pain points (feeds Article 10)
 
 2. **Confirm target location.** Propose a sibling directory at `../<project-name>/` (NOT inside this kit repo). Let the human override.
 
@@ -44,7 +48,10 @@ Trigger phrases: *"set up a new project"*, *"create a new repo for my team"*, *"
 
 6. **Customize Article 10 interactively.** Using the quality-risk answers from step 1, draft 4–8 project-specific rules (test coverage threshold, language strictness, auth pattern, PR approval count, session budget, etc.). Show to the human, accept edits, write into `<target>/CONSTITUTION.md`, re-sync to `.specify/memory/constitution.md`.
 
-7. **Author handoff docs with the human.** Interview for VISION.md, ARCHITECTURE.md, SCOPE.md. Use `docs/PLANNING_INSTRUCTIONS.md` (this repo) as your interview methodology and `docs/HANDOFF_FORMAT.md` as the structural spec. Budget 60–90 minutes; this is where the human's thinking happens — do not shortcut it.
+7. **Author handoff docs with the human.** Depth depends on what existed from step 1:
+   - **Complete material existed**: ~15–30 min gap-filling pass. Format into `docs/HANDOFF_FORMAT.md` structure. Verify each required element (3+ negative assertions per scenario, depth tags, non-goals, behavior specs, pinned versions). Ask only about gaps.
+   - **Partial material**: ~30–60 min. Author the missing documents via interview; keep and adapt what exists.
+   - **No prior material**: full 60–90 min interview using `docs/PLANNING_INSTRUCTIONS.md` as methodology and `docs/HANDOFF_FORMAT.md` as the structural spec. Do not shortcut — this is where the human's thinking becomes binding contract.
 
 8. **Run the target's Bootstrap self-audit.** Block and fix any failures (uncustomized Article 10, missing handoff docs, Spec-Kit stub constitution, missing DNA skills).
 
