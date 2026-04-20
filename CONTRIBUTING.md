@@ -1,4 +1,4 @@
-# Contributing to project-dna
+# Contributing to agentic-dev-starter
 
 Thanks for your interest in improving the methodology. This project welcomes contributions that strengthen the anti-flattening framework, add worked examples, improve documentation clarity, or extend compatibility with new CLI agents.
 

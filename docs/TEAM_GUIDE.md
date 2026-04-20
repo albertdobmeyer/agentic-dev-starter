@@ -14,30 +14,26 @@ The model is simple: **main is the contract**. The lead owns the handoff documen
 
 ## 2. Lead Setup
 
-Run once at the start of the project:
+Point your CLI agent at the `agentic-dev-starter` kit and invoke Protocol A (see the kit's root `CLAUDE.md`):
 
-```bash
-# 1. Copy the DNA files into your project
-cp project-dna/template/AGENT.md ./my-project/CLAUDE.md
-cp project-dna/template/CONSTITUTION.md ./my-project/
+> *"Read CLAUDE.md. Set up a new project for my team."*
 
-# 2. Open in Claude Code
-cd my-project && claude
-# Say: "Read CLAUDE.md"
-```
+The agent handles the full unfold: directory scaffolding, Spec-Kit install (latest), token-meter startup, 5 DNA enforcement skills, Article 10 interview, handoff-doc authoring, `git init`, and remote push. Expect 60–90 minutes of real conversation during handoff-doc authoring — that's where your strategic thinking becomes binding contract.
 
-The agent bootstraps Spec-Kit and creates handoff doc skeletons. Then complete the four handoff documents:
+What you provide during the unfold:
 
-| Document | What the lead writes |
-|----------|---------------------|
-| **VISION.md** | Problem, users, experience fidelity scenarios with negative assertions |
-| **ARCHITECTURE.md** | Tech stack (pinned versions), modules, data model, data flow |
-| **CONSTITUTION.md** | Customize Article 10 with team rules (see below) |
+| Artifact | What you contribute |
+|---|---|
+| **VISION.md** | Problem, target users, experience fidelity scenarios with 3+ negative assertions each |
+| **ARCHITECTURE.md** | Tech stack (pinned versions), module boundaries, data model, data flow |
+| **CONSTITUTION.md** | Answers to the Article 10 interview — rules specific to your stack and team risks |
 | **SCOPE.md** | 8+ explicit non-goals |
+
+The agent produces skeletons and interviews you; you steer the content.
 
 ### Article 10: Team-Specific Rules
 
-This is where team policy goes. Examples:
+Based on the interview, your agent may propose rules like:
 
 ```
 - All PRs require at least 1 approval before merge
@@ -48,11 +44,7 @@ This is where team policy goes. Examples:
 - TypeScript strict mode everywhere — no `any` types
 ```
 
-Commit everything to main and push:
-
-```bash
-git add -A && git commit -m "docs: complete handoff documents" && git push
-```
+Accept, edit, or reject each. Articles 1–9 are universal and not negotiable.
 
 **Main is now the contract.** Every developer builds against it.
 
@@ -60,24 +52,16 @@ git add -A && git commit -m "docs: complete handoff documents" && git push
 
 ## 3. Dev Onboarding
 
-Steps for each developer joining the project:
+For each developer joining the team, send this message:
 
-1. **Clone the repo**
-   ```bash
-   git clone <repo-url> && cd my-project
-   ```
+> Clone `<repo-url>`, `cd` into the project, open Claude Code. Say:
+> *"Read CLAUDE.md — I'm a new dev, onboard me."*
+>
+> Your agent handles per-machine installs (Spec-Kit CLI, token-meter) and walks you through the handoff docs. Requires: Claude Code, `uv`, `git`, Node.js 18+.
 
-2. **Read CLAUDE.md** — it points to everything else and sets the rules
+The agent runs the Dev Onboarding protocol baked into the target project's `CLAUDE.md`: verifies Spec-Kit CLI and Node on the dev's machine, installs Spec-Kit if missing, tells the dev to start `npx agent-token-meter` in a split pane, walks them through `CONSTITUTION.md` (especially Article 10), `VISION.md`, `SCOPE.md`, `ARCHITECTURE.md` in order, summarizes the feature workflow, and offers to pick up an existing spec if one has a handoff note.
 
-3. **Read CONSTITUTION.md** — understand the rules before writing any code. Pay attention to Article 10 (team-specific rules)
-
-4. **Read VISION.md and SCOPE.md** — understand what to build and what NOT to build
-
-5. **Read ARCHITECTURE.md** — understand the technical shape
-
-6. **Start first feature** (see section 4)
-
-Developers should NOT modify handoff documents on their feature branches. If they find a gap or disagreement, they propose a change to main via PR (see section 9).
+Developers should NOT modify handoff documents on their feature branches. If they find a gap or disagreement, they propose a change to `main` via PR (see section 9).
 
 ---
 
@@ -289,4 +273,4 @@ When conflicts happen despite prevention:
 
 ---
 
-*Part of [project-dna](../README.md). See also: [METHODOLOGY.md](METHODOLOGY.md), [AGENT_SETUP.md](AGENT_SETUP.md), [CONSTITUTION.md](../template/CONSTITUTION.md).*
+*Part of [agentic-dev-starter](../README.md). See also: [METHODOLOGY.md](METHODOLOGY.md), [HANDOFF_FORMAT.md](HANDOFF_FORMAT.md), [CONSTITUTION.md](../template/CONSTITUTION.md).*

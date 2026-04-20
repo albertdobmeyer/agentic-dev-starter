@@ -31,7 +31,7 @@ A: Yes. Use [HANDOFF_FORMAT.md](HANDOFF_FORMAT.md) as your structural reference.
 A: The agent runs `specify init` as part of bootstrap. If Spec-Kit CLI isn't installed, the agent installs it via `uv tool install specify-cli`. If `specify init` fails (known Windows issue with Rich library), the agent tells you — the workflow still functions with manual branch management.
 
 **Q: Claude Code tries to plan instead of build. How do I stop it?**
-A: Make sure Claude Code reads [AGENT_SETUP.md](AGENT_SETUP.md), not the planning instructions. AGENT_SETUP.md explicitly frames Claude Code as the co-engineer: "Never improvise architecture. The handoff documents define the vision."
+A: Make sure Claude Code reads the target project's `CLAUDE.md` (the renamed `template/AGENT.md` from the kit). It frames the agent as the co-architect, not the planner: *"Do NOT write code until handoff docs are complete and the human confirms."* If the agent still drifts into open-ended planning when handoff docs exist, confirm `/dna-test-gate` and the other DNA skills are installed — those enforce build-not-plan behavior.
 
 **Q: Can I skip steps in the Spec-Kit workflow?**
 A: Yes. For well-specified handoff bundles, skip `/speckit-clarify` and `/speckit-analyze`. The minimum path: constitution → specify → plan → tasks → implement. The Pre-Implementation Gate Checklist in the constitution is the "ready to build?" test.

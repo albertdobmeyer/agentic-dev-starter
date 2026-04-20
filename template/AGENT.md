@@ -29,7 +29,7 @@ If this project has no `.specify/` directory, set it up:
    Re-run this every time CONSTITUTION.md is edited.
 6. **DNA skills**: Verify all 5 enforcement skills are in `.claude/skills/`: `dna-test-gate`, `dna-context-check`, `dna-decompose`, `dna-delegate`, `dna-verify`. If the human used the README one-liner, they're already present. If any are missing, tell the human to run:
    ```
-   cp -r <path-to-project-dna>/template/skills/dna-* .claude/skills/
+   cp -r <path-to-agentic-dev-starter>/template/skills/dna-* .claude/skills/
    ```
    These are the enforcement layer on top of Spec-Kit — test gates, context management, complexity decomposition, sub-agent delegation, and post-implementation verification.
 7. **Handoff docs**: If VISION.md, ARCHITECTURE.md, SCOPE.md don't exist, create skeletons:
@@ -45,6 +45,18 @@ If this project has no `.specify/` directory, set it up:
 
    This audit matters because the DNA enforcement skills cannot gate what isn't installed. A silent bootstrap failure looks like a working project until the first `/dna-test-gate` call returns vacuous-pass or the first `/speckit-plan` reads stub constitution text.
 9. **Enter planning mode.** Do NOT write code until handoff docs are complete and the human confirms.
+
+## Dev Onboarding (Existing Project)
+
+When `.specify/` already exists (the project was bootstrapped by the team lead) and a new developer says *"I'm a new dev, onboard me"* or similar, **skip the Bootstrap section above** and run this protocol instead:
+
+1. **Verify per-machine tools.** Spec-Kit CLI (`specify version`), Node.js 18+ (`node --version`). If Spec-Kit is missing, install it with the same dynamic-tag command as Bootstrap step 2 — each developer installs it on their own machine. If `uv` or Node is missing, tell the human to install them (see Bootstrap step 1 for links).
+2. **Start the token-meter.** Tell the human to open a split terminal pane and run `npx agent-token-meter`. Auto-fetches latest; feeds real-time burn-rate data into `/dna-context-check`.
+3. **Walk through the project's handoff docs** in order: `CONSTITUTION.md` (especially Article 10 — team-specific rules; confirm the dev understands and accepts), `VISION.md` (experience fidelity scenarios, negative assertions, depth tags), `SCOPE.md` (explicit non-goals), `ARCHITECTURE.md` (tech stack, module boundaries, data model).
+4. **Summarize the feature workflow.** Each feature: `/speckit-specify` → `/speckit-clarify` → `/speckit-plan` → `/speckit-tasks` → `/dna-test-gate` → `/speckit-implement` or `/dna-delegate` → `/dna-verify` → PR to main. `/dna-context-check` runs automatically; handoff before 100k tokens.
+5. **Ask which feature to pick up.** If an existing `specs/NNN-*/` directory has a `handoff.md`, offer to continue from there. Otherwise start fresh with `/speckit-specify`.
+
+Do NOT re-run the Bootstrap section when `.specify/` exists — it re-initializes Spec-Kit and can overwrite the team's customized setup.
 
 ## Workflow
 

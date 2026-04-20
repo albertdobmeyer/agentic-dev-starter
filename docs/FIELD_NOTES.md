@@ -21,7 +21,7 @@ These findings were captured during the first complete end-to-end build using th
 - Once generated, the specification is the operational source of truth
 - The /specify prompt was reframed from "describe the feature" to "translate your design into testable contracts"
 
-**Resulting changes:** [AGENT_SETUP.md](AGENT_SETUP.md) section 2, [PLANNING_INSTRUCTIONS.md](PLANNING_INSTRUCTIONS.md) VISION.md description, [FAQ.md](FAQ.md) methodology section.
+**Resulting changes:** [PLANNING_INSTRUCTIONS.md](PLANNING_INSTRUCTIONS.md) VISION.md description, [FAQ.md](FAQ.md) methodology section, kit's target `AGENT.md` specify-step framing.
 
 ---
 
@@ -49,7 +49,7 @@ This preserves traceability (every phase boundary is a commit) without forcing m
 **Revision:** Added explicit parallelization semantics:
 > *Tasks marked `[P]` in the same phase are candidates for delegated sub-agent execution. Each targets a different file with no dependencies on incomplete tasks. Spawn sub-agents in pairs or groups. Merge results when all complete, then validate integration with the full test suite.*
 
-**Resulting changes:** [AGENT_SETUP.md](AGENT_SETUP.md) new "Agent Parallelization" section, [FAQ.md](FAQ.md) parallelization Q&A.
+**Resulting changes:** kit's target `AGENT.md` parallel sub-agent guidance, [FAQ.md](FAQ.md) parallelization Q&A, `dna-decompose` + `dna-delegate` skills.
 
 ---
 

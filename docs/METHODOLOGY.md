@@ -1,6 +1,6 @@
 # Methodology: The Five Original Contributions
 
-> Part of [project-dna](../README.md)
+> Part of [agentic-dev-starter](../README.md)
 > AKD AUTOMATION SOLUTIONS — Licensed under CC BY-SA 4.0
 
 This document explains the *why* behind Articles 3-7 of the constitution template. Each article addresses a specific, documented failure mode in spec-driven AI-assisted development.
