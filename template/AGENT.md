@@ -65,13 +65,19 @@ If this project has no `.specify/` directory, set it up:
    mkdir -p .claude/agents
    cp -r <path-to-agentic-dev-starter>/template/agents/* .claude/agents/
    ```
-   Minimum roster at time of writing: `dna-construction-logger` (maintains `docs/05-CONSTRUCTION-SITES.md`). More subagents in future kit versions. See `docs/METHODOLOGY.md` for why subagents matter (role separation, audit isolation, bias firewall).
+   Roster at time of writing (3 subagents; more in future kit versions):
+   - `dna-construction-logger` — maintains `docs/05-CONSTRUCTION-SITES.md`; called when any `[D]→[W]` or `[W]→[E]` downgrade is considered.
+   - `dna-cross-checker` — parses `Files this feature will touch` across all open specs; blocks branches claiming the same shared file. Called before `/speckit-specify` on new branches and before any PR to main.
+   - `dna-spec-auditor` — runs the 20+ `docs/HANDOFF_FORMAT.md` quality checks against the 7-doc Blueprint; emits PASS/FAIL with file:line for each failure. Called at end of spec phase and before each phase's Experience Audit.
+
+   See `docs/METHODOLOGY.md` for why subagents matter (role separation, audit isolation, bias firewall).
 8. **Bootstrap self-audit** (zero-trust verification — do NOT skip): Before proceeding to planning, verify each item. Block on any failure and complete it before continuing.
    - `.specify/` directory exists (created by step 4)
    - `.specify/scripts/` contains at least one `.sh` or `.ps1` file (regression fence — proves `--script` flag resolved in step 4; an empty scripts dir means Spec-Kit hit its interactive prompt)
    - `.specify/memory/constitution.md` does NOT contain `[PROJECT_NAME] Constitution` (Spec-Kit stub marker — indicates step 5 didn't run)
    - `.claude/skills/` contains all 5 DNA directories: `dna-test-gate`, `dna-context-check`, `dna-decompose`, `dna-delegate`, `dna-verify`
-   - `.claude/agents/` contains at least `dna-construction-logger.md` (step 7a — subagent roster; more added in future kit versions)
+   - `.claude/agents/` contains the full subagent roster: `dna-construction-logger.md`, `dna-cross-checker.md`, `dna-spec-auditor.md` (step 7a — more added in future kit versions)
+   - `.claude/skills/dna-test-gate/run.sh` exists and is executable (`-rwx`) — the first executable DNA gate (Article 1 enforcement); falls back to SKILL.md prose for unsupported test runners
    - Root `CONSTITUTION.md` exists and its Article 10 has been customized (not a placeholder)
    - **7-doc Blueprint Package**: every file below exists under `docs/` (skeletons from step 7 are acceptable for day-1; they must be filled before `/speckit-specify`):
      - `docs/00-CORE-PRINCIPLES.md`

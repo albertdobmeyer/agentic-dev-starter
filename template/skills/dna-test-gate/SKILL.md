@@ -22,7 +22,27 @@ This is a **zero-trust gate**. The agent MUST NOT implement production code unti
 
 This skill enforces CONSTITUTION.md Article 1: "Write the test BEFORE the implementation. No exceptions."
 
-## Pre-Execution
+## Primary execution path — invoke the runnable script
+
+Most projects can use the bundled bash script for the gate check. Run it first:
+
+```bash
+bash .claude/skills/dna-test-gate/run.sh
+```
+
+- Exit code `0` = gate **PASSED** — every implementation task has a test file that fails before implementation. Proceed to `/speckit-implement`.
+- Exit code `1` = gate **FAILED** — tests missing or already-green. Fix per the script's output; do NOT implement.
+- Exit code `2` = setup problem (no `tasks.md`, no test runner detected). Fall through to the manual checks below.
+
+The script auto-detects feature directory (from branch name or `specs/` mtime), test runner (vitest, jest, mocha, pytest, go test), and infers test file paths from implementation file paths in each task's body.
+
+Arguments: `bash run.sh specs/NNN-feature-name` (explicit directory) or `bash run.sh specs/NNN "T012"` (single task).
+
+## Fallback — manual gate when the script can't run
+
+If the script exits `2` (setup problem) or the project uses a test runner the script doesn't know about (rust, php, ruby, …), run the prose checks below. Your job is then to replicate the script's logic for the unsupported runner and escalate a PR to add that runner to `run.sh`.
+
+## Pre-Execution (fallback path)
 
 1. Run `.specify/scripts/powershell/check-prerequisites.ps1 -Json -RequireTasks -IncludeTasks` to locate FEATURE_DIR.
 2. Read `tasks.md` from FEATURE_DIR.
