@@ -44,14 +44,24 @@ Trigger phrases: *"set up a new project"*, *"create a new repo for my team"*, *"
 
 4. **Switch working directory to the target.** All subsequent commands run there. From here on, `<target>/CLAUDE.md` is the primary instruction file — it's the kit's `template/AGENT.md` renamed and governs the target-project unfold.
 
-5. **Run the target's Bootstrap** per `<target>/CLAUDE.md` §Bootstrap: Spec-Kit install (latest tag), start token-meter in split pane, `specify init . --integration claude --force --offline`, sync constitution, verify 5 DNA skills, create handoff doc skeletons.
+5. **Run the target's Bootstrap** verbatim per `<target>/CLAUDE.md` §Bootstrap (steps 1–9). The canonical `specify init` invocation and its required flags live there — do not reconstruct them. Bootstrap handles Spec-Kit install, token-meter, `specify init`, constitution sync, DNA skill verification, handoff skeletons, and self-audit. Block on any self-audit failure before proceeding to step 6.
 
 6. **Customize Article 10 interactively.** Using the quality-risk answers from step 1, draft 4–8 project-specific rules (test coverage threshold, language strictness, auth pattern, PR approval count, session budget, etc.). Show to the human, accept edits, write into `<target>/CONSTITUTION.md`, re-sync to `.specify/memory/constitution.md`.
 
-7. **Author handoff docs with the human.** Depth depends on what existed from step 1:
-   - **Complete material existed**: ~15–30 min gap-filling pass. Format into `docs/HANDOFF_FORMAT.md` structure. Verify each required element (3+ negative assertions per scenario, depth tags, non-goals, behavior specs, pinned versions). Ask only about gaps.
-   - **Partial material**: ~30–60 min. Author the missing documents via interview; keep and adapt what exists.
-   - **No prior material**: full 60–90 min interview using `docs/PLANNING_INSTRUCTIONS.md` as methodology and `docs/HANDOFF_FORMAT.md` as the structural spec. Do not shortcut — this is where the human's thinking becomes binding contract.
+7. **Author the 7-doc Blueprint Package with the human** (restored from original PROJECT_DNA methodology). The target now expects six linked docs under `docs/` plus `CONSTITUTION.md` at root:
+   - `docs/00-CORE-PRINCIPLES.md` — problem, users, domain model, core principles (each generates ≥1 scenario)
+   - `docs/01-SYSTEM-INTENT.md` — entities, state machines, Experience Fidelity Scenarios (3+ neg assertions each, behavioral variation, filmable success), **Scenario Validation Matrix** (mandatory — bidirectional assertion↔task linkage, "Uncovered Assertions" must be empty), depth classification
+   - `docs/02-ARCHITECTURE.md` — module boundaries, API surface, data flows, event/sync flows, **Architecture Impact Assessment** per scenario
+   - `docs/03-EXECUTION-CONTEXT.md` — pinned stack versions, coding standards, error handling, testing philosophy
+   - `docs/04-COORDINATION-HINTS.md` — phase ordering with depth-tagged done criteria, **Production Threshold** (must-close vs v1.1), risk hotspots, non-goals (8+)
+   - `docs/05-CONSTRUCTION-SITES.md` — living tracker (initialized empty at bootstrap; the `dna-construction-logger` subagent appends entries during build)
+
+   Depth of authoring depends on what existed from step 1:
+   - **Complete material existed**: ~30–45 min gap-filling pass per doc. Map content into the 7 files. Verify each required element.
+   - **Partial material**: ~60–90 min. Author missing docs; keep and adapt what exists.
+   - **No prior material**: full 90–120 min interview using `docs/PLANNING_INSTRUCTIONS.md` as methodology and the skeleton files themselves as the structural spec. Each skeleton names what "complete" means via `{FILL IN: ...}` markers and trailing completion checks.
+
+   Do not shortcut. This is where the human's thinking becomes binding contract. Skeletons at `docs/` with remaining `{FILL IN}` markers are NOT production-ready — Bootstrap self-audit will pass with skeletons present (step 8 allows skeletons day-1), but `/speckit-specify` must NOT run until markers are resolved.
 
 8. **Run the target's Bootstrap self-audit.** Block and fix any failures (uncustomized Article 10, missing handoff docs, Spec-Kit stub constitution, missing DNA skills).
 

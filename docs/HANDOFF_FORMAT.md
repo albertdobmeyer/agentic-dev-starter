@@ -1,139 +1,161 @@
 # Handoff Document Format Reference
 
-> Use this as a structural guide when writing handoff documents — whether Claude helps you write them or you write them yourself.
+> The kit uses the **7-doc Blueprint Package** from the original PROJECT_DNA methodology. Six docs live under `docs/` in the target, plus `CONSTITUTION.md` at root. Each doc serves a different consumer at a different abstraction level. Skeletons in `template/blueprint/` are copied to target during Protocol A step 7.
+
+> Do not confuse the 7-doc Blueprint Package with Spec-Kit's per-feature `specs/NNN-*/spec.md` files. The Blueprint Package describes the **whole project**; Spec-Kit spec dirs describe **individual features** built against that Blueprint.
 
 ---
 
-## The Four Documents
+## The 7 documents
 
-Every project needs these four documents before building starts. Together they tell Claude Code + Spec-Kit: what to build, how it's shaped, what rules to follow, and what NOT to build.
+```
+target/
+├── CONSTITUTION.md                     ← Hard rules. 10 articles. Article 10 is project-specific.
+└── docs/
+    ├── 00-CORE-PRINCIPLES.md           ← Why this system exists. Domain knowledge. Principles that generate scenarios.
+    ├── 01-SYSTEM-INTENT.md             ← What must exist. Entities, scenarios, Scenario Validation Matrix, depth tags.
+    ├── 02-ARCHITECTURE.md              ← System shape. Modules, APIs, data flows. Architecture Impact Assessment per scenario.
+    ├── 03-EXECUTION-CONTEXT.md         ← How to write code. Pinned versions, standards, testing philosophy.
+    ├── 04-COORDINATION-HINTS.md        ← Build ordering. Phases with depth-tagged done criteria. Production Threshold.
+    └── 05-CONSTRUCTION-SITES.md        ← Living tracker. Agent-maintained. Every simplification logged.
+```
+
+## What goes where (decision guide)
+
+| If it answers... | It goes in... |
+|---|---|
+| "Why does this system exist? What does the domain look like?" | `00-CORE-PRINCIPLES.md` |
+| "What entities exist? What states can they be in? What invariants always hold?" | `01-SYSTEM-INTENT.md` |
+| "What does the user actually *experience* when a principle is fully realized?" | `01-SYSTEM-INTENT.md` (Experience Fidelity Scenarios) |
+| "Which scenario assertions does this task satisfy?" | `01-SYSTEM-INTENT.md` (Scenario Validation Matrix) |
+| "Is this requirement about existence, correctness, or experience?" | Depth tag `[E]`/`[W]`/`[D]` on the requirement, in `01-SYSTEM-INTENT.md` |
+| "What must the user NEVER have to do?" | `01-SYSTEM-INTENT.md` (Negative Assertions in scenarios) |
+| "What modules exist? How do they communicate?" | `02-ARCHITECTURE.md` |
+| "What does the API look like?" | `02-ARCHITECTURE.md` |
+| "Does this scenario require new services or subsystem redesign?" | `02-ARCHITECTURE.md` (Architecture Impact Assessment) |
+| "What version of X do we use? Where do files go? How do we write tests?" | `03-EXECUTION-CONTEXT.md` |
+| "What gets built first? What depends on what?" | `04-COORDINATION-HINTS.md` |
+| "What must ship at `[D]` depth vs what's v1.1?" | `04-COORDINATION-HINTS.md` (Production Threshold) |
+| "What was simplified during implementation, and why?" | `05-CONSTRUCTION-SITES.md` (agent-maintained via `dna-construction-logger` subagent) |
+| "What hard rules never bend?" | `CONSTITUTION.md` (Articles 1–9 universal, Article 10 project-specific) |
 
 ---
 
-## VISION.md
+## Required elements per document
 
-**Purpose:** What you're building, for whom, and what the user experiences.
+### `00-CORE-PRINCIPLES.md`
+- Problem statement (one paragraph)
+- Target users (2–3 segments with context, pain, %)
+- Domain model (entities as nouns, not features)
+- Core principles (3–7 typical; each must produce a scenario in `01-SYSTEM-INTENT.md`)
+- Business model, hard constraints, anti-principles
 
-**Required sections:**
+### `01-SYSTEM-INTENT.md` — the most load-bearing doc
+- Entity schemas (all fields, all types, all constraints — no "TBD")
+- State machines (transitions, triggers, reversibility)
+- Invariants ("the system NEVER...")
+- **Experience Fidelity Scenarios** — one per principle, each with:
+  - Context (when/where/carrying/time budget)
+  - What they see/hear, what they do (2–3 behavioral variations + error/correction flow)
+  - **≥3 negative assertions** ("user NEVER has to...")
+  - Why this matters (≥1 quantified comparison — numbers, not adjectives)
+  - Filmable success criterion
+  - Depth tag
+- **Scenario Validation Matrix** — **mandatory**, one per scenario:
+  - Columns: `#`, assertion, required task(s), load-bearing?, depth, without-this-task-what-breaks
+  - "Uncovered Assertions" row must be empty before `/speckit-plan`
+  - "Tasks Without Assertions" row must be empty before `/speckit-plan`
+- Depth classification summary (every requirement tagged `[E]`/`[W]`/`[D]`)
 
-### Problem Statement
-Who has the pain? What is the pain? One paragraph.
+### `02-ARCHITECTURE.md`
+- Module boundaries, interface contracts, API surface
+- Data flows + event/sync flows (every data structure that implies automatic behavior names its trigger here)
+- Infrastructure decisions (chosen + rejected)
+- **Architecture Impact Assessment** — one per scenario:
+  - Fits existing patterns / requires new infrastructure / requires subsystem redesign / cross-scenario conflicts
+  - New-infrastructure items must be reflected as requirements in `04-COORDINATION-HINTS.md` phases
 
-### Target Users
-2-3 user segments with: role name, context (when/where they use it), what they care about, what frustrates them, approximate percentage of user base.
+### `03-EXECUTION-CONTEXT.md`
+- Tech stack (every row pinned to exact `major.minor` + rationale)
+- Repo structure, coding standards (specific, not "follow best practices")
+- Error handling house style
+- Testing philosophy + numeric coverage thresholds
+- Environment / secrets / infra setup (≤ 4 commands from `git clone` to running tests)
 
-### Core Value Proposition
-One sentence per user segment. "For {user}: {what they get}."
+### `04-COORDINATION-HINTS.md`
+- Phases: "what exists after" (one sentence), "done when" (3–8 criteria each depth-tagged), "correctness > speed" flags, Experience Audit step
+- Every phase touching a core principle has ≥1 `[D]` done-criterion
+- **Production Threshold**: must-close scenarios vs deferred-to-v1.1 (each with rationale)
+- Risk hotspots + mitigation
+- Seed data requirements per phase
+- Non-goals (8+ explicit)
 
-### Experience Fidelity Scenarios (1 per core feature, minimum 2 total)
+### `05-CONSTRUCTION-SITES.md`
+- Initialized at bootstrap (empty "Active sites" table)
+- Maintained during implementation by `dna-construction-logger` subagent
+- Every `[D]→[W]` or `[W]→[E]` downgrade logged with scenario impact, reason, resolution plan
+- Accumulation of 3+ entries on one scenario → escalate (architecture problem, not patching problem)
 
-Each scenario follows this structure:
-
-```
-**CONTEXT:** When, where, what the user is doing before they touch the app.
-
-**WHAT THEY EXPERIENCE:**
-Narrative of the user's journey through the feature. Concrete, sensory,
-step-by-step. What do they see? What do they tap/click? What appears?
-
-**WHAT THEY NEVER HAVE TO DO:**
-- Negative assertion 1 (minimum 3)
-- Negative assertion 2
-- Negative assertion 3
-
-**BEHAVIORAL VARIATION:**
-- Happy path: (as described above)
-- Edge case: (unusual but valid input or state)
-- Error flow: (something goes wrong — what does the user experience?)
-
-**WHY IT MATTERS:**
-Quantified comparison. "Currently takes X minutes, with this app takes Y seconds."
-
-**SUCCESS CRITERION:**
-Filmable. "Video of user doing X, completing in Y seconds, without doing Z."
-
-**DEPTH:** [D] — requires {list of components that must work together}.
-```
-
-### Depth Summary
-Table mapping every requirement to `[E]`/`[W]`/`[D]` with one-line rationale.
-
-**Relationship to Spec-Kit specs:** VISION.md is the pre-spec. It feeds into `/speckit-specify`, which produces a formal specification with testable acceptance scenarios (Given/When/Then). Once the spec exists, it supersedes VISION.md for implementation decisions. VISION.md remains the strategic reference for "why we're building this."
-
----
-
-## ARCHITECTURE.md
-
-**Purpose:** Technical shape of the system. No ambiguity.
-
-**Required sections:**
-
-### Tech Stack
-Table: Layer | Technology | Version (pinned major.minor) | Rationale
-
-### Module Boundaries
-Directory tree showing file/folder structure with brief annotations.
-
-### Data Model
-Complete TypeScript interfaces (or equivalent) for every entity. All fields, all types, all constraints. Never "add fields as needed."
-
-### Data Flow
-How data moves through the system. Entry points, storage, exit points. Diagram or narrative.
-
-### API Surface (if applicable)
-Table: Method | Path | Auth | Purpose
-
-### Infrastructure Decisions
-Hosting, database, auth approach. Include what you chose AND what you didn't choose and why.
+### `CONSTITUTION.md`
+- Articles 1–9 universal (testing, specs, anti-flattening, depth, simplification logging, behavior specs, drift, workflow, reserved)
+- Article 10 project-specific (4–8 rules customized during Protocol A step 6)
+- Pre-Implementation Gate Checklist at the bottom — every box must be checkable before building starts
 
 ---
 
-## CONSTITUTION.md
+## Quality checks before implementation
 
-**Purpose:** Hard rules that are never negotiated during implementation.
+Run these against every doc. Every failure is blocking.
 
-**Structure:** Start from [template/CONSTITUTION.md](../template/CONSTITUTION.md). Articles 1-9 are universal. Customize Article 10 with project-specific rules.
+### Structural
+- [ ] All 6 `docs/NN-*.md` files exist plus root `CONSTITUTION.md`
+- [ ] No file contains the literal string `{FILL IN` (all markers resolved)
+- [ ] No file contains `[PROJECT_NAME] Constitution` (Spec-Kit stub marker — indicates constitution sync failed)
 
-**Article 10 examples:**
-```
-- TypeScript strict mode everywhere. No `any` types.
-- All colors from constants file — no hardcoded hex in components.
-- Mobile-first. Test at 375px minimum.
-- No confirmation dialogs for frequent actions. Use undo instead.
-```
-
-**Pre-Implementation Gate Checklist:** Include at the bottom. All boxes must be checkable before building starts.
-
----
-
-## SCOPE.md
-
-**Purpose:** What the project is NOT. One line per non-goal.
-
-**Format:**
-```
-- No {feature} — {brief reason if not obvious}
-- No {feature}
-- No {feature} — {what to do instead if applicable}
-```
-
-**Good non-goals are specific:**
-- "No user accounts" (clear)
-- "No dark mode for v1" (clear, implies v2 possibility)
-- "Keep it simple" (too vague — not a useful fence)
-
----
-
-## Quality Checks
-
-Before handing off to Claude Code, verify:
-
-- [ ] VISION.md has 2+ experience fidelity scenarios with 3+ negative assertions each
+### Scenario fidelity (from `01-SYSTEM-INTENT.md`)
+- [ ] Every principle in `00-CORE-PRINCIPLES.md` has a corresponding Experience Fidelity Scenario
+- [ ] Every scenario has ≥3 negative assertions
 - [ ] Every scenario has behavioral variation (happy + edge + error)
 - [ ] Every scenario has a filmable success criterion
-- [ ] ARCHITECTURE.md has pinned versions for every dependency
-- [ ] ARCHITECTURE.md has complete data model (no "TBD" fields)
-- [ ] CONSTITUTION.md has a customized Article 10
-- [ ] SCOPE.md has 8+ explicit non-goals
-- [ ] Total word count across all four docs is under 3000 words
-- [ ] No implementation code in any document (patterns and schemas are fine, logic is not)
+- [ ] Every scenario has a Scenario Validation Matrix with **both** "Uncovered Assertions" and "Tasks Without Assertions" empty
+- [ ] Every scenario's "Why this matters" has a quantified comparison (numbers, not "faster"/"easier")
+
+### Architecture impact (from `02-ARCHITECTURE.md`)
+- [ ] Every scenario has an Architecture Impact Assessment
+- [ ] "Requires new infrastructure" items appear as requirements in `04-COORDINATION-HINTS.md` phases
+- [ ] Every data structure that implies automatic behavior has its trigger mechanism in Event/sync flows
+
+### Depth discipline
+- [ ] Every core principle has ≥1 `[D]` requirement
+- [ ] No `[D]` requirement is satisfiable by a single component (if so, reclassify as `[W]`)
+- [ ] Every phase touching a core principle has ≥1 `[D]` done-criterion
+
+### Execution + coordination
+- [ ] Every tech-stack row in `03-EXECUTION-CONTEXT.md` is pinned to exact `major.minor`
+- [ ] Testing coverage thresholds are numeric
+- [ ] `04-COORDINATION-HINTS.md` defines explicit Production Threshold with must-close and deferred scenarios
+- [ ] `04-COORDINATION-HINTS.md` lists 8+ non-goals
+- [ ] `CONSTITUTION.md` Article 10 is customized (not a placeholder)
+
+---
+
+## Relationship to Spec-Kit
+
+The 7-doc Blueprint Package is the **pre-spec** for the whole project. Per-feature Spec-Kit dirs (`specs/NNN-*/spec.md`) reference the Blueprint during `/speckit-specify`:
+
+- `00-CORE-PRINCIPLES.md` → informs which principle this feature serves
+- `01-SYSTEM-INTENT.md` → the feature's Experience Fidelity Scenario(s) live here; `spec.md` formalizes them into Given/When/Then
+- `02-ARCHITECTURE.md` → the feature's Architecture Impact block lives here
+- `03-EXECUTION-CONTEXT.md` → authoritative for the feature's implementation standards
+- `04-COORDINATION-HINTS.md` → the feature belongs to a named phase with depth-tagged done criteria
+- `05-CONSTRUCTION-SITES.md` → any simplification during the feature's implementation lands here via `dna-construction-logger`
+
+Once `/speckit-specify` formalizes the spec, it's the operational source of truth for that feature. The Blueprint remains the strategic reference.
+
+---
+
+## History and naming
+
+Earlier versions of this kit used a compressed 4-doc format (`VISION.md`, `ARCHITECTURE.md`, `SCOPE.md`, `CONSTITUTION.md`). Restored to the original 7-doc Blueprint in 2026-04-21 after a methodology audit against `PROJECT_DNA.md` surfaced lost artifacts: the Scenario Validation Matrix, Architecture Impact Assessment, Production Threshold, and living Construction Sites tracker. See `.exploration/RESTORATION-2026-04-21.md` for the rationale.
+
+Projects on the old 4-doc format continue to work but will not benefit from the anti-flattening mechanisms restored in the 7-doc package. Migrate when convenient.

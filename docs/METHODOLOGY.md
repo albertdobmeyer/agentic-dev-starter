@@ -2,8 +2,10 @@
 
 > Part of [agentic-dev-starter](../README.md)
 > AKD AUTOMATION SOLUTIONS — Licensed under CC BY-SA 4.0
+>
+> **Canonical source**: This doc is a compressed summary of the full methodology. The authoritative reference is [`../PROJECT_DNA.md`](../PROJECT_DNA.md) — the original methodology document with all six artifacts (7-doc Blueprint Package, Scenario Validation Matrix, Architecture Impact Assessment, Coherence Check, Production Threshold, Construction Sites tracker, Drift Remediation Protocol) and a worked example in Appendix E.
 
-This document explains the *why* behind Articles 3-7 of the constitution template. Each article addresses a specific, documented failure mode in spec-driven AI-assisted development.
+This document explains the *why* behind Articles 3-7 of the constitution template. Each article addresses a specific, documented failure mode in spec-driven AI-assisted development. For the full operational mechanisms that prevent each failure mode, read `PROJECT_DNA.md`.
 
 ---
 

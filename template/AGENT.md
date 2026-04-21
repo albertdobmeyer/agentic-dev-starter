@@ -21,7 +21,23 @@ If this project has no `.specify/` directory, set it up:
    ```
    On Windows, prefix all `specify` commands with `PYTHONIOENCODING=utf-8` to prevent Rich encoding crashes in non-UTF-8 terminals.
 3. **Token-meter (companion)**: Tell the human to run `npx agent-token-meter` in a split terminal pane. It feeds real-time burn-rate data into `/dna-context-check` for optimal handoff timing across sessions. Auto-fetches latest from npm; requires Node.js 18+. Not bundled — installs on demand, always current.
-4. **Initialize**: `specify init . --integration claude --force --offline`. This creates `.specify/`, `.claude/skills/`, templates, scripts, and the speckit workflow.
+4. **Initialize** (canonical, non-interactive):
+   ```
+   PYTHONIOENCODING=utf-8 specify init . --integration claude --script sh --force --offline --no-git
+   ```
+   Creates `.specify/`, `.claude/skills/`, templates, scripts, and the speckit workflow. Each flag matters — don't drop any:
+   - `--script sh` — avoids interactive prompt that blocks forever in non-TTY (agent) contexts. If the shell is `pwsh`/`powershell` and `bash` is not on PATH, use `--script ps` instead.
+   - `--no-git` — Spec-Kit's default `git init` conflicts with Protocol A step 9; step 9 owns `.gitignore` creation.
+   - `--force` — permits init into a directory already holding the kit payload (CLAUDE.md, CONSTITUTION.md, .claude/skills/dna-*) copied by Protocol A step 3.
+   - `--offline` — uses bundled assets; avoids network + proxy issues.
+   - `--integration claude` — future-correct flag (Spec-Kit deprecated `--ai` for 1.0.0).
+   - `PYTHONIOENCODING=utf-8` — prevents Rich encoding crashes on Windows non-UTF-8 terminals.
+4a. **Verify init succeeded** (zero-trust, 1-second check). Fail loudly if any fails:
+   - `.specify/` directory exists
+   - `.specify/memory/constitution.md` exists (Spec-Kit stub is OK at this stage — sync'd in step 5)
+   - `.specify/scripts/` contains `.sh` or `.ps1` files (proves `--script` flag resolved; if empty, Spec-Kit prompted for script type and the agent missed it)
+
+   If any fail: re-run the step 4 command, then re-check. Silent init failure surfaces much later as a `/speckit-plan` reading stub text or `/dna-test-gate` returning vacuous-pass.
 5. **Sync constitution**: `specify init` writes `.specify/memory/constitution.md` as a placeholder stub. The project-dna methodology uses root `CONSTITUTION.md` as canonical. Sync the real constitution so Spec-Kit tooling reads it:
    ```
    cp CONSTITUTION.md .specify/memory/constitution.md
@@ -32,16 +48,38 @@ If this project has no `.specify/` directory, set it up:
    cp -r <path-to-agentic-dev-starter>/template/skills/dna-* .claude/skills/
    ```
    These are the enforcement layer on top of Spec-Kit — test gates, context management, complexity decomposition, sub-agent delegation, and post-implementation verification.
-7. **Handoff docs**: If VISION.md, ARCHITECTURE.md, SCOPE.md don't exist, create skeletons:
-   - VISION.md — Problem statement, target users, experience fidelity scenarios (min 2, each with 3+ negative assertions, behavioral variation, filmable success criteria, depth tags)
-   - ARCHITECTURE.md — Tech stack (pinned versions), module boundaries, complete data model, data flow
-   - SCOPE.md — 8+ explicit non-goals (each prevents a rabbit hole)
+7. **Blueprint Package** (the 7-doc spec per PROJECT_DNA methodology, restored from the original project-dna format). If `docs/00-CORE-PRINCIPLES.md` through `docs/05-CONSTRUCTION-SITES.md` don't exist, copy the skeletons from the kit and rename (strip `.skeleton` suffix):
+   ```
+   mkdir -p docs
+   cp <path-to-agentic-dev-starter>/template/blueprint/00-CORE-PRINCIPLES.skeleton.md     docs/00-CORE-PRINCIPLES.md
+   cp <path-to-agentic-dev-starter>/template/blueprint/01-SYSTEM-INTENT.skeleton.md       docs/01-SYSTEM-INTENT.md
+   cp <path-to-agentic-dev-starter>/template/blueprint/02-ARCHITECTURE.skeleton.md        docs/02-ARCHITECTURE.md
+   cp <path-to-agentic-dev-starter>/template/blueprint/03-EXECUTION-CONTEXT.skeleton.md   docs/03-EXECUTION-CONTEXT.md
+   cp <path-to-agentic-dev-starter>/template/blueprint/04-COORDINATION-HINTS.skeleton.md  docs/04-COORDINATION-HINTS.md
+   cp <path-to-agentic-dev-starter>/template/blueprint/05-CONSTRUCTION-SITES.skeleton.md  docs/05-CONSTRUCTION-SITES.md
+   ```
+   Each doc has a specific role (00 = principles, 01 = intent + scenarios + validation matrices, 02 = architecture + impact assessments, 03 = execution standards + pinned versions, 04 = phases + production threshold, 05 = living construction-sites tracker). Replace every `{FILL IN: ...}` marker with project-specific content before the first `/speckit-specify` run — the skeletons themselves name what "complete" means.
+
+7a. **Subagents**: Verify the kit's subagent definitions are in `.claude/agents/`. These are agent files (not skills) that the main agent dispatches to for specialized work. If missing, copy:
+   ```
+   mkdir -p .claude/agents
+   cp -r <path-to-agentic-dev-starter>/template/agents/* .claude/agents/
+   ```
+   Minimum roster at time of writing: `dna-construction-logger` (maintains `docs/05-CONSTRUCTION-SITES.md`). More subagents in future kit versions. See `docs/METHODOLOGY.md` for why subagents matter (role separation, audit isolation, bias firewall).
 8. **Bootstrap self-audit** (zero-trust verification — do NOT skip): Before proceeding to planning, verify each item. Block on any failure and complete it before continuing.
    - `.specify/` directory exists (created by step 4)
+   - `.specify/scripts/` contains at least one `.sh` or `.ps1` file (regression fence — proves `--script` flag resolved in step 4; an empty scripts dir means Spec-Kit hit its interactive prompt)
    - `.specify/memory/constitution.md` does NOT contain `[PROJECT_NAME] Constitution` (Spec-Kit stub marker — indicates step 5 didn't run)
-   - `.claude/skills/` contains all 5 directories: `dna-test-gate`, `dna-context-check`, `dna-decompose`, `dna-delegate`, `dna-verify`
+   - `.claude/skills/` contains all 5 DNA directories: `dna-test-gate`, `dna-context-check`, `dna-decompose`, `dna-delegate`, `dna-verify`
+   - `.claude/agents/` contains at least `dna-construction-logger.md` (step 7a — subagent roster; more added in future kit versions)
    - Root `CONSTITUTION.md` exists and its Article 10 has been customized (not a placeholder)
-   - Root `VISION.md`, `ARCHITECTURE.md`, `SCOPE.md` exist (skeletons from step 7 are acceptable)
+   - **7-doc Blueprint Package**: every file below exists under `docs/` (skeletons from step 7 are acceptable for day-1; they must be filled before `/speckit-specify`):
+     - `docs/00-CORE-PRINCIPLES.md`
+     - `docs/01-SYSTEM-INTENT.md`
+     - `docs/02-ARCHITECTURE.md`
+     - `docs/03-EXECUTION-CONTEXT.md`
+     - `docs/04-COORDINATION-HINTS.md`
+     - `docs/05-CONSTRUCTION-SITES.md` (must contain the "Active sites" table header — this is the living tracker from PROJECT_DNA Section 5)
 
    This audit matters because the DNA enforcement skills cannot gate what isn't installed. A silent bootstrap failure looks like a working project until the first `/dna-test-gate` call returns vacuous-pass or the first `/speckit-plan` reads stub constitution text.
 9. **Enter planning mode.** Do NOT write code until handoff docs are complete and the human confirms.
