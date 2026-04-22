@@ -32,8 +32,10 @@ DRY_RUN=0
 SCOPE="all"
 
 usage() {
-  sed -n '8,22p' "$0" >&2
-  exit 2
+  # Print the docstring (lines 3-21: name, blurb, usage, exit codes).
+  local rc="${1:-2}"
+  sed -n '3,21p' "$0" | sed 's/^# \{0,1\}//' >&2
+  exit "$rc"
 }
 
 while [ $# -gt 0 ]; do
@@ -48,7 +50,7 @@ while [ $# -gt 0 ]; do
       fi
       shift 2
       ;;
-    --help|-h) usage ;;
+    --help|-h) usage 0 ;;
     -*)
       echo "[refresh] SETUP — unknown flag: $1" >&2
       usage

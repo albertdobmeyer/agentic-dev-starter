@@ -41,9 +41,17 @@ mkdir -p "$(dirname "$OUT")"
 FOUND=0
 
 for target in "$@"; do
+  # Accept either a full path or a basename that matches a sibling dir of the kit
+  # (Protocol A default places targets at ../<name>/ relative to the kit).
   if [ ! -d "$target" ]; then
-    echo "[aggregate-retros] SKIP — $target is not a directory" >&2
-    continue
+    if [ -d "$KIT_ROOT/../$target" ]; then
+      target="$KIT_ROOT/../$target"
+    elif [ -d "$KIT_ROOT/REPOS/$target" ]; then
+      target="$KIT_ROOT/REPOS/$target"
+    else
+      echo "[aggregate-retros] SKIP — $target is not a directory (tried ../$target and REPOS/$target)" >&2
+      continue
+    fi
   fi
 
   # Find all retrospective files in this target's specs/ dir
