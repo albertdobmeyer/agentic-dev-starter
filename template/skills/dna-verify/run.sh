@@ -56,25 +56,121 @@ else
 fi
 
 # ------------------------------------------------------------------
-# 3. Run test suite with coverage
+# 3. Compute changed-file set (for branch-diff-scoped coverage, SPEC-16)
+# ------------------------------------------------------------------
+# Rule: the threshold applies to files touched by the current branch, not
+# the whole project. Predecessor-feature debt should not block a new
+# feature that is itself well-tested. Falls back to project-wide aggregate
+# when the branch has no changes vs main (or when running on main).
+
+CHANGED_FILES=""
+BASE_BRANCH="${DNA_VERIFY_BASE:-main}"
+
+if git rev-parse --verify "$BASE_BRANCH" >/dev/null 2>&1; then
+  # Three-dot diff: files touched in this branch that aren't on $BASE_BRANCH.
+  CHANGED_FILES=$(git diff --name-only "$BASE_BRANCH"...HEAD 2>/dev/null \
+    | grep -E '^(src|lib|app|packages/.+/src)/.*\.(ts|tsx|js|jsx)$' \
+    | grep -vE '\.(test|spec)\.' || true)
+fi
+
+if [ -n "$CHANGED_FILES" ]; then
+  CHANGED_COUNT=$(echo "$CHANGED_FILES" | wc -l | tr -d ' ')
+  echo "[dna-verify] Branch-diff mode: $CHANGED_COUNT source file(s) changed vs $BASE_BRANCH"
+else
+  echo "[dna-verify] No source-file diff vs $BASE_BRANCH — falling back to project-wide coverage"
+fi
+
+# ------------------------------------------------------------------
+# 4. Run test suite with coverage
 # ------------------------------------------------------------------
 COVERAGE_PCT=""
 COVERAGE_RUNNER=""
+COVERAGE_CHECK=""
+PER_FILE_FAILS=""
 
 if [ -f "package.json" ]; then
   if grep -q '"vitest"' package.json; then
     COVERAGE_RUNNER="vitest"
     if command -v npx >/dev/null 2>&1; then
       set +e
-      OUTPUT=$(npx vitest run --coverage --reporter=basic 2>&1)
+      # json-summary writes coverage/coverage-summary.json for per-file lookup.
+      OUTPUT=$(npx vitest run --coverage --coverage.reporter=text --coverage.reporter=json-summary --reporter=basic 2>&1)
       RC=$?
       set -e
-      # Vitest coverage line looks like: "All files | 87.5 | ..."
-      COVERAGE_PCT=$(echo "$OUTPUT" | grep -E "^All files" | awk -F'|' '{gsub(/ /,"",$2); print $2}' | head -1)
       if [ $RC -ne 0 ]; then
         echo "[dna-verify] FAIL — test suite did not pass (vitest exit $RC)"
         echo "$OUTPUT" | tail -20
         exit 1
+      fi
+
+      if [ -n "$CHANGED_FILES" ] && [ -f "coverage/coverage-summary.json" ]; then
+        # Per-file mode. For each changed file, look up its per-file pct.
+        # Keys in coverage-summary.json are absolute paths; on Windows they
+        # contain escaped backslashes. Normalize in the lookup itself.
+        PY=""
+        for p in python3 python; do
+          if command -v "$p" >/dev/null 2>&1; then PY="$p"; break; fi
+        done
+
+        while IFS= read -r rel; do
+          [ -z "$rel" ] && continue
+          pct="MISSING"
+
+          if command -v jq >/dev/null 2>&1; then
+            pct=$(jq -r --arg suffix "/$rel" '
+              to_entries
+              | map(select((.key | gsub("\\\\"; "/")) | endswith($suffix)))
+              | if length > 0 then (.[0].value.lines.pct | tostring) else "MISSING" end
+            ' coverage/coverage-summary.json 2>/dev/null)
+          elif [ -n "$PY" ]; then
+            pct=$("$PY" -c "
+import json, sys
+try:
+    with open('coverage/coverage-summary.json') as f:
+        data = json.load(f)
+    rel = sys.argv[1]
+    for key, val in data.items():
+        if key == 'total':
+            continue
+        norm = key.replace('\\\\', '/')
+        if norm.endswith('/' + rel):
+            print(val['lines']['pct'])
+            sys.exit(0)
+    print('MISSING')
+except Exception as e:
+    print('MISSING')
+" "$rel" 2>/dev/null)
+          else
+            echo "  [dna-verify] WARN — neither jq nor python available; cannot parse per-file coverage. Falling back to project-wide."
+            COVERAGE_PCT=$(echo "$OUTPUT" | grep -E "^All files" | awk -F'|' '{gsub(/ /,"",$2); print $2}' | head -1)
+            break
+          fi
+
+          if [ "$pct" = "MISSING" ] || [ "$pct" = "null" ]; then
+            echo "  $rel: no coverage data (file not imported by any test)"
+            PER_FILE_FAILS="$PER_FILE_FAILS\n  - $rel: no coverage data"
+            continue
+          fi
+
+          pct_int=${pct%.*}
+          if [ "${pct_int:-0}" -ge "$COVERAGE_THRESHOLD" ]; then
+            echo "  $rel: ${pct}% ≥ ${COVERAGE_THRESHOLD}% ✅"
+          else
+            echo "  $rel: ${pct}% < ${COVERAGE_THRESHOLD}% ❌"
+            PER_FILE_FAILS="$PER_FILE_FAILS\n  - $rel: ${pct}% < ${COVERAGE_THRESHOLD}%"
+          fi
+        done <<< "$CHANGED_FILES"
+
+        if [ -z "$PER_FILE_FAILS" ]; then
+          echo "[dna-verify] Coverage: all $CHANGED_COUNT changed file(s) ≥ ${COVERAGE_THRESHOLD}% ✅"
+          COVERAGE_CHECK="PASS"
+        else
+          echo "[dna-verify] Coverage: one or more changed files below ${COVERAGE_THRESHOLD}% ❌"
+          COVERAGE_CHECK="FAIL"
+        fi
+      else
+        # No diff or no json report → project-wide aggregate (legacy behavior).
+        COVERAGE_PCT=$(echo "$OUTPUT" | grep -E "^All files" | awk -F'|' '{gsub(/ /,"",$2); print $2}' | head -1)
       fi
     fi
   elif grep -q '"jest"' package.json; then
@@ -83,7 +179,6 @@ if [ -f "package.json" ]; then
     OUTPUT=$(npx jest --coverage --silent 2>&1)
     RC=$?
     set -e
-    # Jest coverage: "All files    |  87.5  | ..."
     COVERAGE_PCT=$(echo "$OUTPUT" | grep -E "All files" | awk -F'|' '{gsub(/ /,"",$2); print $2}' | head -1)
     if [ $RC -ne 0 ]; then
       echo "[dna-verify] FAIL — test suite did not pass (jest exit $RC)"
@@ -92,7 +187,7 @@ if [ -f "package.json" ]; then
   fi
 fi
 
-if [ -z "$COVERAGE_PCT" ] && [ -f "pyproject.toml" ]; then
+if [ -z "$COVERAGE_PCT" ] && [ -z "$COVERAGE_CHECK" ] && [ -f "pyproject.toml" ]; then
   COVERAGE_RUNNER="pytest"
   set +e
   OUTPUT=$(pytest --cov --cov-report=term 2>&1)
@@ -105,18 +200,20 @@ if [ -z "$COVERAGE_PCT" ] && [ -f "pyproject.toml" ]; then
   fi
 fi
 
-if [ -z "$COVERAGE_PCT" ]; then
-  echo "[dna-verify] WARN — could not measure coverage (no supported runner or coverage tooling). Skipping coverage check; sub-agent audit should still run."
-  COVERAGE_CHECK="SKIPPED"
-else
-  # Integer-compare (strip decimal)
-  COVERAGE_INT=${COVERAGE_PCT%.*}
-  if [ "$COVERAGE_INT" -ge "$COVERAGE_THRESHOLD" ]; then
-    echo "[dna-verify] Coverage: ${COVERAGE_PCT}% ≥ ${COVERAGE_THRESHOLD}% ✅"
-    COVERAGE_CHECK="PASS"
+# If per-file mode didn't set COVERAGE_CHECK, apply the legacy aggregate check.
+if [ -z "$COVERAGE_CHECK" ]; then
+  if [ -z "$COVERAGE_PCT" ]; then
+    echo "[dna-verify] WARN — could not measure coverage (no supported runner or coverage tooling). Skipping coverage check; sub-agent audit should still run."
+    COVERAGE_CHECK="SKIPPED"
   else
-    echo "[dna-verify] Coverage: ${COVERAGE_PCT}% < ${COVERAGE_THRESHOLD}% ❌"
-    COVERAGE_CHECK="FAIL"
+    COVERAGE_INT=${COVERAGE_PCT%.*}
+    if [ "$COVERAGE_INT" -ge "$COVERAGE_THRESHOLD" ]; then
+      echo "[dna-verify] Coverage (project-wide): ${COVERAGE_PCT}% ≥ ${COVERAGE_THRESHOLD}% ✅"
+      COVERAGE_CHECK="PASS"
+    else
+      echo "[dna-verify] Coverage (project-wide): ${COVERAGE_PCT}% < ${COVERAGE_THRESHOLD}% ❌"
+      COVERAGE_CHECK="FAIL"
+    fi
   fi
 fi
 
