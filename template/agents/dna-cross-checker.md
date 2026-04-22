@@ -26,7 +26,16 @@ The words **`(SHARED`** or **`(new`** or **`(modify`** in parentheses are hints 
 
 ## The shared-code glob
 
-Read the project's `CONSTITUTION.md` Article 10. Extract any explicit shared-code glob — typically phrased as *"changes to `src/models/**`, `src/shared/**`, or anything matching a configurable shared glob must land via main first."* If no glob is declared, default to:
+Read the project's `CONSTITUTION.md` Article 10. Look for an explicit `shared-code-glob:` YAML-style block (added to the template in 2026-04-22 to remove the ambiguity the 2026-04-22 dogfood surfaced):
+
+```
+shared-code-glob:
+  - src/models/**
+  - src/shared/**
+  - ...
+```
+
+If that block is present, parse it and use exactly those patterns as the shared-code set. If the block is absent (legacy constitution, or project is still on the old template), default to:
 
 ```
 src/models/**
@@ -35,6 +44,8 @@ src/types/**
 src/common/**
 packages/*/shared/**
 ```
+
+…and **emit a NEEDS_CONSTITUTION_UPDATE soft warning** in your report recommending the team adopt the explicit block. Deterministic detection beats reading-the-prose every time.
 
 Any file matching this glob is a **shared file**. Two features claiming the same shared file is a hard block; two features claiming the same non-shared file is a soft warning.
 

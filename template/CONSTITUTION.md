@@ -98,6 +98,18 @@ Customize for your project. Examples:
 **Project-DNA defaults** (remove if not applicable):
 - Merge conflict prevention is a design constraint. If `[P]` tasks overlap on files, the task decomposition is wrong — fix the tasks, not the conflicts.
 - Sub-agents get ONE file each. Interfaces defined before delegation.
+- **Shared-code glob** (consumed by `dna:cross-checker` — a file matching any pattern below is shared-code; changes to it must PR to main first before feature-branch adoption). Customize this list for your project:
+  ```
+  shared-code-glob:
+    - src/models/**
+    - src/shared/**
+    - src/types/**
+    - src/common/**
+    - src/middleware/**
+    - src/api/routes/**
+    - packages/*/shared/**
+  ```
+  Edit the list above to match your project's shared-code surface. Anything NOT in this list is feature-local and can evolve on a feature branch without shared-code PR discipline.
 
 ---
 

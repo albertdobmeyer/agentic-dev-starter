@@ -80,12 +80,25 @@ fi
 # ------------------------------------------------------------------
 # 4. Cross-checker verdict (if other features are open)
 # ------------------------------------------------------------------
-# Simple proxy: if any other specs/NNN-*/ exists (open branch), nudge toward
-# running the cross-checker subagent. Script does not invoke the subagent;
-# that requires the Agent tool.
-OTHER_SPECS=$(ls -d specs/[0-9][0-9][0-9]-*/ 2>/dev/null | grep -v "$FEATURE_DIR/" | wc -l)
-if [ "$OTHER_SPECS" -gt 0 ]; then
-  echo "  ℹ️  $OTHER_SPECS other open spec(s) detected — run the dna:cross-checker subagent before delegating if you haven't already"
+# Only count specs whose feature branch is still OPEN (unmerged to main).
+# Merged branches are historical and should not nudge the human to re-run
+# cross-checker. Mirrors the merged-vs-open filter in dna-cross-checker.md
+# §step 1. Added 2026-04-22 per SPEC-18 (dogfood RE-04).
+MERGED_BRANCHES=$(git branch --merged main 2>/dev/null | sed 's/[* ]//g' | grep -E '^[0-9]{3}-' || true)
+OTHER_SPECS_COUNT=0
+for d in specs/[0-9][0-9][0-9]-*/; do
+  [ -d "$d" ] || continue
+  base=$(basename "${d%/}")
+  # Skip the current feature and any merged branch
+  [ "specs/$base" = "$FEATURE_DIR" ] && continue
+  if echo "$MERGED_BRANCHES" | grep -qxF "$base"; then
+    continue
+  fi
+  OTHER_SPECS_COUNT=$((OTHER_SPECS_COUNT+1))
+done
+
+if [ "$OTHER_SPECS_COUNT" -gt 0 ]; then
+  echo "  ℹ️  $OTHER_SPECS_COUNT other open (unmerged) spec(s) detected — run the dna:cross-checker subagent before delegating if you haven't already"
 fi
 
 # ------------------------------------------------------------------
