@@ -123,10 +123,26 @@ while IFS= read -r line; do
     continue
   fi
 
+  # Skip verification-only tasks whose body starts with "Run " or "Verify " — they invoke
+  # scripts or re-run the suite and aren't themselves gate-able impl tasks.
+  # (Line is "NN:- [ ] TNNN <body>" because the outer grep used -En.)
+  if echo "$line" | grep -qE '^[0-9]+:- \[ \] T[0-9]+ (Run|Verify|Check)\b'; then
+    continue
+  fi
+
   TOTAL=$((TOTAL+1))
 
   # Extract file path hints from the task body: anything matching src/…, lib/…, app/…
   IMPL_PATH=$(echo "$line" | grep -oE '(src|lib|app|packages/[^/]+/src)/[A-Za-z0-9_/.-]+\.(ts|tsx|js|jsx|py|go)' | head -1 || true)
+
+  # If the path itself is a test/spec file, this IS a test-authoring task — uncount and skip.
+  # (Tasks that author the tests the impl tasks will be measured against.)
+  case "$IMPL_PATH" in
+    *.test.ts|*.test.tsx|*.test.js|*.test.jsx|*.spec.ts|*.spec.tsx|*.spec.js|*.spec.jsx|*_test.go)
+      TOTAL=$((TOTAL-1))
+      continue
+      ;;
+  esac
 
   if [ -z "$IMPL_PATH" ]; then
     echo "  $TASK_ID  UNINSPECTABLE (no impl path in task body) — add explicit file reference"
