@@ -44,8 +44,8 @@ while [ $# -gt 0 ]; do
     --dry-run) DRY_RUN=1; shift ;;
     --scope)
       SCOPE="${2:-}"
-      if [ "$SCOPE" != "skills" ] && [ "$SCOPE" != "agents" ] && [ "$SCOPE" != "all" ]; then
-        echo "[refresh] SETUP — --scope must be one of: skills, agents, all" >&2
+      if [ "$SCOPE" != "skills" ] && [ "$SCOPE" != "agents" ] && [ "$SCOPE" != "workflows" ] && [ "$SCOPE" != "all" ]; then
+        echo "[refresh] SETUP — --scope must be one of: skills, agents, workflows, all" >&2
         exit 2
       fi
       shift 2
@@ -185,6 +185,25 @@ if [ "$SCOPE" = "agents" ] || [ "$SCOPE" = "all" ]; then
     done < <(find "$KIT_ROOT/template/agents" -type f -name '*.md' | sort)
   else
     echo "  (no template/agents/ in kit)"
+  fi
+  echo
+fi
+
+# ------------------------------------------------------------------
+# Workflows: template/workflows/*.yml → <target>/.github/workflows/*.yml
+# ------------------------------------------------------------------
+
+if [ "$SCOPE" = "workflows" ] || [ "$SCOPE" = "all" ]; then
+  echo "## Workflows"
+  if [ -d "$KIT_ROOT/template/workflows" ]; then
+    while IFS= read -r src; do
+      fname="$(basename "$src")"
+      rel="workflows/$fname"
+      dest="$TARGET/.github/workflows/$fname"
+      refresh_file "$src" "$dest" "$rel"
+    done < <(find "$KIT_ROOT/template/workflows" -type f \( -name '*.yml' -o -name '*.yaml' \) | sort)
+  else
+    echo "  (no template/workflows/ in kit)"
   fi
   echo
 fi

@@ -39,6 +39,8 @@ Trigger phrases: *"set up a new project"*, *"create a new repo for my team"*, *"
    - `template/AGENT.md` → `<target>/CLAUDE.md` (renamed to the target agent's convention)
    - `template/CONSTITUTION.md` → `<target>/CONSTITUTION.md`
    - `template/skills/dna-*/` → `<target>/.claude/skills/dna-*/`
+   - `template/agents/*.md` → `<target>/.claude/agents/*.md`
+   - `template/workflows/dna.yml` → `<target>/.github/workflows/dna.yml` (GitHub Actions enforcement; no-op on non-GitHub remotes)
 
    Use platform-appropriate copy (`cp -r` on Unix/Git-Bash, `Copy-Item -Recurse` on PowerShell). Detect the shell from the environment.
 

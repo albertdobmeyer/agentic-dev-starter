@@ -76,8 +76,9 @@ If this project has no `.specify/` directory, set it up:
    - `.specify/scripts/` contains at least one `.sh` or `.ps1` file (regression fence — proves `--script` flag resolved in step 4; an empty scripts dir means Spec-Kit hit its interactive prompt)
    - `.specify/memory/constitution.md` does NOT contain `[PROJECT_NAME] Constitution` (Spec-Kit stub marker — indicates step 5 didn't run)
    - `.claude/skills/` contains all 5 DNA directories: `dna-test-gate`, `dna-context-check`, `dna-decompose`, `dna-delegate`, `dna-verify`
-   - `.claude/agents/` contains the full subagent roster: `dna-construction-logger.md`, `dna-cross-checker.md`, `dna-spec-auditor.md` (step 7a — more added in future kit versions)
+   - `.claude/agents/` contains the full subagent roster: `dna-construction-logger.md`, `dna-cross-checker.md`, `dna-spec-auditor.md`, `dna-verifier.md`
    - `.claude/skills/dna-test-gate/run.sh` exists and is executable (`-rwx`) — the first executable DNA gate (Article 1 enforcement); falls back to SKILL.md prose for unsupported test runners
+   - `.github/workflows/dna.yml` exists (if the remote is GitHub — no-op file on GitLab/Bitbucket targets; mention to the human so they can port it if needed). Contents: `name: DNA enforcement` plus `dna-decompose` + `dna-verify` steps. This is the system-discipline layer — gates become unskippable at merge time (SPEC-14).
    - Root `CONSTITUTION.md` exists and its Article 10 has been customized (not a placeholder)
    - **7-doc Blueprint Package**: every file below exists under `docs/` (skeletons from step 7 are acceptable for day-1; they must be filled before `/speckit-specify`):
      - `docs/00-CORE-PRINCIPLES.md`
