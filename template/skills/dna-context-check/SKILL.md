@@ -25,6 +25,21 @@ AI agents have a context window. Even at 1M tokens, there is a "dumb zone" — a
 - **Preserve** continuity across sessions via handoff documents
 - **Integrate** with agent-token-meter for precise burn-rate data
 
+## Execution — run the script
+
+```bash
+bash .claude/skills/dna-context-check/run.sh
+```
+
+The script reads `agent-token-meter` output (if running) and emits:
+
+- Exit `0` → SAFE (< 70k tokens used). Continue.
+- Exit `1` → WARNING (70k–100k). Plan to finish current logical unit; write handoff within next ~30k tokens.
+- Exit `2` → HANDOFF_REQUIRED (> 100k). Write session handoff NOW before continuing. Required artifact is outlined in the script's output.
+- Exit `3` → UNMEASURED (token-meter not running). Start it: `npx agent-token-meter` in a split pane. Without it, the 100k handoff rule is on the honor system; main agent must self-estimate.
+
+Handoff thresholds come from `CONSTITUTION.md` Article 10 if declared (grep for "session budget: Nk"); otherwise the methodology default of 100k.
+
 ## Context Assessment
 
 ### Step 1: Estimate Context Depth

@@ -22,6 +22,24 @@ You **MUST** specify which chunk or task range to delegate.
 
 Sub-agents are powerful but dangerous. Without scoping, two sub-agents will modify the same files and produce merge conflicts. This skill creates a **scoped delegation context** — everything the sub-agent needs to do its work, and hard boundaries on what it must NOT touch.
 
+## Pre-dispatch safety check — run the script first
+
+Before invoking the Agent tool to spawn sub-agents, verify preconditions:
+
+```bash
+bash .claude/skills/dna-delegate/run.sh
+```
+
+Checks:
+- `dna-decompose` script passed (all `[P]` tasks have disjoint file sets)
+- Working tree is clean (sub-agents operate on current state; unsaved changes cause confusion)
+- `plan.md` has a "Shared Interfaces" / "Contracts" section (so sub-agents import shared types, never create competing definitions)
+- Nudges toward running `dna:cross-checker` if other feature branches are open
+
+Exit `0` = dispatch safely. Exit `1` = fix preconditions first. Exit `2` = setup problem.
+
+Actual sub-agent spawning uses the Agent tool in main-agent context; the script only validates what a script CAN validate.
+
 ## Pre-Execution
 
 1. Read the decomposition output from `/dna-decompose`. If no decomposition exists, tell the user to run `/dna-decompose` first.

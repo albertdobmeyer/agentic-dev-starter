@@ -99,8 +99,19 @@ Trigger: *"help me understand"*, *"what is this"*, *"show me around"*.
 
 Summarize in 3 bullets:
 - The kit is a seed that unfolds into a fully-configured target project.
-- A target unfold delivers: Spec-Kit installed (latest), 5 DNA enforcement skills, token-meter running, handoff docs authored with human input, git initialized, remote pushed.
-- The human's job is vision + Article 10 customization + handoff-doc content. The agent handles installs, file scaffolding, audits, git.
+- A target unfold delivers: Spec-Kit installed (pinned), 5 DNA enforcement skills (4 with executable `run.sh`), 4 subagents (construction-logger, cross-checker, spec-auditor, verifier), token-meter running, 7-doc Blueprint Package authored with human input, git initialized, remote pushed.
+- The human's job is vision + Article 10 customization + Blueprint content. The agent handles installs, scaffolding, audits, git.
+
+### Architecture — kernel + adapters (added 2026-04-21)
+
+The kit is split into two layers:
+
+- **`kernel/`** — agent-agnostic methodology. Invariants, vocabulary, role taxonomy. Read first: `kernel/README.md`.
+- **`adapters/`** — agent-specific wiring. `claude-code/` is complete (it's what `template/` implements today); `cursor/`, `amp/`, `codex/` are stubs.
+
+Protocol A currently uses the Claude Code adapter implicitly (because `template/` is Claude-Code-shaped). Future adapters: new contributors read `adapters/README.md` + `kernel/`, author a new adapter directory, extend Protocol A step 3 with agent detection.
+
+**If the team lead is using a non-Claude-Code agent**, tell them: "the Claude-Code adapter is the only complete one today. Either (a) use Claude Code, (b) implement the methodology manually from `kernel/methodology.md`, or (c) author the adapter for your agent per `adapters/README.md` and contribute it back."
 
 Offer to run Protocol A / B / C next based on where the human wants to go.
 

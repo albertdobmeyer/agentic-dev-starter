@@ -25,6 +25,34 @@ This is the post-implementation counterpart to `/dna-test-gate` (pre-implementat
 
 The human reviews `/dna-verify` reports, not implementation code. If the report says CONGRUENT, the code is correct by definition. If DIVERGENT, the human refines the spec — they don't fix the code directly.
 
+## Execution — two layers
+
+The verification has a mechanical floor and a judgmental ceiling. Run them in order.
+
+### Layer 1 — mechanical floor (script)
+
+```bash
+bash .claude/skills/dna-verify/run.sh
+```
+
+Checks: test suite passes, coverage ≥ CONSTITUTION threshold, every `[D]` requirement in `docs/01-SYSTEM-INTENT.md` has ≥1 integration test, every Experience Fidelity Scenario has ≥1 referencing test.
+
+- Exit `0` → mechanical floor met. Proceed to Layer 2.
+- Exit `1` → floor not met. Fix before the subagent audit. The subagent cannot credibly audit fidelity on a broken test floor.
+- Exit `2` → setup problem (no Blueprint, no tests dir).
+
+### Layer 2 — judgmental ceiling (subagent)
+
+Invoke the `dna:verifier` subagent. It starts with **zero carryover from the build conversation** (PROJECT_DNA Section 4.3 audit-isolation principle), reads spec + code from disk, walks every Experience Fidelity Scenario against current code, and returns a verdict.
+
+- `CONGRUENT` → ship / close phase.
+- `PARTIAL` → escalate to architect; optionally log construction sites via `dna:construction-logger`.
+- `DIVERGENT` → PHASE DOES NOT CLOSE. Every FAIL either gets implemented or logged as an architect-approved deferral in `docs/05-CONSTRUCTION-SITES.md`.
+
+## Fallback (prose path — when neither layer runs)
+
+If the project lacks a supported test runner AND the subagent is unavailable, the main agent replicates the scenario walkthrough manually using the structured steps below. This is a last resort — whenever possible, the subagent should do the walkthrough with fresh context to avoid builder-as-auditor bias.
+
 ## Pre-Execution
 
 1. Run `.specify/scripts/powershell/check-prerequisites.ps1 -Json -RequireTasks -IncludeTasks` to locate FEATURE_DIR.

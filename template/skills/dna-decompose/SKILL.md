@@ -22,6 +22,20 @@ A single agent context cannot reliably build an entire application. This skill d
 
 This is complexity management: the agent applies abstraction principles to partition the work so that sub-agents (or the same agent across sessions) can work on different chunks without stepping on each other.
 
+## After agent proposes decomposition — validate with the script
+
+The decomposition itself is agentic work (creative task-splitting). But the RESULT must be merge-safe: no two `[P]` parallel tasks may touch the same file. Validate mechanically:
+
+```bash
+bash .claude/skills/dna-decompose/run.sh
+```
+
+- Exit `0` → decomposition is merge-safe. Proceed to `/dna-delegate`.
+- Exit `1` → overlaps detected. Fix by removing `[P]` from one of each overlapping pair, or by extracting the shared file's changes into a serial prerequisite task.
+- Exit `2` → setup problem (no tasks.md).
+
+This turns CONSTITUTION Article 8's "[P] tasks must have ZERO file overlap" rule from prose into a check with an exit code.
+
 ## Analysis
 
 ### Step 1: Load Project Shape
