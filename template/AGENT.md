@@ -102,6 +102,27 @@ When `.specify/` already exists (the project was bootstrapped by the team lead) 
 
 Do NOT re-run the Bootstrap section when `.specify/` exists — it re-initializes Spec-Kit and can overwrite the team's customized setup.
 
+## Refresh Protocol (Pull Kit Updates)
+
+When the human says *"refresh my kit"*, *"pull kit updates"*, *"sync my subagents"*, *"my kit has new gates, update my target"* or similar, run this protocol:
+
+1. **Locate the kit clone.** Ask the human for the filesystem path to their `agentic-dev-starter` clone (e.g., `B:/repos/agentic-dev-starter`). Optionally check for a `.claude/.kit-path` file that records the last-used kit path; read it and confirm with the human before reusing.
+2. **Dry-run first.** Run `bash <kit-path>/tools/refresh-target.sh . --dry-run` from the target root. Show the full output to the human.
+3. **Explain the verdict**:
+   - `ADDED` lines — new kit artifact the target doesn't have yet. Safe to pull forward.
+   - `IDENTICAL` lines — already in sync. No action.
+   - `DRIFT` lines — target has a customized version OR an older version of a kit file. **Do not auto-force.** Surface each diff (`diff <kit-path>/<file> <target>/<file>`) and ask the human which version to keep.
+4. **Apply** based on human's decision:
+   - `ADDED` only, no DRIFT: re-run without `--dry-run`. Exit code must be 0.
+   - DRIFT adopted from kit: re-run with `--force`. Exit code must be 0.
+   - DRIFT kept locally: do nothing; note it in the response so the human knows the local customization is preserved.
+5. **Record the kit path**: write the kit path to `.claude/.kit-path` (single-line, gitignored) so the next refresh doesn't require asking again.
+6. **Report** what changed: count of ADDED, OVERWROTE, DRIFT-preserved. If any gate script changed, mention the human should re-run any active-feature gates to ensure the new version passes.
+
+The refresher is **add-only + warn-on-diff by default**. It will never clobber a target-side customization without explicit `--force`. This protects local methodology adaptations while still enabling kit evolution to propagate.
+
+Scope flags (`--scope skills`, `--scope agents`, `--scope all`) narrow the refresh when only one kind of artifact evolved. Use `--scope agents` after a kit release that only ships new subagents; `--scope skills` for gate-script updates.
+
 ## Workflow
 
 ```

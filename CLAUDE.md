@@ -115,6 +115,23 @@ Protocol A currently uses the Claude Code adapter implicitly (because `template/
 
 Offer to run Protocol A / B / C next based on where the human wants to go.
 
+### Protocol E — Refresh an existing target with kit updates
+
+Trigger: *"refresh my kit"*, *"pull kit updates into my project"*, *"sync my subagents / scripts"*, *"my kit repo has new gates, update my target"*.
+
+The kit evolves after targets unfold. New `run.sh` scripts, new subagents, updated `SKILL.md` files land in `template/` and `template/agents/` but don't flow back into existing targets automatically. Protocol E fixes that.
+
+1. Ask the human for the target project's filesystem path.
+2. From this kit repo, run `bash tools/refresh-target.sh <target-path> --dry-run`.
+3. Surface the output: `ADDED`, `IDENTICAL`, `DRIFT` counts per file.
+4. If DRIFT is reported on any file, open each diff with the human and ask whether to keep the target's version or adopt the kit's. Default: keep local.
+5. Re-run without `--dry-run` (or with `--force` if the human chose to adopt DRIFT).
+6. Confirm the target's working tree compiles / tests pass (ask the human to run their suite before committing).
+
+The target-side counterpart is documented in `template/AGENT.md` §Refresh Protocol — so a team lead running inside their target says the same phrases and the agent invokes `<kit-path>/tools/refresh-target.sh` from there. Either direction works; both converge on `tools/refresh-target.sh`.
+
+Do NOT refresh `CONSTITUTION.md`, `CLAUDE.md`, or `docs/*.md` in the target — those are Article-10 customizations and team-authored Blueprint content. The refresher is scoped to `.claude/skills/dna-*/` and `.claude/agents/` only.
+
 ## Philosophy
 
 **Zero infrastructure, agent-orchestrated.** Spec-Kit and agent-token-meter are NOT bundled — they install at unfold time against their latest versions. The repo is a small seed of templates + protocols. No scaffolder scripts, no manual shell commands for the human, no OS-specific setup instructions. The CLI agent interprets the protocols above and handles execution on whatever platform it's running on.
