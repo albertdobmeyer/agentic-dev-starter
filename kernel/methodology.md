@@ -81,6 +81,7 @@ Every feature, regardless of adapter:
 2. Blueprint Package present + complete (run spec-auditor role)
 3. Run cross-check across other open features (run cross-checker role)
 4. /speckit-specify equivalent — produces spec.md referencing scenarios
+4.5. Validate spec.md against Blueprint (run spec-validate gate + spec-validator subagent)
 5. Verify test floor — tests exist AND fail before implementation (run test-gate)
 6. Decompose into merge-safe parallel chunks (run decomposer validator)
 7. Implement — solo or via delegated sub-agents (run delegate safety check before dispatch)
@@ -90,6 +91,15 @@ Every feature, regardless of adapter:
 11. Write per-feature retrospective
 12. Merge
 ```
+
+**Step 4.5 — spec ↔ Blueprint validation** (added 2026-04-22 per SPEC-19): once `/speckit-specify` (and optionally `/speckit-plan`, `/speckit-tasks`) produces a per-feature `specs/NNN-*/spec.md`, run the two-layer validator before the test floor:
+
+- **Mechanical floor**: `dna-spec-validate` script (deterministic regex). Catches depth-tag mismatch, file paths outside declared modules, undefined principle/scenario/phase/entity references, stale line citations, cross-spec file ownership conflicts. CI-eligible. Default mode `blocking`.
+- **Judgmental ceiling**: `dna-spec-validator` subagent (LLM, fresh context per invariant 6). Catches negative-assertion violations, non-goal violations, behavioral-fidelity drift between spec narrative and cited scenario narrative. Dev-loop only.
+
+Pre-condition: step 2's spec-auditor must have reported CLEAR. The validator presumes the Blueprint is itself coherent — auditing a spec against an inconsistent Blueprint is meaningless.
+
+If the validator's mechanical layer BLOCKs: fix the spec.md. If the judgmental layer returns DIVERGENT: refine the spec narrative (or, if the divergence is intentional, log a Construction Site entry per invariant 5 and re-run).
 
 Adapter-specific: how step 4's spec is written, where tests live, what "sub-agent" looks like in this platform's runtime. Non-adapter-specific: that each step happens and in this order.
 

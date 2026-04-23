@@ -145,6 +145,7 @@ VISION.md is the input to /speckit-specify. The spec is the operational source o
 |-------|------|-----------------|
 | `/dna-test-gate` | Before /speckit-implement | Tests exist and fail. Zero-trust, no bypass. |
 | `/dna-context-check` | Throughout | Token budget. Triggers handoff before the dumb zone. |
+| `/dna-spec-validate` | After /speckit-specify (or /speckit-tasks) | Spec.md harmonized with Blueprint. Catches depth/path/reference drift. Pair with `dna-spec-validator` subagent for semantic drift. |
 | `/dna-decompose` | After /speckit-tasks | Chunks work into merge-conflict-free slices. |
 | `/dna-delegate` | Instead of /speckit-implement | Spawns scoped sub-agents for parallel chunks. |
 | `/dna-verify` | After /speckit-implement | Built = specced? Closes the verification gap. |
