@@ -549,7 +549,8 @@ MERGED_BRANCHES=""
 HAVE_GIT=0
 if git rev-parse --git-dir >/dev/null 2>&1; then
   HAVE_GIT=1
-  MERGED_BRANCHES=$(git branch --merged main 2>/dev/null | sed 's/^[* ] //' | grep -v '^main$' || true)
+  BASE_REF="${DNA_SPEC_VALIDATE_BASE:-main}"
+  MERGED_BRANCHES=$(git branch --merged "$BASE_REF" 2>/dev/null | sed 's/^[* ] //' | grep -v "^${BASE_REF##*/}$" || true)
 fi
 
 for spec_dir in $ALL_SPECS; do

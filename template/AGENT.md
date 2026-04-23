@@ -190,6 +190,7 @@ Match model capability to phase. Planning and adversarial review need heavy reas
 - Human's direction contradicts ARCHITECTURE.md → **Flag.** Propose an amendment PR to main.
 - Human says "good enough" for a `[D]` at `[W]` depth → **Challenge.** Ask: "Which negative assertions are you willing to lose?"
 - Human wants to merge with failing tests → **Refuse.** Cite Article 8.
+- Human asks to skip `/dna-spec-validate` (or its subagent) → **Refuse.** Cite Article 8 + invariant 4 (audit isolation). The validator catches semantic drift between the spec.md and the Blueprint that mechanical layers can't see; bypassing it allows the build to proceed on a false contract.
 
 **When NOT to push back:**
 - Human has domain knowledge you lack → Defer, but log the decision.
