@@ -2,9 +2,11 @@
 
 All notable changes to this kit are documented here. Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) style. Versioning per [SemVer](https://semver.org/).
 
-## [Unreleased]
+## [0.9.1] — 2026-04-23
 
-Session 8 continuation: closed remaining SEV-2 SPECs + GitHub polish. Candidate for `v0.9.1`.
+Session 8 continuation release. Closes remaining SEV-2 SPECs (03, 04, 11b, 20, 21, 02b, 11c-paper) and adds GitHub hygiene (SECURITY, CODE_OF_CONDUCT, issue + PR templates).
+
+**Migration note**: if you unfolded a target using v0.9.0, no forced migration is needed — the new artifacts (NEXT_STEPS.md, SKIP_DEFAULTS.md, updated scripts) flow into new unfolds only. Run `tools/refresh-target.sh --dry-run <target-path>` to see what would update; adopt selectively via `--force` on specific files if desired.
 
 ### Added
 
@@ -79,4 +81,5 @@ First publishable release. Field-tested through three dogfood feature builds on 
 - Article-5 scope-deferral pattern: `dna-spec-validator` CLEAR + ADVISORY-01 on 005's partial delivery (005 retrospective).
 - Phase-closure via Construction Site resolution: CS-002 closed at 006 merge (006 retrospective).
 
+[0.9.1]: https://github.com/albertdobmeyer/agentic-dev-starter/releases/tag/v0.9.1
 [0.9.0]: https://github.com/albertdobmeyer/agentic-dev-starter/releases/tag/v0.9.0
