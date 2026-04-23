@@ -19,6 +19,34 @@ tests/
 
 {FILL IN: Directory tree showing module structure. Annotate each top-level module with its purpose.}
 
+## Module paths
+
+> **Why this section exists**: deterministic path globs let `dna-spec-validate` and other gates check whether a feature's `## Files this feature will touch` list lives within a declared module without re-parsing the ASCII tree above. Mirrors the `shared-code-glob:` precedent in `CONSTITUTION.md` Article 10.
+>
+> One row per top-level module. Globs are bash `**`-style. Add new rows when you add a module; the tree above and the table below must agree.
+
+```yaml
+modules:
+  # name: <module-id>           # short, kebab-case, matches the directory under src/
+  # path: <glob>                # bash glob (e.g., src/api/routes/**)
+  # purpose: <one-liner>        # what code lives here, what does NOT
+  # owner-scenarios: [N, ...]   # scenario numbers from 01-SYSTEM-INTENT.md this module primarily serves; [] for infrastructure
+
+  - name: {module-id}
+    path: src/{module}/**
+    purpose: {one-line purpose}
+    owner-scenarios: []
+
+  - name: {another-module}
+    path: src/{another}/**
+    purpose: {one-line purpose}
+    owner-scenarios: [1, 2]
+```
+
+**Exempt paths** (always allowed, never need a module): `tools/**`, `tests/**`, `docs/**`, `scripts/**`, `.specify/**`, `.github/**`. Feature spec.md files may list paths in these locations without triggering a module-boundary failure.
+
+**Authoring rule**: a file path that does not match any `path:` glob and is not in the exempt set is "homeless" — either a missing module declaration above, or a sign the file belongs in a different module. Resolve before `/speckit-plan`.
+
 ## Interface contracts
 
 {FILL IN: The public interfaces between modules. Declarative. Example: "The `auth` module exposes `verifySession(token) → User | null` and `startSession(credentials) → Token`."}
