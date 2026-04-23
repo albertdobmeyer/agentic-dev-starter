@@ -94,3 +94,71 @@ Five findings. Three methodology revisions. Two validations. Zero showstoppers.
 The methodology refines itself. Every rule that changed was changed because live execution revealed a better formulation — not because the rule was wrong in principle, but because its expression was imprecise. The framework is now tighter than before the build.
 
 *Every rule exists because it was tested. The methodology evolves by its own use.*
+
+---
+
+# Second validation — team-project-scheduler (2026-04-22 → 2026-04-23)
+
+> **Project:** team-project-scheduler (worked-example published at [github.com/albertdobmeyer/team-project-scheduler-example](https://github.com/albertdobmeyer/team-project-scheduler-example))
+> **Build dates:** 2026-04-22 (feature 004, `[W]`-depth dogfood) + 2026-04-23 (feature 005, `[D]`-depth dogfood)
+> **Scope:** Both dogfood runs exercised the full enforcement layer (6 skills + 5 subagents + CI) on real features. Second validation raises n from 1 (bookmark-organizer) to 2.
+
+Raw session walkthroughs preserved at [dogfood-evidence/](https://github.com/albertdobmeyer/team-project-scheduler-example/tree/c084166/dogfood-evidence) in the example repo. Aggregated retrospective corpus at [dogfood-evidence/retrospectives-corpus.md](https://github.com/albertdobmeyer/team-project-scheduler-example/blob/c084166/dogfood-evidence/retrospectives-corpus.md).
+
+---
+
+## Finding 6: Pass-2 independent-context verifier catches what Pass-1 misses
+
+**Observed value:** On feature 004 (`[W]`-depth), the Pass-1 `dna-verifier` subagent passed the feature. A Pass-2 invocation with a fresh context (no build-conversation history) caught a subtle scenario-assertion gap that the in-context Pass-1 missed. Evidence preserved at [DOGFOOD-NOTES-2026-04-22.md §Pass 2](https://github.com/albertdobmeyer/team-project-scheduler-example/blob/c084166/dogfood-evidence/DOGFOOD-NOTES-2026-04-22.md).
+
+**Observation:** Build-conversation context carries implicit trust — the verifier "knows what we meant." A fresh-context pass strips that trust. The bias firewall only works when the verifier is genuinely independent.
+
+**No revision needed.** This validates the design of running verifier + validator in fresh-context isolation. The pattern was hypothesized; 004 proved it.
+
+---
+
+## Finding 7: Judgmental subagent correctly distinguishes scope-deferral from drift
+
+**Observed value:** On feature 005 (`[D]`-depth), the spec deliberately deferred the UI layer to a committed sibling feature (006-calendar-ui). SPEC-19's `dna-spec-validator` subagent was invoked to assess whether this was legitimate Article 5 scoping or production-threshold drift. It returned CLEAR + ADVISORY-01 correctly identifying it as legitimate — and named the required Construction Site entry before merge. Evidence at [DOGFOOD-NOTES-2026-04-23.md §Phase 5](https://github.com/albertdobmeyer/team-project-scheduler-example/blob/c084166/dogfood-evidence/DOGFOOD-NOTES-2026-04-23.md).
+
+**Observation:** The ruleset encoded in the subagent's prompt actually reasons about the pattern rather than rubber-stamping. A subagent that returned CLEAR without ADVISORY would be indistinguishable from a stub; one that returned BLOCK would force false positives. ADVISORY-01 is the mark of a judgment call being made.
+
+**No revision needed.** Validates SPEC-19's design. The pattern-match-then-classify prompt structure holds under real-feature load.
+
+---
+
+## Finding 8: Construction Sites prevent silent phase closure
+
+**Observed value:** CS-002 was logged at merge time (not post-hoc) for feature 005's partial-delivery. The entry in [docs/05-CONSTRUCTION-SITES.md](https://github.com/albertdobmeyer/team-project-scheduler-example/blob/c084166/docs/05-CONSTRUCTION-SITES.md) explicitly blocks Phase 2 closure until 006 ships. Without the logged entry, the gap between "server read path shipped" and "filmable user experience achievable" would have been invisible.
+
+**Observation:** Construction Sites are not a post-implementation debt tracker — they're a *phase-closure gate*. An unresolved CS blocks Production Threshold. This makes Article 5 scope-deferral safe because the consequences stay visible.
+
+**No revision needed.** Validates the invariant added to HANDOFF-2026-04-23 §invariants #11: partial-delivery of `[D]` is legitimate only with (a) explicit out-of-scope statement, (b) committed sibling feature, (c) merge-time CS entry, (d) phase remains open.
+
+---
+
+## Finding 9: Refresh-target.sh mechanism works across kit evolution
+
+**Observed value:** Between sessions 6 and 7 (2026-04-22 → 2026-04-23), the kit gained SPEC-19 artifacts (`dna-spec-validate` skill + `dna-spec-validator` subagent + CI step). The existing target was brought current via `tools/refresh-target.sh` with no manual file-shuffling. One DRIFT was surfaced (a pre-existing target customization) and resolved with `--force` at the human's direction; rest was ADD-only.
+
+**Observation:** The kit-to-target sync mechanism is the only way this worked-example stays in step with kit evolution over time. Without it, targets become snapshot-only and adoption friction compounds.
+
+**No revision needed.** Validates SPEC-15's design. Protocol E is load-bearing.
+
+---
+
+## Cross-validation summary
+
+| Finding | Bookmark-organizer (n=1) | Team-project-scheduler (n=2) |
+|---|---|---|
+| Test-first mandate drives real test coverage | ✅ 259 tests | ✅ 26 tests, 81% branch-diff coverage |
+| Constitution checks catch architectural drift | ✅ caught silent LLM-client swap | ✅ `dna-cross-checker` caught shared-model merge-conflict (CS-001) |
+| Commit-per-milestone granularity works | ✅ 4 commits for 47 tasks | ✅ 1-commit-per-merged-feature + intermediate phase commits |
+| `[P]` parallelization via subagents | ✅ halved implementation time | ✅ `dna-delegate` used for 003 and 005; merge-conflict-free |
+| Fresh-context verifier as bias firewall | _not tested_ | ✅ caught Pass-1-missed assertion gap in 004 |
+| Construction Sites prevent flattening | _not tested_ | ✅ CS-001 resolved, CS-002 open + phase-blocked |
+| Spec-validator distinguishes scope-vs-drift | _not tested_ | ✅ CLEAR + ADVISORY-01 on 005 partial delivery |
+
+The second validation exercises dimensions the first couldn't (because the enforcement layer was still being built). The methodology now has evidence at two depths across two projects; recurring patterns are what `tools/aggregate-retros.sh` surfaces.
+
+*The framework is now tighter than before the second build. The same refinement loop applies: live execution reveals better formulations; formulations stabilize with each validation.*

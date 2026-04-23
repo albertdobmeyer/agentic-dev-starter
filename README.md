@@ -77,11 +77,19 @@ Your team lead's machine and each developer's machine need:
 
 The kit bundles nothing. Spec-Kit and agent-token-meter install on demand from their official sources, always at the latest version.
 
+## Worked example
+
+Want to see what the output looks like before running the kit yourself?
+
+**[team-project-scheduler-example](https://github.com/albertdobmeyer/team-project-scheduler-example)** is a real Node/TypeScript team scheduler built through this kit: 5 merged features, a full 7-document Blueprint Package, two dogfood validation runs with session walkthroughs, and an open Construction Site (CS-002) demonstrating how the methodology catches partial-delivery of a `[D]`-depth scenario instead of hiding it.
+
+Start with [its README](https://github.com/albertdobmeyer/team-project-scheduler-example#readme) for a guided reading path. Longer narrative: [docs/WORKED_EXAMPLE.md](docs/WORKED_EXAMPLE.md).
+
 ## Deep dives
 
 For humans who want to understand why the rules exist:
 
-[Methodology](docs/METHODOLOGY.md) | [Team Guide](docs/TEAM_GUIDE.md) | [Field Notes](docs/FIELD_NOTES.md) | [Planning Instructions](docs/PLANNING_INSTRUCTIONS.md) | [Handoff Format](docs/HANDOFF_FORMAT.md) | [FAQ](docs/FAQ.md)
+[Methodology](docs/METHODOLOGY.md) | [Team Guide](docs/TEAM_GUIDE.md) | [Field Notes](docs/FIELD_NOTES.md) | [Planning Instructions](docs/PLANNING_INSTRUCTIONS.md) | [Handoff Format](docs/HANDOFF_FORMAT.md) | [FAQ](docs/FAQ.md) | [Worked Example](docs/WORKED_EXAMPLE.md)
 
 ---
 

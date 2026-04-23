@@ -50,6 +50,8 @@ target/
 - Core principles (3–7 typical; each must produce a scenario in `01-SYSTEM-INTENT.md`)
 - Business model, hard constraints, anti-principles
 
+> **See example**: [team-project-scheduler-example/docs/00-CORE-PRINCIPLES.md](https://github.com/albertdobmeyer/team-project-scheduler-example/blob/c084166/docs/00-CORE-PRINCIPLES.md) — three principles each paired to a scenario, domain model named as nouns (Task, User, TaskStatus), anti-principles explicit.
+
 ### `01-SYSTEM-INTENT.md` — the most load-bearing doc
 - Entity schemas (all fields, all types, all constraints — no "TBD")
 - State machines (transitions, triggers, reversibility)
@@ -67,6 +69,8 @@ target/
   - "Tasks Without Assertions" row must be empty before `/speckit-plan`
 - Depth classification summary (every requirement tagged `[E]`/`[W]`/`[D]`)
 
+> **See example**: [team-project-scheduler-example/docs/01-SYSTEM-INTENT.md](https://github.com/albertdobmeyer/team-project-scheduler-example/blob/c084166/docs/01-SYSTEM-INTENT.md) — Scenario 1 shows ≥3 negative assertions, filmable success at ≤15s, behavioral variation (happy/edge/error), and a Validation Matrix with real task IDs from specs/001-*/ and specs/005-*/. "Uncovered Assertions" is empty.
+
 ### `02-ARCHITECTURE.md`
 - Module boundaries, interface contracts, API surface
 - Data flows + event/sync flows (every data structure that implies automatic behavior names its trigger here)
@@ -74,6 +78,8 @@ target/
 - **Architecture Impact Assessment** — one per scenario:
   - Fits existing patterns / requires new infrastructure / requires subsystem redesign / cross-scenario conflicts
   - New-infrastructure items must be reflected as requirements in `04-COORDINATION-HINTS.md` phases
+
+> **See example**: [team-project-scheduler-example/docs/02-ARCHITECTURE.md](https://github.com/albertdobmeyer/team-project-scheduler-example/blob/c084166/docs/02-ARCHITECTURE.md) — Architecture Impact Assessment per scenario. Scenario 1's assessment names the calendar/view module boundary and the HTTP contract surface; Scenario 2's assessment forced Slack client infrastructure to be listed as a Phase 2 prerequisite in 04-COORDINATION-HINTS.md.
 
 ### `03-EXECUTION-CONTEXT.md`
 - Tech stack (every row pinned to exact `major.minor` + rationale)
@@ -90,16 +96,22 @@ target/
 - Seed data requirements per phase
 - Non-goals (8+ explicit)
 
+> **See example**: [team-project-scheduler-example/docs/04-COORDINATION-HINTS.md](https://github.com/albertdobmeyer/team-project-scheduler-example/blob/c084166/docs/04-COORDINATION-HINTS.md) — five phases with depth-tagged done criteria; Phase 2 (Calendar rendering) has three `[D]` done criteria (`:48-:50`) that remain **open** because 005 shipped only the server read path — an intentionally open gate until 006 ships. 10 non-goals, Production Threshold explicit.
+
 ### `05-CONSTRUCTION-SITES.md`
 - Initialized at bootstrap (empty "Active sites" table)
 - Maintained during implementation by `dna-construction-logger` subagent
 - Every `[D]→[W]` or `[W]→[E]` downgrade logged with scenario impact, reason, resolution plan
 - Accumulation of 3+ entries on one scenario → escalate (architecture problem, not patching problem)
 
+> **See example**: [team-project-scheduler-example/docs/05-CONSTRUCTION-SITES.md](https://github.com/albertdobmeyer/team-project-scheduler-example/blob/c084166/docs/05-CONSTRUCTION-SITES.md) — **CS-001 RESOLVED** (cross-feature shared-model merge conflict, addressed by installing `dna:cross-checker`) and **CS-002 OPEN** (`[D]`-depth scenario partially delivered: server contract in 005, UI deferred to committed sibling 006). CS-002 is the canonical demonstration of legitimate Article 5 scope-deferral: logged at merge time, committed sibling named, phase not closed until sibling ships.
+
 ### `CONSTITUTION.md`
 - Articles 1–9 universal (testing, specs, anti-flattening, depth, simplification logging, behavior specs, drift, workflow, reserved)
 - Article 10 project-specific (4–8 rules customized during Protocol A step 6)
 - Pre-Implementation Gate Checklist at the bottom — every box must be checkable before building starts
+
+> **See example**: [team-project-scheduler-example/CONSTITUTION.md](https://github.com/albertdobmeyer/team-project-scheduler-example/blob/c084166/CONSTITUTION.md) — Article 10 customized for a small Node/TS team (coverage threshold, shared-code PR gate with explicit file globs, review depth rules). Compare against the kit's uncustomized [template/CONSTITUTION.md](../template/CONSTITUTION.md) to see what project-specific customization looks like in practice.
 
 ---
 
