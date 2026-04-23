@@ -61,8 +61,10 @@ Runs once per project. If `.specify/` does not exist, perform these steps before
    - `.cursor/rules/*.mdc` at least 12 files present
    - `.cursor/scripts/dna-*/run.sh` executable (6 directories)
    - `CONSTITUTION.md` Article 10 is customized (not a `{FILL IN}` placeholder) — this is the project-specific quality-gate block
-9. **Initialize git** and commit the bootstrap. `.gitignore` should exclude `node_modules/`, `.specify/local/`, `coverage/`, and any IDE-local files. Push to your chosen remote.
-10. **Per-dev onboarding brief** (for the team lead to send each developer):
+   - **`NEXT_STEPS.md` pre-specify gate** (SPEC-04): if `NEXT_STEPS.md` exists at project root, grep for `{FILL IN` or `SKIP-DEFAULT` markers across `CONSTITUTION.md` + `docs/*.md`. If any marker remains, **BLOCK `/speckit-specify`** until they are resolved. When all markers are resolved, instruct the human to `rm NEXT_STEPS.md` and commit `chore: graduate from onboarding — handoff docs complete`. Absence signals the project has left onboarding.
+9. **Materialize `NEXT_STEPS.md`** at project root from `NEXT_STEPS.template.md` (copied by Protocol A step 9a during unfold). Substitute every placeholder (`{PROJECT_NAME}`, `{DATE}`, `{ADAPTER}=Cursor`, `{MODE}`, status tags for each doc). This is the day-1 guide the team lead reads first.
+10. **Initialize git** and commit the bootstrap. `.gitignore` should exclude `node_modules/`, `.specify/local/`, `coverage/`, and any IDE-local files. Push to your chosen remote.
+11. **Per-dev onboarding brief** (for the team lead to send each developer):
     > Clone `<repo>`, `cd` into it, open Cursor. Say: *"Read CURSOR.md — I'm a new dev, onboard me."* The agent runs installs and walks you through the Blueprint. Prerequisites: Cursor, `uv`, `git`, Node.js 18+.
 
 ## Per-feature workflow (12 steps)

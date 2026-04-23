@@ -91,9 +91,10 @@ If this project has no `.specify/` directory, set it up:
      - `docs/03-EXECUTION-CONTEXT.md`
      - `docs/04-COORDINATION-HINTS.md`
      - `docs/05-CONSTRUCTION-SITES.md` (must contain the "Active sites" table header — this is the living tracker from PROJECT_DNA Section 5)
+   - **NEXT_STEPS.md pre-specify gate** (SPEC-04): if `NEXT_STEPS.md` exists at project root, grep for `{FILL IN` or `SKIP-DEFAULT` markers across `CONSTITUTION.md` + `docs/*.md`. If any marker remains, **BLOCK `/speckit-specify`** and tell the human to complete the markers first. When all markers are resolved, instruct the human to `rm NEXT_STEPS.md` and commit `chore: graduate from onboarding — handoff docs complete`. The absence of this file is the signal the project has left the onboarding phase.
 
    This audit matters because the DNA enforcement skills cannot gate what isn't installed. A silent bootstrap failure looks like a working project until the first `/dna-test-gate` call returns vacuous-pass or the first `/speckit-plan` reads stub constitution text.
-9. **Enter planning mode.** Do NOT write code until handoff docs are complete and the human confirms.
+9. **Enter planning mode.** Do NOT write code until handoff docs are complete and the human confirms. Open `NEXT_STEPS.md` at project root first — it names what's authored vs. skeleton, the next action, and the graduation condition. Proceed from there.
 
 ## Dev Onboarding (Existing Project)
 

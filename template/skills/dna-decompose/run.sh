@@ -39,7 +39,10 @@ echo "[dna-decompose] Validating $TASKS_FILE"
 
 declare -A TASK_FILES   # task_id → space-separated file list
 
-PARALLEL_TASKS=$(grep -E '^- \[[ x]\] T[0-9]+ \[P\]' "$TASKS_FILE" || true)
+# SPEC-20 / RE-16: tasks may use backtick-wrapped `[P]` (Markdown-safe inline
+# code) instead of bare [P]. Accept both. Escaped backticks are optional —
+# the pattern `\`?\[P\]\`?` matches `[P]`, `\`[P]\``, and even weird half-wrapped forms.
+PARALLEL_TASKS=$(grep -E '^- \[[ x]\] T[0-9]+ `?\[P\]`?' "$TASKS_FILE" || true)
 
 if [ -z "$PARALLEL_TASKS" ]; then
   echo "[dna-decompose] No [P] tasks in $TASKS_FILE. Decomposition is trivially safe (serial)."

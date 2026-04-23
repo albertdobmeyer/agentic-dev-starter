@@ -2,6 +2,37 @@
 
 All notable changes to this kit are documented here. Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) style. Versioning per [SemVer](https://semver.org/).
 
+## [Unreleased]
+
+Session 8 continuation: closed remaining SEV-2 SPECs + GitHub polish. Candidate for `v0.9.1`.
+
+### Added
+
+- **SKIP entry mode** (SPEC-03) — new fourth branch in Protocol A step 1 for busy team leads who want opinionated defaults instead of a 90-minute interview. `template/defaults/SKIP_DEFAULTS.md` documents every default (aligned with 7-doc Blueprint). Protocol A-bis lets the lead "promote" from SKIP later — re-interviews only for unresolved fields, never overwrites human-authored content.
+- **Post-unfold onboarding cue** (SPEC-04) — `template/NEXT_STEPS.template.md` is materialized at target root during Protocol A step 9a with placeholder substitution (`{PROJECT_NAME}`, `{DATE}`, `{MODE}`, `{ADAPTER}`, per-doc status). Sacrificial lifecycle: lead deletes it at graduation. Bootstrap self-audit blocks `/speckit-specify` while it exists with unresolved `{FILL IN}` markers.
+- **Kit-root agent auto-detect** (SPEC-11b) — `.cursor/rules/agentic-dev-starter-kit.mdc` at kit root auto-orients Cursor users to the Cursor adapter when they open the kit repo. Claude Code users continue to auto-read `CLAUDE.md`. Protocol A step 3 documents the detection pattern explicitly.
+- **Unfold smoke harness** (SPEC-02b) — `tools/unfold-smoke.sh` runs canonical `specify init` invocations for both adapters against throwaway temp dirs and asserts the expected file trees. Includes a guardrail that confirms `--integration cursor` (without `-agent`) still errors. Run before every Spec-Kit version bump per `docs/SPEC_KIT_PINNING.md`.
+- **Article 10 migration doc** (SPEC-21) — `docs/MIGRATION-ARTICLE-10.md` tells team leads with pre-SPEC-17 targets how to add the `shared-code-glob:` block (RE-12 from 2026-04-23 retro).
+- **Cursor structural validation** (SPEC-11c paper-level) — `.exploration/CURSOR-STRUCTURAL-VALIDATION-2026-04-23.md` captures the pre-real-dogfood sanity pass. All 29 payload files verified; all 6 scripts execute cleanly; all cross-references resolve. Real feature-build dogfood still pending.
+- **GitHub hygiene files** — `SECURITY.md`, `CODE_OF_CONDUCT.md`, `.github/ISSUE_TEMPLATE/{bug_report,feature_request,adopter_feedback}.md`, `.github/pull_request_template.md`.
+
+### Changed
+
+- **dna-test-gate heuristics** (SPEC-20 / RE-14, RE-15) — skip-verb filter extended to `Run|Verify|Check|Log|Append|Close|Document|Update|Flip|Remove|Rename|Delete`. Test-file lookup now iterates every impl path mentioned in a task body instead of only the first. Mirrored into Cursor adapter scripts.
+- **dna-decompose** (SPEC-20 / RE-16) — now recognizes backtick-wrapped `` `[P]` `` in addition to bare `[P]`. Mirrored into Cursor adapter scripts.
+- **Protocol A step 3** — documents adapter auto-detection + clean fallback to ask-the-human for mixed teams.
+- **Protocol A step 1** — SKIP branch added to YES/PARTIAL/NONE tree.
+- **`template/AGENT.md` + `adapters/cursor/payload/CURSOR.md`** — Bootstrap self-audit gains NEXT_STEPS.md pre-specify gate.
+
+### Deferred
+
+- **SPEC-20 RE-13** — dna-verify scenario-file discovery for `tests/scenario/` root. LOW severity; SPEC-22 documents the convention explicitly.
+- **SPEC-11c full** — real feature-level Cursor dogfood requires a human running the 12-step workflow in Cursor. First Cursor adopter becomes the validation cohort.
+- **README Mermaid 4-way branch** — visually show SKIP node alongside YES/PARTIAL/NONE. Polish item.
+- **SPEC-12** — 5 supplementary subagents (pr-reviewer, drift-remediator, architecture-impact, coherence-gate, kit-graduate). Shared roadmap across adapters.
+
+---
+
 ## [0.9.0] — 2026-04-23
 
 First publishable release. Field-tested through three dogfood feature builds on the worked example ([team-project-scheduler-example](https://github.com/albertdobmeyer/team-project-scheduler-example)). Team-lead-evaluation-ready; known gaps listed below so adopters have honest expectations.

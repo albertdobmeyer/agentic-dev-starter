@@ -123,26 +123,28 @@ while IFS= read -r line; do
     continue
   fi
 
-  # Skip verification-only tasks whose body starts with "Run " or "Verify " — they invoke
-  # scripts or re-run the suite and aren't themselves gate-able impl tasks.
+  # Skip verification-only / log-only tasks whose body starts with a known
+  # non-implementation verb. These invoke scripts, append to logs, or update
+  # markdown — they aren't themselves gate-able impl tasks.
   # (Line is "NN:- [ ] TNNN <body>" because the outer grep used -En.)
-  if echo "$line" | grep -qE '^[0-9]+:- \[ \] T[0-9]+ (Run|Verify|Check)\b'; then
+  # SPEC-20 / RE-14: extended verb list beyond Run|Verify|Check — added
+  # Log|Append|Close|Document|Update|Flip|Remove for construction-site
+  # bookkeeping, scenario-ref test flipping, and retrospective authoring.
+  if echo "$line" | grep -qE '^[0-9]+:- \[ \] T[0-9]+ (Run|Verify|Check|Log|Append|Close|Document|Update|Flip|Remove|Rename|Delete)\b'; then
     continue
   fi
 
   TOTAL=$((TOTAL+1))
 
-  # Extract file path hints from the task body: anything matching src/…, lib/…, app/…
-  IMPL_PATH=$(echo "$line" | grep -oE '(src|lib|app|packages/[^/]+/src)/[A-Za-z0-9_/.-]+\.(ts|tsx|js|jsx|py|go)' | head -1 || true)
-
-  # If the path itself is a test/spec file, this IS a test-authoring task — uncount and skip.
-  # (Tasks that author the tests the impl tasks will be measured against.)
-  case "$IMPL_PATH" in
-    *.test.ts|*.test.tsx|*.test.js|*.test.jsx|*.spec.ts|*.spec.tsx|*.spec.js|*.spec.jsx|*_test.go)
-      TOTAL=$((TOTAL-1))
-      continue
-      ;;
-  esac
+  # Extract ALL file path hints from the task body (not just the first).
+  # SPEC-20 / RE-15: previously used `| head -1`, causing multi-file tasks to
+  # only gate-check the first mentioned file. Now we enumerate all candidate
+  # paths; later in this loop we try each until one has a matching test file.
+  # Tasks with multiple distinct impl outputs SHOULD be split into sub-tasks;
+  # this heuristic is a safety net for the common case where a single task
+  # body mentions both the primary file and a colocated type or helper.
+  IMPL_PATHS=$(echo "$line" | grep -oE '(src|lib|app|packages/[^/]+/src)/[A-Za-z0-9_/.-]+\.(ts|tsx|js|jsx|py|go)' | sort -u || true)
+  IMPL_PATH=$(echo "$IMPL_PATHS" | head -n 1 || true)
 
   if [ -z "$IMPL_PATH" ]; then
     echo "  $TASK_ID  UNINSPECTABLE (no impl path in task body) — add explicit file reference"
@@ -150,39 +152,66 @@ while IFS= read -r line; do
     continue
   fi
 
-  # Infer test file path
-  CANDIDATES=()
-  case "$IMPL_PATH" in
-    *.ts|*.tsx|*.js|*.jsx)
-      BASE="${IMPL_PATH%.*}"
-      EXT="${IMPL_PATH##*.}"
-      CANDIDATES+=("${BASE}.test.${EXT}")
-      CANDIDATES+=("${BASE}.spec.${EXT}")
-      # tests/ mirror
-      SUB="${IMPL_PATH#src/}"; SUB="${SUB#lib/}"; SUB="${SUB#app/}"
-      BASE_SUB="${SUB%.*}"
-      CANDIDATES+=("tests/${BASE_SUB}.test.${EXT}")
-      CANDIDATES+=("tests/unit/${BASE_SUB}.test.${EXT}")
-      ;;
-    *.py)
-      SUB="${IMPL_PATH#src/}"
-      BASE_SUB="${SUB%.py}"
-      CANDIDATES+=("tests/test_${BASE_SUB##*/}.py")
-      CANDIDATES+=("tests/$(dirname "$BASE_SUB")/test_${BASE_SUB##*/}.py")
-      ;;
-    *.go)
-      BASE="${IMPL_PATH%.go}"
-      CANDIDATES+=("${BASE}_test.go")
-      ;;
-  esac
-
+  # SPEC-20 / RE-15: iterate every impl path mentioned in the task body, not
+  # just the first. Pick the first path that has a matching test file. Skip
+  # paths that ARE themselves test/spec files (test-authoring tasks).
   TEST_FILE=""
-  for c in "${CANDIDATES[@]}"; do
-    if [ -f "$c" ]; then TEST_FILE="$c"; break; fi
+  ALL_CANDIDATES=()
+  SKIP_TASK=0
+
+  for IP in $IMPL_PATHS; do
+    # If this path IS a test/spec file, the task is authoring a test — uncount and skip.
+    case "$IP" in
+      *.test.ts|*.test.tsx|*.test.js|*.test.jsx|*.spec.ts|*.spec.tsx|*.spec.js|*.spec.jsx|*_test.go)
+        SKIP_TASK=1
+        break
+        ;;
+    esac
+
+    # Build candidate test-file paths for this impl path
+    CANDIDATES=()
+    case "$IP" in
+      *.ts|*.tsx|*.js|*.jsx)
+        BASE="${IP%.*}"
+        EXT="${IP##*.}"
+        CANDIDATES+=("${BASE}.test.${EXT}")
+        CANDIDATES+=("${BASE}.spec.${EXT}")
+        SUB="${IP#src/}"; SUB="${SUB#lib/}"; SUB="${SUB#app/}"
+        BASE_SUB="${SUB%.*}"
+        CANDIDATES+=("tests/${BASE_SUB}.test.${EXT}")
+        CANDIDATES+=("tests/unit/${BASE_SUB}.test.${EXT}")
+        CANDIDATES+=("tests/integration/${BASE_SUB}.test.${EXT}")
+        ;;
+      *.py)
+        SUB="${IP#src/}"
+        BASE_SUB="${SUB%.py}"
+        CANDIDATES+=("tests/test_${BASE_SUB##*/}.py")
+        CANDIDATES+=("tests/$(dirname "$BASE_SUB")/test_${BASE_SUB##*/}.py")
+        ;;
+      *.go)
+        BASE="${IP%.go}"
+        CANDIDATES+=("${BASE}_test.go")
+        ;;
+    esac
+
+    ALL_CANDIDATES+=("${CANDIDATES[@]}")
+
+    for c in "${CANDIDATES[@]}"; do
+      if [ -f "$c" ]; then
+        TEST_FILE="$c"
+        IMPL_PATH="$IP"  # report the path that matched for error messages
+        break 2
+      fi
+    done
   done
 
+  if [ "$SKIP_TASK" -eq 1 ]; then
+    TOTAL=$((TOTAL-1))
+    continue
+  fi
+
   if [ -z "$TEST_FILE" ]; then
-    echo "  $TASK_ID  MISSING     $IMPL_PATH  → expected one of: ${CANDIDATES[*]}"
+    echo "  $TASK_ID  MISSING     $IMPL_PATH  → expected one of: ${ALL_CANDIDATES[*]}"
     MISSING=$((MISSING+1))
     continue
   fi

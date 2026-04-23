@@ -37,18 +37,15 @@ When a new Spec-Kit tag ships and you want to adopt it:
    ```
    uv tool install specify-cli --force --from "git+https://github.com/github/spec-kit.git@vX.Y.Z"
    ```
-2. Test the canonical invocations in a throwaway directory:
+2. **Run the smoke harness** (SPEC-02b):
    ```
-   mkdir -p /tmp/speckit-test-claude && cd /tmp/speckit-test-claude
-   PYTHONIOENCODING=utf-8 specify init . --integration claude --script sh --force --offline --no-git
+   bash tools/unfold-smoke.sh
    ```
-   Verify: `.claude/` exists, `.specify/` exists with populated `scripts/`.
-3. Same for Cursor:
-   ```
-   mkdir -p /tmp/speckit-test-cursor && cd /tmp/speckit-test-cursor
-   PYTHONIOENCODING=utf-8 specify init . --integration cursor-agent --script sh --force --offline --no-git
-   ```
-   Verify: `.cursor/` exists, `.specify/` exists.
+   The harness unfolds both adapters into throwaway temp dirs, asserts the expected file trees, and runs a guardrail that confirms `--integration cursor` (without `-agent`) still errors. Exits 0 on pass, 1 on any breakage. Review output — a WARN is non-blocking but notable; a FAIL means the bump broke something.
+3. If the smoke harness FAILed, something has changed in Spec-Kit:
+   - Compare `specify init --help` output against the Flag Contract table above
+   - Identify the renamed/removed flag or integration name
+   - Update flags in `template/AGENT.md`, `adapters/cursor/payload/CURSOR.md`, and (if structural) the smoke harness itself
 4. If any flag has been renamed or removed, update the Flag Contract table above AND every occurrence in:
    - `template/AGENT.md`
    - `adapters/cursor/payload/CURSOR.md`

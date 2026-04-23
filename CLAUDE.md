@@ -21,7 +21,7 @@ You are in the **meta repo**. You do NOT bootstrap Spec-Kit, create `.specify/`,
 
 Trigger phrases: *"set up a new project"*, *"create a new repo for my team"*, *"start a new project"*, similar.
 
-1. **Check for existing material, then interview.** First ask: *"Before I interview you — do you already have a VISION, architecture, PRD, or planning document for this project?"*
+1. **Check for existing material, then interview.** First ask: *"Before I interview you — do you already have a VISION, architecture, PRD, or planning document for this project? Or would you prefer to skip the interview and use opinionated defaults you can review later?"*
 
    - **YES (complete or substantial)**: Accept the material (paste or file path). Read it. Later, in step 7, do a **gap-filling pass** — map content into `docs/HANDOFF_FORMAT.md` structure and interview only for missing required elements (3+ negative assertions per scenario, depth tags, non-goals, behavior specs for automatic-behavior data, pinned versions). Skip the long interview.
    - **PARTIAL**: Accept what exists. In step 7, interview only for the missing artifacts (e.g., has VISION, needs ARCHITECTURE + SCOPE).
@@ -32,10 +32,16 @@ Trigger phrases: *"set up a new project"*, *"create a new repo for my team"*, *"
      - Primary tech stack (language + framework + datastore)
      - Output type (web app / API / CLI / library / service)
      - 3–5 biggest quality risks or team pain points (feeds Article 10)
+   - **SKIP** (SPEC-03 fast-path — busy leads): Ask only for project name + one-line description. Use `template/defaults/SKIP_DEFAULTS.md` for the remaining fields. Copy `SKIP_DEFAULTS.md` into the target root so the lead can review what was assumed. Every Article 10 rule generated in step 6 gets an HTML comment `<!-- SKIP-DEFAULT: review before building -->` so they're grep-targetable. Every `docs/*.md` file keeps its `{FILL IN: ...}` markers unchanged (no agent improvisation). The team lead promotes from SKIP later via Protocol A-bis (trigger: *"run the full interview now"*, *"promote from SKIP"*).
 
 2. **Confirm target location.** Propose a sibling directory at `../<project-name>/` (NOT inside this kit repo). Let the human override.
 
-3. **Detect which adapter to use, then copy the kit payload into the target**. Ask the human which agent they're using (Claude Code, Cursor, or mixed). Most concise path: the `npx tiged` one-liner that delivers only the adapter payload (~260KB, no git history).
+3. **Detect which adapter to use, then copy the kit payload into the target.** Detection (SPEC-11b):
+   - **If you are Claude Code** (you're reading this CLAUDE.md as your primary context): default to the Claude Code adapter (`template/`).
+   - **If you are Cursor** (the rule `.cursor/rules/agentic-dev-starter-kit.mdc` should have auto-attached): default to the Cursor adapter (`adapters/cursor/payload/`). That rule tells you to skip the "which agent?" question.
+   - **If the context is ambiguous or the team is mixed**: ask the human which agent they're using. Accept `Claude Code`, `Cursor`, or explicit instruction.
+
+   Most concise path: the `npx tiged` one-liner that delivers only the adapter payload (~260KB, no git history).
 
    **For Claude Code targets**:
    ```
@@ -84,6 +90,18 @@ Trigger phrases: *"set up a new project"*, *"create a new repo for my team"*, *"
 
 9. **Initialize git.** In the target: `git init`, create a stack-appropriate `.gitignore`, `git add -A`, commit with message `chore: bootstrap agentic-dev-starter methodology kit`.
 
+9a. **Materialize `NEXT_STEPS.md` at target root** (SPEC-04 post-unfold cue). Copy `template/NEXT_STEPS.template.md` (or `adapters/cursor/payload/NEXT_STEPS.template.md`) → `<target>/NEXT_STEPS.md`, substituting every placeholder:
+    - `{PROJECT_NAME}` → the project's name
+    - `{DATE}` → today's ISO date
+    - `{KIT_VERSION}` → the kit tag this unfold was produced against (e.g., `v0.9.0`)
+    - `{ADAPTER}` → `Claude Code` or `Cursor`
+    - `{MODE}` → `YES` / `PARTIAL` / `NONE` / `SKIP` from step 1's branch
+    - `{ART10_STATUS}` → `customized` (NONE/PARTIAL/YES) or `SKIP-default` (SKIP)
+    - `{ART10_ACTION}` → `Review; most sessions don't change it again` (customized) or `Review every rule in SKIP_DEFAULTS.md; edit what doesn't fit` (SKIP)
+    - `{DOC00_STATUS}` through `{DOC04_STATUS}` → `authored` (if the human completed the doc in step 7) or `skeleton` (if `{FILL IN}` markers remain)
+    - `{CLAUDE_OR_CURSOR_MD}` → `CLAUDE.md` or `CURSOR.md` per adapter
+    This file is **sacrificial** — the team lead deletes it when graduation conditions (no `{FILL IN}` markers; no `SKIP-DEFAULT` tags; `dna-spec-auditor` CLEAR) are met. Its presence blocks `/speckit-specify` via Bootstrap self-audit.
+
 10. **Offer to push to a remote.** Ask the human for org/repo name. Prefer `gh repo create <name> --public|--private --source . --push`. If `gh` is unavailable, give the exact `git remote add` + `git push` commands.
 
 11. **Generate the dev-onboarding brief** — a single message the team lead sends to each dev. Template (adapt to the adapter chosen in step 3):
@@ -93,6 +111,25 @@ Trigger phrases: *"set up a new project"*, *"create a new repo for my team"*, *"
 
     **Cursor version**:
     > Clone `<repo-url>`, `cd` into it, open Cursor. Say: *"Read CURSOR.md — I'm a new dev, onboard me."* The agent handles installs and walks you through the handoff docs. Requires: Cursor, `uv`, `git`, Node.js 18+.
+
+### Protocol A-bis — Promote a SKIP-unfolded project
+
+Trigger phrases: *"run the full interview now"*, *"promote this project from SKIP"*, *"graduate from SKIP mode"*, similar. Only applies to targets previously unfolded via Protocol A's SKIP branch.
+
+1. **Verify SKIP state.** Read the target's `SKIP_DEFAULTS.md` at project root. If it doesn't exist, Protocol A-bis is not applicable — the target was not SKIP-unfolded. Redirect the human.
+2. **Read current state.** Diff the target's `CONSTITUTION.md` Article 10 against the SKIP defaults. Read every `docs/*.md` file. Enumerate:
+   - Fields in CONSTITUTION.md still tagged `<!-- SKIP-DEFAULT -->` (not yet lead-edited)
+   - `{FILL IN: ...}` markers still present in `docs/*.md`
+   - `{DEFAULT: ... — review}` markers anywhere
+3. **Interview only for unresolved fields.** Ask the questions from Protocol A step 1 NONE branch, but ONLY for fields still carrying the tags above. Never re-ask about fields the lead has already edited.
+4. **Rewrite only those fields.**
+   - For CONSTITUTION.md Article 10 rules: replace each `SKIP-DEFAULT`-tagged rule with the human's answer; remove the HTML comment.
+   - For `docs/*.md` `{FILL IN}` markers: replace per the structural spec (skeletons themselves name what "complete" means).
+5. **Re-run `dna-spec-auditor`.** Verify all 20+ Blueprint quality checks pass. Block until CLEAR.
+6. **Delete `NEXT_STEPS.md`.** Its presence signaled "unfold incomplete." Its absence signals graduation. Commit with message `chore: graduate from SKIP — handoff docs authored`.
+7. **Delete `SKIP_DEFAULTS.md`.** No longer load-bearing — every field it documented is now lead-edited. Include in the graduation commit.
+
+Refuses to overwrite lead-edited fields (anything not tagged `SKIP-DEFAULT` / `{FILL IN}` / `{DEFAULT}`). If the human wants to re-do lead-edited fields, they edit them directly; Protocol A-bis is for elevating assumed fields to authored, not re-authoring already-authored fields.
 
 ### Protocol B — Methodology tour
 

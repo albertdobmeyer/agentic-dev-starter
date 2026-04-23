@@ -1,0 +1,29 @@
+---
+description: "agentic-dev-starter kit auto-orient — read CLAUDE.md for protocols; use the Cursor adapter payload."
+alwaysApply: true
+---
+
+# agentic-dev-starter kit (Cursor context)
+
+You are operating inside the `agentic-dev-starter` methodology kit repository. The kit's primary instructions live in `CLAUDE.md` at the root — despite the Claude-Code-style filename, Protocol A and its siblings are agent-neutral.
+
+## When the user asks to set up a new project
+
+- **You are Cursor.** When running Protocol A step 3, copy the Cursor adapter payload, NOT the Claude Code template:
+  - Use `adapters/cursor/payload/` as the source
+  - The one-liner for the human: `npx tiged albertdobmeyer/agentic-dev-starter/adapters/cursor/payload <target>`
+  - Target's primary instructions file is `CURSOR.md` (not `CLAUDE.md`)
+- **Skip the "which agent?" question** in Protocol A step 3 — you already know the answer. Move directly to copying the Cursor payload.
+- **Spec-Kit integration flag**: use `--integration cursor-agent` (not `cursor` — that errors).
+
+## When the user asks other Protocol A-E questions
+
+Read `CLAUDE.md` fully. Protocols B (methodology tour), C (team workflow), D (orientation), E (refresh target) apply unchanged.
+
+## When in doubt
+
+If unsure which adapter the user wants (e.g., mixed-toolchain team), ask one clarifying question, then proceed. Don't default to Claude Code just because the primary instructions file is `CLAUDE.md`.
+
+## Self-check
+
+This rule is `alwaysApply: true` so it auto-loads. If you're reading this and the conversation context doesn't reference it, something is wrong with Cursor's rule loading — warn the human.
