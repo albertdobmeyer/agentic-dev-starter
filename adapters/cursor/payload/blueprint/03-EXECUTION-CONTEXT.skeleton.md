@@ -61,6 +61,15 @@
 - {Rule 2 — e.g., "≥80% line coverage on domain logic; 100% on state transitions"}
 - Test-first is non-negotiable (Constitution Article 1).
 
+### Test file location convention
+
+Tests live in one of two places, chosen by purpose:
+
+- **Co-located** (`src/path/to/module.test.ts` next to `src/path/to/module.ts`): the default. Unit and integration tests for the module.
+- **Scenario-reference tests** (`tests/scenario/scenario-N.test.ts`, one file per Experience Fidelity Scenario in `01-SYSTEM-INTENT.md`): anchors that `dna-verify`'s scenario-file discovery check looks for. These do NOT contain the full scenario assertions (those live in the co-located integration tests); they are discoverability pointers so the mechanical gate can confirm every scenario has at least one test file referencing it.
+
+If your test runner's config uses a glob like `include: ["src/**/*.test.ts"]` (vitest's default), it will NOT pick up `tests/scenario/**`. Either extend the include pattern (e.g., `["src/**/*.test.ts", "tests/**/*.test.ts"]`) or put scenario-reference tests under `src/scenario/` — but then `dna-verify`'s default scenario-file glob needs matching adjustment. The convention above (tests/scenario/) is what the kit's `dna-verify` script searches by default.
+
 ## Environment / secrets
 
 {FILL IN: Which env vars are required, which are optional, how they're validated at startup. No secrets committed. Where `.env.example` lives.}

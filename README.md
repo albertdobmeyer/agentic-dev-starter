@@ -1,6 +1,15 @@
 # agentic-dev-starter
 
+![License](https://img.shields.io/badge/license-CC%20BY--SA%204.0-blue) ![Works with](https://img.shields.io/badge/works%20with-Claude%20Code%20%7C%20Cursor-blueviolet) ![Engine](https://img.shields.io/badge/engine-Spec--Kit%20v0.8.0-green) ![Status](https://img.shields.io/badge/status-v1%20%E2%80%94%20field--tested-brightgreen)
+
 A methodology kit for teams using AI coding agents (Claude Code, Cursor) on real products. It gives every developer — junior or senior — the same engineering contract: spec-driven, test-first, drift-resistant, merge-conflict-free.
+
+**Quick start** (one command, ~260 KB):
+```bash
+npx tiged albertdobmeyer/agentic-dev-starter/template my-project   # Claude Code
+npx tiged albertdobmeyer/agentic-dev-starter/adapters/cursor/payload my-project   # Cursor
+```
+Then open the agent and say *"Read CLAUDE.md. Set up a new project for my team."* (Cursor: *"Read CURSOR.md..."*). See a real example: [team-project-scheduler-example](https://github.com/albertdobmeyer/team-project-scheduler-example) — 6 shipped features with full Blueprint and dogfood evidence.
 
 ## What it fixes
 

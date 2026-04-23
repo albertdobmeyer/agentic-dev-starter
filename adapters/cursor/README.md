@@ -51,7 +51,7 @@ payload/
 
 | Kernel role | Cursor mechanism | File / path |
 |---|---|---|
-| specifier | Spec-Kit slash command | `/speckit-specify` (installed via `specify init --integration cursor` during Bootstrap) |
+| specifier | Spec-Kit slash command | `/speckit-specify` (installed via `specify init --integration cursor-agent` during Bootstrap) |
 | planner | Spec-Kit slash command | `/speckit-plan` |
 | tasker | Spec-Kit slash command | `/speckit-tasks` |
 | implementer | Cursor Composer (one file per focused prompt) | no dedicated file; Composer dispatched per task |

@@ -25,17 +25,18 @@ You are the **co-architect** of this project, not an implementation agent. You p
 Runs once per project. If `.specify/` does not exist, perform these steps before any other work:
 
 1. **Prerequisites**: confirm `uv`, `git`, and Node.js 18+ on the system. If `uv` is missing, tell the human to install it (`curl -LsSf https://astral.sh/uv/install.sh | sh` on macOS/Linux; `powershell -c "irm https://astral.sh/uv/install.ps1 | iex"` on Windows).
-2. **Spec-Kit CLI**: check `specify version`. If absent or outdated, install the latest from source:
+2. **Spec-Kit CLI**: check `specify --help | head -1`. If absent or older than the pinned tag, install:
    ```
-   LATEST=$(git ls-remote --tags --sort=-v:refname https://github.com/github/spec-kit.git 'refs/tags/v*' | head -1 | sed 's/.*refs\/tags\///')
-   uv tool install specify-cli --force --from "git+https://github.com/github/spec-kit.git@${LATEST}"
+   SPECIFY_VERSION=v0.8.0   # last verified 2026-04-23 against this CURSOR.md
+   uv tool install specify-cli --force --from "git+https://github.com/github/spec-kit.git@${SPECIFY_VERSION}"
    ```
+   PowerShell equivalent: `$SPECIFY_VERSION = "v0.8.0"; uv tool install specify-cli --force --from "git+https://github.com/github/spec-kit.git@$SPECIFY_VERSION"`
 3. **Token-meter companion** (optional): have the human run `npx agent-token-meter` in a split terminal. Feeds real-time burn-rate data; consumed by `@dna-context-check` when deciding handoff timing.
 4. **Initialize Spec-Kit** non-interactively:
    ```
-   PYTHONIOENCODING=utf-8 specify init . --integration cursor --script sh --force --offline --no-git
+   PYTHONIOENCODING=utf-8 specify init . --integration cursor-agent --script sh --force --offline --no-git
    ```
-   Use `--script ps` if `pwsh` is the default shell and `bash` is not on PATH. `--integration cursor` wires the Spec-Kit workflow for Cursor; future Spec-Kit versions may have richer Cursor integration — pin to the installed version.
+   Use `--script ps` if `pwsh` is the default shell and `bash` is not on PATH. The Spec-Kit integration name for Cursor is `cursor-agent` (not `cursor`); `specify init --help` lists all supported integrations.
 5. **Sync the constitution**:
    ```
    cp CONSTITUTION.md .specify/memory/constitution.md
@@ -96,7 +97,7 @@ When `@dna-context-check` warns that context budget is running low, stop at the 
 ## Known Cursor-specific considerations
 
 - **Role isolation via "New Chat"**: Cursor does not scriptably spawn fresh-context subagents the way Claude Code does. Roles that MUST run in isolated context (verifier, spec-validator, spec-auditor, cross-checker, pr-reviewer) rely on the human clicking "New Chat" before invoking them. The rule files for these roles explicitly say `[New Chat]` at the top.
-- **Slash commands**: Spec-Kit's `/speckit-*` commands work in Cursor after `specify init --integration cursor`. DNA-specific rules are invoked with `@rule-name` (Cursor's `@` context-mention) or auto-attached on file-glob match per the rule's frontmatter.
+- **Slash commands**: Spec-Kit's `/speckit-*` commands work in Cursor after `specify init --integration cursor-agent`. DNA-specific rules are invoked with `@rule-name` (Cursor's `@` context-mention) or auto-attached on file-glob match per the rule's frontmatter.
 - **Composer vs chat**: implementation work (step 11) uses Cursor's Composer for scoped edits. Chat is for planning, gates, and retrospectives.
 - **File scopes**: each rule's `globs:` frontmatter restricts when it auto-attaches. A rule without globs is only pulled in by explicit `@mention`.
 

@@ -14,12 +14,14 @@ You are the **co-architect** of this project, not an implementation agent. You p
 If this project has no `.specify/` directory, set it up:
 
 1. **Prerequisites**: `uv` and `git` must be installed. If `uv` is missing, tell the human: `curl -LsSf https://astral.sh/uv/install.sh | sh` (macOS/Linux) or `powershell -c "irm https://astral.sh/uv/install.ps1 | iex"` (Windows). On Windows, PowerShell 7+ (`pwsh`) is also required — install from https://aka.ms/powershell if `pwsh --version` fails. Full prerequisites: https://github.com/github/spec-kit
-2. **Spec-Kit CLI**: Check `specify version`. If not installed or outdated, install the latest from source:
+2. **Spec-Kit CLI**: Check `specify --help | head -1`. If not installed or older than the pinned version below, install the pinned tag. Pinning (vs. always-latest) keeps unfolds reproducible — a kit bump is a deliberate event, not a silent surprise:
    ```
-   LATEST=$(git ls-remote --tags --sort=-v:refname https://github.com/github/spec-kit.git 'refs/tags/v*' | head -1 | sed 's/.*refs\/tags\///')
-   uv tool install specify-cli --force --from "git+https://github.com/github/spec-kit.git@${LATEST}"
+   SPECIFY_VERSION=v0.8.0   # last verified 2026-04-23 against this AGENT.md
+   uv tool install specify-cli --force --from "git+https://github.com/github/spec-kit.git@${SPECIFY_VERSION}"
    ```
+   PowerShell equivalent: `$SPECIFY_VERSION = "v0.8.0"; uv tool install specify-cli --force --from "git+https://github.com/github/spec-kit.git@$SPECIFY_VERSION"`
    On Windows, prefix all `specify` commands with `PYTHONIOENCODING=utf-8` to prevent Rich encoding crashes in non-UTF-8 terminals.
+   See `docs/SPEC_KIT_PINNING.md` in the kit for the bump procedure when a newer Spec-Kit ships.
 3. **Token-meter (companion)**: Tell the human to run `npx agent-token-meter` in a split terminal pane. It feeds real-time burn-rate data into `/dna-context-check` for optimal handoff timing across sessions. Auto-fetches latest from npm; requires Node.js 18+. Not bundled — installs on demand, always current.
 4. **Initialize** (canonical, non-interactive):
    ```
