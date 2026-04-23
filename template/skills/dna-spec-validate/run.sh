@@ -159,34 +159,218 @@ echo "[dna-spec-validate] Reminder: this gate assumes dna:spec-auditor has repor
 echo
 
 # ------------------------------------------------------------------
-# 5. Check execution (Stage 1: all stubbed; Stages 2–3 implement them)
+# 5. Check execution
 # ------------------------------------------------------------------
-# Each check appends to FINDINGS_BLOCK or FINDINGS_WARN. Verdict is computed
-# from those at the end. In advisory mode, BLOCK findings get logged but the
-# script still exits 0; only SETUP errors exit nonzero.
+# Each check appends to FINDINGS_BLOCK (severity: must-fix) or FINDINGS_WARN
+# (severity: investigate). Verdict computed at the end. In advisory mode,
+# BLOCK findings get logged but the script still exits 0; only SETUP errors
+# exit nonzero.
+#
+# Stages 2+ implement these. Stages 3+ add depth-match, file-paths-inside-modules,
+# and cross-spec-ownership and flip default mode to blocking.
 
 FINDINGS_BLOCK=()
 FINDINGS_WARN=()
 CHECKS_RUN=0
 CHECKS_STUBBED=0
 
-run_check() {
-  # Marker for Stage 2/3 to replace. Right now every check is a stub.
+add_warn()  { FINDINGS_WARN+=("$*"); }
+add_block() { FINDINGS_BLOCK+=("$*"); }
+
+# Helper: find first line in a file matching a pattern; emit "<file>:<lineno>"
+# (or just "<file>" if no match found).
+file_line_of() {
+  local file="$1"
+  local pattern="$2"
+  local lineno
+  lineno=$(grep -nE "$pattern" "$file" 2>/dev/null | head -1 | cut -d: -f1)
+  if [ -n "$lineno" ]; then
+    echo "$file:$lineno"
+  else
+    echo "$file"
+  fi
+}
+
+mark_stub() {
   local check_name="$1"
   CHECKS_RUN=$((CHECKS_RUN + 1))
   CHECKS_STUBBED=$((CHECKS_STUBBED + 1))
-  echo "[dna-spec-validate]   STUB   $check_name (impl lands in Stage 2/3)"
+  echo "[dna-spec-validate]   STUB   $check_name (impl lands in Stage 3)"
+}
+
+mark_pass() {
+  local check_name="$1"
+  CHECKS_RUN=$((CHECKS_RUN + 1))
+  echo "[dna-spec-validate]   PASS   $check_name"
+}
+
+mark_warn() {
+  local check_name="$1"
+  local count="$2"
+  CHECKS_RUN=$((CHECKS_RUN + 1))
+  echo "[dna-spec-validate]   WARN   $check_name ($count finding(s))"
+}
+
+mark_block() {
+  local check_name="$1"
+  local count="$2"
+  CHECKS_RUN=$((CHECKS_RUN + 1))
+  echo "[dna-spec-validate]   BLOCK  $check_name ($count finding(s))"
 }
 
 echo "[dna-spec-validate] Mechanical checks:"
-run_check "depth-tag-matches-scenario"
-run_check "file-paths-inside-modules"
-run_check "principle-references-resolve"
-run_check "scenario-references-resolve"
-run_check "phase-references-resolve"
-run_check "entity-references-resolve"
-run_check "doc-line-citations-exist"
-run_check "cross-spec-ownership"
+
+# ------------------------------------------------------------------
+# 5.1 Depth-tag presence
+# ------------------------------------------------------------------
+# Spec.md must declare a depth tag somewhere. Backtick-wrapped form `[D]`,
+# `[W]`, or `[E]` per the convention in 01-SYSTEM-INTENT.md.
+
+CHECK_NAME="depth-tag-presence"
+DEPTH_HITS=$(grep -cE '`\[[DEW]\]`' "$SPEC_FILE" || true)
+if [ "$DEPTH_HITS" -gt 0 ]; then
+  mark_pass "$CHECK_NAME"
+else
+  WARN_MSG="depth-tag-presence: spec.md has no \`[D]\`/\`[W]\`/\`[E]\` tag. Every feature must declare its depth (at $SPEC_FILE)."
+  add_warn "$WARN_MSG"
+  mark_warn "$CHECK_NAME" 1
+fi
+
+# ------------------------------------------------------------------
+# 5.2 Principle references resolve
+# ------------------------------------------------------------------
+# Every "Principle N" cited in spec.md must exist as `^### Principle N —` in
+# 00-CORE-PRINCIPLES.md. Undefined → WARN (could be roadmap, not drift).
+
+CHECK_NAME="principle-references-resolve"
+CITED=$(grep -oE 'Principle [0-9]+' "$SPEC_FILE" 2>/dev/null | grep -oE '[0-9]+' | sort -u || true)
+DEFINED=$(grep -oE '^### Principle [0-9]+' "$BLUEPRINT_DIR/00-CORE-PRINCIPLES.md" 2>/dev/null | grep -oE '[0-9]+' | sort -u || true)
+PRINCIPLE_FINDINGS=0
+for n in $CITED; do
+  if ! echo "$DEFINED" | grep -qx "$n"; then
+    LOC=$(file_line_of "$SPEC_FILE" "Principle $n\b")
+    add_warn "principle-references-resolve: spec cites Principle $n but no such principle defined in $BLUEPRINT_DIR/00-CORE-PRINCIPLES.md (at $LOC)"
+    PRINCIPLE_FINDINGS=$((PRINCIPLE_FINDINGS + 1))
+  fi
+done
+if [ "$PRINCIPLE_FINDINGS" -eq 0 ]; then
+  mark_pass "$CHECK_NAME"
+else
+  mark_warn "$CHECK_NAME" "$PRINCIPLE_FINDINGS"
+fi
+
+# ------------------------------------------------------------------
+# 5.3 Scenario references resolve
+# ------------------------------------------------------------------
+# Permissive heading regex per Plan agent: H2-H4, em-dash/hyphen/colon variants.
+
+CHECK_NAME="scenario-references-resolve"
+CITED=$(grep -oE 'Scenario [0-9]+' "$SPEC_FILE" 2>/dev/null | grep -oE '[0-9]+' | sort -u || true)
+DEFINED=$(grep -oE '^#{2,4}[[:space:]]+Scenario[[:space:]]+[0-9]+' "$BLUEPRINT_DIR/01-SYSTEM-INTENT.md" 2>/dev/null | grep -oE '[0-9]+' | sort -u || true)
+SCENARIO_FINDINGS=0
+for n in $CITED; do
+  if ! echo "$DEFINED" | grep -qx "$n"; then
+    LOC=$(file_line_of "$SPEC_FILE" "Scenario $n\b")
+    add_warn "scenario-references-resolve: spec cites Scenario $n but no such scenario defined in $BLUEPRINT_DIR/01-SYSTEM-INTENT.md (at $LOC)"
+    SCENARIO_FINDINGS=$((SCENARIO_FINDINGS + 1))
+  fi
+done
+if [ "$SCENARIO_FINDINGS" -eq 0 ]; then
+  mark_pass "$CHECK_NAME"
+else
+  mark_warn "$CHECK_NAME" "$SCENARIO_FINDINGS"
+fi
+
+# ------------------------------------------------------------------
+# 5.4 Phase references resolve
+# ------------------------------------------------------------------
+
+CHECK_NAME="phase-references-resolve"
+CITED=$(grep -oE 'Phase [0-9]+' "$SPEC_FILE" 2>/dev/null | grep -oE '[0-9]+' | sort -u || true)
+DEFINED=$(grep -oE '^### Phase [0-9]+' "$BLUEPRINT_DIR/04-COORDINATION-HINTS.md" 2>/dev/null | grep -oE '[0-9]+' | sort -u || true)
+PHASE_FINDINGS=0
+for n in $CITED; do
+  if ! echo "$DEFINED" | grep -qx "$n"; then
+    LOC=$(file_line_of "$SPEC_FILE" "Phase $n\b")
+    add_warn "phase-references-resolve: spec cites Phase $n but no such phase defined in $BLUEPRINT_DIR/04-COORDINATION-HINTS.md (at $LOC)"
+    PHASE_FINDINGS=$((PHASE_FINDINGS + 1))
+  fi
+done
+if [ "$PHASE_FINDINGS" -eq 0 ]; then
+  mark_pass "$CHECK_NAME"
+else
+  mark_warn "$CHECK_NAME" "$PHASE_FINDINGS"
+fi
+
+# ------------------------------------------------------------------
+# 5.5 Entity references resolve
+# ------------------------------------------------------------------
+# Field-form references like `Task.status`, `User.email`. Filters out file-
+# extension matches (CONSTITUTION.md, TaskCard.tsx, etc.) by suffix blacklist.
+# Entity (left of `.`) must appear as `interface <Entity>` in 01-SYSTEM-INTENT.md.
+
+CHECK_NAME="entity-references-resolve"
+EXT_BLACKLIST='^(md|tsx?|jsx?|py|sh|json|ya?ml|toml|sql|html|css|txt|tsbuildinfo|map|lock)$'
+CITED=$(grep -oE '\b[A-Z][a-zA-Z0-9]+\.[a-z][a-zA-Z0-9_]+\b' "$SPEC_FILE" 2>/dev/null \
+  | awk -F. -v ext="$EXT_BLACKLIST" '$2 !~ ext { print $1 }' \
+  | sort -u || true)
+DEFINED=$(grep -oE 'interface[[:space:]]+[A-Z][a-zA-Z0-9]+' "$BLUEPRINT_DIR/01-SYSTEM-INTENT.md" 2>/dev/null \
+  | awk '{print $NF}' | sort -u || true)
+ENTITY_FINDINGS=0
+for e in $CITED; do
+  if ! echo "$DEFINED" | grep -qx "$e"; then
+    LOC=$(file_line_of "$SPEC_FILE" "\\b$e\\.")
+    add_warn "entity-references-resolve: spec cites entity $e but no such interface defined in $BLUEPRINT_DIR/01-SYSTEM-INTENT.md (at $LOC)"
+    ENTITY_FINDINGS=$((ENTITY_FINDINGS + 1))
+  fi
+done
+if [ "$ENTITY_FINDINGS" -eq 0 ]; then
+  mark_pass "$CHECK_NAME"
+else
+  mark_warn "$CHECK_NAME" "$ENTITY_FINDINGS"
+fi
+
+# ------------------------------------------------------------------
+# 5.6 Doc line citations exist
+# ------------------------------------------------------------------
+# `docs/NN-X.md:LINE` or `docs/NN-X.md:LINE-LINE`. Line(s) must exist.
+# Stale ranges → WARN (Blueprint edits will move line numbers; this is
+# intrinsic to citing line numbers, hence WARN not BLOCK).
+
+CHECK_NAME="doc-line-citations-exist"
+CITES=$(grep -oE 'docs/[0-9]{2}-[A-Z][A-Z-]*\.md:[0-9]+(-[0-9]+)?' "$SPEC_FILE" 2>/dev/null | sort -u || true)
+LINE_FINDINGS=0
+for cite in $CITES; do
+  doc="${cite%%:*}"
+  range="${cite#*:}"
+  end="${range#*-}"
+  start="${range%%-*}"
+  if [ ! -f "$doc" ]; then
+    add_warn "doc-line-citations-exist: cited doc $doc does not exist (in $SPEC_FILE)"
+    LINE_FINDINGS=$((LINE_FINDINGS + 1))
+    continue
+  fi
+  total=$(wc -l < "$doc" | tr -d ' ')
+  if [ "$end" -gt "$total" ]; then
+    LOC=$(file_line_of "$SPEC_FILE" "${cite//\//\\/}")
+    add_warn "doc-line-citations-exist: cited line $cite exceeds $doc length ($total lines) (at $LOC)"
+    LINE_FINDINGS=$((LINE_FINDINGS + 1))
+  fi
+done
+if [ "$LINE_FINDINGS" -eq 0 ]; then
+  mark_pass "$CHECK_NAME"
+else
+  mark_warn "$CHECK_NAME" "$LINE_FINDINGS"
+fi
+
+# ------------------------------------------------------------------
+# 5.7 (Stage 3) — depth-tag-matches-scenario, file-paths-inside-modules,
+#                cross-spec-ownership. Stubbed in Stage 2.
+# ------------------------------------------------------------------
+
+mark_stub "depth-tag-matches-scenario"
+mark_stub "file-paths-inside-modules"
+mark_stub "cross-spec-ownership"
 echo
 
 # ------------------------------------------------------------------
