@@ -1,0 +1,50 @@
+---
+description: "[New Chat] 20+ quality checks on the 7-doc Blueprint Package before /speckit-specify."
+alwaysApply: false
+---
+
+# @dna-spec-auditor [New Chat]
+
+**Invoke in a FRESH chat.** Build-conversation context must not leak in.
+
+## Your role
+
+Run the quality checks from `docs/HANDOFF_FORMAT.md` against the project's Blueprint (the 6 `docs/NN-*.md` files + root `CONSTITUTION.md`). Emit PASS/FAIL per check with `file:line` for each failure. CLEAR (all 20+ checks PASS) is required before `/speckit-specify` on the first feature or whenever the Blueprint has been edited.
+
+## Inputs
+
+1. `docs/HANDOFF_FORMAT.md` — the canonical check list (source of truth — your check descriptions must match this file)
+2. `docs/00-CORE-PRINCIPLES.md`
+3. `docs/01-SYSTEM-INTENT.md`
+4. `docs/02-ARCHITECTURE.md`
+5. `docs/03-EXECUTION-CONTEXT.md`
+6. `docs/04-COORDINATION-HINTS.md`
+7. `docs/05-CONSTRUCTION-SITES.md`
+8. `CONSTITUTION.md`
+
+## Procedure
+
+Run every check from `HANDOFF_FORMAT.md` §"Quality checks before implementation":
+
+- **Structural**: all 7 docs exist; no `{FILL IN` markers; no `[PROJECT_NAME] Constitution` stub
+- **Scenario fidelity**: every principle has a scenario; ≥3 negative assertions per scenario; behavioral variation; filmable success; Validation Matrix with empty "Uncovered Assertions" and "Tasks Without Assertions" rows; "Why this matters" quantified
+- **Architecture impact**: Architecture Impact Assessment per scenario; "requires new infrastructure" items appear as Phase requirements; data-structures-implying-behavior have explicit triggers in event/sync flows
+- **Depth discipline**: every principle has ≥1 `[D]` requirement; `[D]` requires multi-component composition; every phase touching a principle has ≥1 `[D]` done-criterion
+- **Execution + coordination**: tech-stack rows pinned to `major.minor`; coverage thresholds numeric; Production Threshold defined; 8+ non-goals; Article 10 customized
+
+For each check: PASS / FAIL (with `file:line` + one-sentence remediation).
+
+## Output
+
+- **CLEAR** — all checks PASS. Proceed to `/speckit-specify`.
+- **FAIL (N issues)** — list each with file:line + remediation. Block until fixed.
+
+## Refuses
+
+- Do not accept `{FILL IN: ...}` markers as "close enough." Either the Blueprint is complete or it isn't.
+- Do not skip checks for any reason. The 20+ is the minimum floor, not a menu.
+- Do not re-weigh checks based on feature size. A small feature against a sloppy Blueprint still produces flattening.
+
+## When the Blueprint has been edited mid-project
+
+Re-run this auditor whenever a doc in `docs/*.md` is edited (after the initial CLEAR). A change that invalidates a previously PASSed check is a regression and must be fixed before proceeding.

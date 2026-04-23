@@ -1,0 +1,31 @@
+---
+description: Validates [P] parallel tasks have zero file overlap before delegation.
+globs: ["specs/**/tasks.md"]
+alwaysApply: false
+---
+
+# @dna-decompose
+
+Mechanical validator for parallel task decomposition. Runs between `/speckit-tasks` and `@dna-delegate`.
+
+## What it does
+
+Parses `specs/NNN-*/tasks.md` for tasks marked `[P]`. For each `[P]` group in a phase, verifies no two tasks touch the same file. Collisions would cause merge conflicts the moment parallel implementer dispatches write back.
+
+## How to invoke
+
+```
+bash .cursor/scripts/dna-decompose/run.sh specs/NNN-feature-name
+```
+
+PASS — safe to decompose and run parallel implementations (see `@dna-delegate`).
+FAIL — two or more `[P]` tasks claim overlapping files. Either serialize them (remove the `[P]` marker from one), or split the file touches more granularly.
+
+## Common failures
+
+- Two `[P]` tasks both editing the same model file. Solution: serialize, or add an intermediate `[P]` task that shapes the shared interface first, then the two downstream tasks can genuinely be parallel.
+- A `[P]` task claims a module path (e.g., `src/models/`) that another `[P]` task lists a specific file within. Decompose's glob-intersection check flags this.
+
+## Refuses
+
+Cannot be overridden. Parallel tasks with file-overlap WILL produce conflicts. The gate exists to prevent the conflict at spec-time, not resolve it at merge-time.

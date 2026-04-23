@@ -35,14 +35,29 @@ Trigger phrases: *"set up a new project"*, *"create a new repo for my team"*, *"
 
 2. **Confirm target location.** Propose a sibling directory at `../<project-name>/` (NOT inside this kit repo). Let the human override.
 
-3. **Copy the kit payload into the target**:
+3. **Detect which adapter to use, then copy the kit payload into the target**. Ask the human which agent they're using (Claude Code, Cursor, or mixed). Most concise path: the `npx tiged` one-liner that delivers only the adapter payload (~260KB, no git history).
+
+   **For Claude Code targets**:
+   ```
+   npx tiged albertdobmeyer/agentic-dev-starter/template <target-path>
+   ```
+   Or equivalent manual copy of `template/*`:
    - `template/AGENT.md` → `<target>/CLAUDE.md` (renamed to the target agent's convention)
    - `template/CONSTITUTION.md` → `<target>/CONSTITUTION.md`
    - `template/skills/dna-*/` → `<target>/.claude/skills/dna-*/`
    - `template/agents/*.md` → `<target>/.claude/agents/*.md`
+   - `template/blueprint/*` → `<target>/blueprint/`
    - `template/workflows/dna.yml` → `<target>/.github/workflows/dna.yml` (GitHub Actions enforcement; no-op on non-GitHub remotes)
 
-   Use platform-appropriate copy (`cp -r` on Unix/Git-Bash, `Copy-Item -Recurse` on PowerShell). Detect the shell from the environment.
+   **For Cursor targets**:
+   ```
+   npx tiged albertdobmeyer/agentic-dev-starter/adapters/cursor/payload <target-path>
+   ```
+   Or equivalent manual copy of `adapters/cursor/payload/*`. The payload includes `CURSOR.md` (primary instructions), `.cursor/rules/*.mdc` (12 rule files), `.cursor/scripts/dna-*/run.sh` (agent-agnostic executable gates), `CONSTITUTION.md`, `blueprint/`, and `workflows/dna.yml`.
+
+   **For mixed teams** (some devs on Claude Code, some on Cursor): choose based on the primary agent the team lead uses — the repo ends up shaped for that agent. Developers on the other agent can read the methodology docs; a `SPEC-11b` follow-up will add kit-root auto-detection so a single project can host both adapter shapes.
+
+   Use platform-appropriate copy when NOT using tiged (`cp -r` on Unix/Git-Bash, `Copy-Item -Recurse` on PowerShell). Detect the shell from the environment.
 
 4. **Switch working directory to the target.** All subsequent commands run there. From here on, `<target>/CLAUDE.md` is the primary instruction file — it's the kit's `template/AGENT.md` renamed and governs the target-project unfold.
 
@@ -71,8 +86,13 @@ Trigger phrases: *"set up a new project"*, *"create a new repo for my team"*, *"
 
 10. **Offer to push to a remote.** Ask the human for org/repo name. Prefer `gh repo create <name> --public|--private --source . --push`. If `gh` is unavailable, give the exact `git remote add` + `git push` commands.
 
-11. **Generate the dev-onboarding brief** — a single message the team lead sends to each dev:
+11. **Generate the dev-onboarding brief** — a single message the team lead sends to each dev. Template (adapt to the adapter chosen in step 3):
+
+    **Claude Code version**:
     > Clone `<repo-url>`, `cd` into it, open Claude Code. Say: *"Read CLAUDE.md — I'm a new dev, onboard me."* The agent handles installs and walks you through the handoff docs. Requires: Claude Code, `uv`, `git`, Node.js 18+.
+
+    **Cursor version**:
+    > Clone `<repo-url>`, `cd` into it, open Cursor. Say: *"Read CURSOR.md — I'm a new dev, onboard me."* The agent handles installs and walks you through the handoff docs. Requires: Cursor, `uv`, `git`, Node.js 18+.
 
 ### Protocol B — Methodology tour
 

@@ -1,0 +1,106 @@
+# template/workflows/dna.yml — copied to <target>/.github/workflows/dna.yml
+# by Protocol A (root CLAUDE.md step 3) at unfold time. GitHub Actions
+# workflow that runs the DNA mechanical gates on every PR to main, turning
+# "agent discipline" into "system discipline" — gates are no longer
+# skippable by a main agent that's forgetting or rushing.
+#
+# What runs (and what doesn't):
+#
+#   - dna-decompose       YES — [P] tasks overlapping files in a PR would
+#                         produce merge conflicts; gate must block.
+#   - dna-verify          YES — runs the full test suite with coverage and
+#                         enforces the mechanical floor (Article 10 coverage
+#                         threshold, [D] integration tests present, scenario
+#                         tests present). Uses branch-diff-scoped per-file
+#                         coverage (SPEC-16) so predecessor debt doesn't
+#                         block clean new features.
+#   - dna-spec-validate   YES — mechanical floor for spec ↔ Blueprint drift
+#                         (depth tag, file-paths-inside-modules, undefined
+#                         references, cross-spec ownership). SPEC-19.
+#   - dna-test-gate       NO — the gate checks "tests exist and FAIL before
+#                         impl". In a PR to main, impl is already committed
+#                         so tests go green. Gate would false-positive. It
+#                         is a dev-time check, not a merge-time check.
+#   - dna-verifier        NO (yet) — the judgmental subagent requires a
+#                         fresh-context LLM run. No headless CI path today.
+#                         A PR reviewer should invoke it manually. Future
+#                         SPEC once Claude Code ships headless invocation.
+#   - dna-spec-auditor    NO (yet) — same reason as dna-verifier.
+#   - dna-spec-validator  NO (yet) — same reason; the judgmental ceiling
+#                         above dna-spec-validate stays human-review-time
+#                         until headless invocation lands (SPEC-19 Stage 4).
+#   - dna-cross-checker   NO (yet) — same reason.
+#
+# Per-gate skip knobs (use sparingly; skipping is a CONSTITUTION Article 5
+# violation unless logged as a Construction Site):
+#
+#   vars.DNA_SKIP_DECOMPOSE      — 'true' to skip dna-decompose
+#   vars.DNA_SKIP_VERIFY         — 'true' to skip dna-verify
+#   vars.DNA_SKIP_SPEC_VALIDATE  — 'true' to skip dna-spec-validate
+
+name: DNA enforcement
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened]
+
+# Prevent two concurrent runs for the same PR (second push supersedes first).
+concurrency:
+  group: dna-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  dna:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Full history needed for `git diff main...HEAD` in dna-verify
+          # branch-diff-scoped coverage (SPEC-16).
+          fetch-depth: 0
+
+      - name: Setup Node
+        if: hashFiles('package-lock.json') != ''
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        if: hashFiles('package-lock.json') != ''
+        run: npm ci
+
+      - name: DNA decompose — [P] tasks have disjoint file sets
+        if: vars.DNA_SKIP_DECOMPOSE != 'true'
+        run: bash .claude/skills/dna-decompose/run.sh
+
+      - name: DNA verify — mechanical floor (coverage, [D] integration, scenario tests)
+        if: vars.DNA_SKIP_VERIFY != 'true'
+        env:
+          # dna-verify does `git diff $DNA_VERIFY_BASE...HEAD` for per-file
+          # scoping. In PR context, compare against the PR's base ref.
+          DNA_VERIFY_BASE: origin/${{ github.base_ref }}
+        run: bash .claude/skills/dna-verify/run.sh
+
+      - name: DNA spec-validate — spec.md harmonized with Blueprint
+        if: vars.DNA_SKIP_SPEC_VALIDATE != 'true'
+        env:
+          # Cross-spec ownership uses `git branch --merged $BASE_REF` to
+          # filter merged branches. Match the PR's base ref so the open-spec
+          # set is computed correctly in CI context.
+          DNA_SPEC_VALIDATE_BASE: origin/${{ github.base_ref }}
+        run: bash .claude/skills/dna-spec-validate/run.sh
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "## DNA gate summary" >> $GITHUB_STEP_SUMMARY
+          echo "- dna-decompose: ${{ steps.outcome.outputs.decompose || 'ran' }}" >> $GITHUB_STEP_SUMMARY
+          echo "- dna-verify: ${{ steps.outcome.outputs.verify || 'ran' }}" >> $GITHUB_STEP_SUMMARY
+          echo "- dna-spec-validate: ${{ steps.outcome.outputs.spec_validate || 'ran' }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Judgmental audits (dna-verifier, dna-spec-auditor, dna-spec-validator, dna-cross-checker) require a fresh-context LLM invocation — PR reviewer responsibility. See docs/TEAM_GUIDE.md #PR-review-protocol." >> $GITHUB_STEP_SUMMARY

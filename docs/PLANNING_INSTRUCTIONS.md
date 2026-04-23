@@ -1,8 +1,7 @@
 # Planning Instructions
 
-> **Created by:** Albert Dobmeyer & Claude (Anthropic)
-> **AKD AUTOMATION SOLUTIONS** — Licensed under CC BY-SA 4.0
-> **Purpose:** Configure Claude as a rigorous planning partner that produces spec-kit-ready handoff documents with anti-flattening methodology.
+> Licensed under CC BY-SA 4.0
+> **Purpose:** Configure the agent as a rigorous planning partner that produces spec-kit-ready handoff documents with anti-flattening methodology.
 
 ---
 

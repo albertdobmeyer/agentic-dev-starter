@@ -1,0 +1,42 @@
+---
+description: Red-phase test gate — every implementation task must have a failing test before code is written.
+globs: ["specs/**/tasks.md"]
+alwaysApply: false
+---
+
+# @dna-test-gate
+
+Runs before any implementation task proceeds. Enforces Article 1 test-first.
+
+## What it does
+
+Parses the feature's `specs/NNN-*/tasks.md` for tasks marked as implementation (T-prefix + `[E]`/`[W]`/`[D]`). For each, verifies a corresponding `*.test.ts` (or equivalent per `docs/03-EXECUTION-CONTEXT.md`) exists AND is failing (red).
+
+## How to invoke
+
+Run the mechanical script. If you're in the project root:
+
+```
+bash .cursor/scripts/dna-test-gate/run.sh specs/NNN-feature-name
+```
+
+The script prints PASS/FAIL per task + a summary. FAIL means: either the test file doesn't exist, or it exists but is passing vacuously (nothing to implement), or it's failing with a setup error (not an assertion).
+
+## Reading the output
+
+- **PASS** — every impl task has a genuine red test. Implementation may proceed.
+- **FAIL at "test file missing"** — author the test file first. Copy the assertion list from the user scenario + negative assertions in `spec.md`.
+- **FAIL at "test file passes vacuously"** — the test exists but asserts nothing real. Strengthen it (check actual behavior, not `expect(true).toBe(true)`).
+- **FAIL at "setup error"** — import path broken or dependency missing. Fix the setup, then re-run.
+
+## When NOT to run this
+
+- Task is `[E]` scaffolding (directory creation, config file) with no runtime behavior to test
+- Task is documentation-only (spec, retrospective)
+- Task is construction-site bookkeeping
+
+The script's own heuristics filter most of these; if a false positive appears, note it in the retrospective as a SPEC candidate for tuning the script.
+
+## Refuses
+
+This rule cannot be overridden. If a task's test file is missing or passing vacuously, implementation does NOT proceed — no exceptions for "small feature" or "obvious code." Article 1 is a hard gate. The human can override by explicitly editing the spec to remove the task, but cannot override the gate itself.

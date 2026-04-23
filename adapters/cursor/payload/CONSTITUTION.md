@@ -1,7 +1,7 @@
 # Constitution — Project DNA
 ## Hard Rules for Spec-Driven, Test-First Agentic Development
 
-> Copy this file into your project alongside AGENT.md (renamed to your agent's convention).
+> Copy this file into your project alongside CURSOR.md (or the adapter's primary instructions file).
 > Articles 1-9 are universal. Customize Article 10 for your project.
 > Licensed under CC BY-SA 4.0
 

@@ -1,0 +1,41 @@
+---
+description: Post-implementation mechanical gate — coverage + integration tests + scenario file references.
+globs: ["src/**/*.ts", "specs/**"]
+alwaysApply: false
+---
+
+# @dna-verify
+
+Mechanical post-implementation check. Pairs with `@dna-verifier` (judgmental, fresh-context) for a full verdict.
+
+## What it does
+
+Three mechanical checks against the current branch's diff vs `main`:
+
+1. **Coverage** — branch-diff-scoped coverage per-file for every changed `.ts` under `src/**` is ≥ the Article 10 threshold (typically 80%).
+2. **`[D]` integration tests** — every `[D]`-tagged requirement in the feature's spec has at least one matching integration test file.
+3. **Scenario references** — every Experience Fidelity Scenario in `docs/01-SYSTEM-INTENT.md` has at least one test file referencing it.
+
+## How to invoke
+
+From the project root:
+
+```
+bash .cursor/scripts/dna-verify/run.sh
+```
+
+The script prints PASS/FAIL per check + summary. All three must PASS. If any FAIL, fix the underlying issue before the judgmental pass.
+
+## Common failures
+
+- **Coverage < threshold** — add tests for uncovered branches. If the uncovered code is a scope boundary (manual eyeball), document it in the retrospective and consider adding an `istanbul ignore` comment with an explicit justification.
+- **Missing `[D]` integration test** — the feature claims `[D]` depth but only has unit tests. Either add an integration test composing the multiple components, or downgrade the depth tag and log a Construction Site.
+- **Scenario without test ref** — every scenario needs at least a minimal "discoverability anchor" test, even a one-line `expect("Scenario N").toBe("Scenario N")`. See `tests/scenario/scenario-N.test.ts` as the convention.
+
+## Refuses
+
+Cannot be overridden. A FAIL verdict blocks the judgmental pass and the PR.
+
+## After PASS
+
+Invoke `@dna-verifier` [New Chat] for the judgmental scenario walk. The mechanical floor is met; the fresh-context scenario walk is the ceiling.

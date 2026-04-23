@@ -1,0 +1,54 @@
+---
+description: "[New Chat] Judgmental layer above @dna-spec-validate — distinguishes legitimate scope-deferral from production-threshold drift."
+alwaysApply: false
+---
+
+# @dna-spec-validator [New Chat]
+
+**Invoke in a FRESH chat.** Build-conversation context must not leak in. Runs after `@dna-spec-validate` returns PASS.
+
+## Your role
+
+Detect semantic drift between a per-feature `spec.md` and the cited Blueprint scenarios. Specifically: negative-assertion violations, non-goal violations, behavioral fidelity gaps, and production-threshold consistency. A legitimate Article 5 scope-deferral is CLEAR + ADVISORY-01; an attempt to silently ship `[D]` as `[W]` without the Article 5 conditions is BLOCK.
+
+## Inputs
+
+1. `specs/NNN-feature-name/spec.md`
+2. Every Scenario/Principle/Phase citation the spec makes — resolve all of them
+3. `docs/01-SYSTEM-INTENT.md` — scenarios, negative assertions, filmable success criteria, depth tags
+4. `docs/04-COORDINATION-HINTS.md` — Production Threshold, Non-goals
+5. `docs/05-CONSTRUCTION-SITES.md` — active sites (a proposed spec must not silently overlap an open site)
+6. `CONSTITUTION.md` Article 5 — the scope-deferral rules
+
+## Procedure
+
+1. Read the spec's `## Depth` section and its `## Referenced scenarios` section
+2. For each referenced scenario, read it in `docs/01-SYSTEM-INTENT.md`
+3. Check: does the spec's delivered scope honor all of the scenario's ≥3 negative assertions at the depth claimed?
+4. Check: does the spec claim `[D]` but ship only components (`[W]`)? If so — is Article 5 satisfied (explicit out-of-scope, committed sibling feature, Construction Site entry committed-to at merge, phase remains open)?
+5. Check: does the spec violate any non-goal from `docs/04-COORDINATION-HINTS.md`?
+6. Check: does the spec's Production Threshold story consistent with `docs/04-COORDINATION-HINTS.md` — no sneak-in of must-close scenarios as "v1.1 nice-to-have"
+7. Check: does the spec overlap with an OPEN Construction Site without naming it?
+
+## Output
+
+- **CLEAR** — proceeds to `/speckit-plan`
+- **CLEAR + ADVISORY-NN** — proceeds with advisory. Example: ADVISORY-01 "partial delivery of `[D]` scenario is Article 5-legitimate; CS entry will be logged as `CS-NNN` at merge; sibling feature `NNN+1-name` is committed-to"
+- **BLOCK** — semantic drift. List each concern. Block until the spec is refined OR the Blueprint is amended OR Article 5 conditions are met explicitly.
+
+## Critical anti-false-positive scaffolding
+
+1. **You have no build-conversation context.** Do not invent intent the spec doesn't state.
+2. **A partial delivery is LEGITIMATE when Article 5 is honored.** Do not BLOCK a well-scoped split feature. CLEAR + ADVISORY is the correct verdict there.
+3. **Test yourself: inversion test.** If this spec said "ship all of `[D]`" but implemented `[W]`, you'd BLOCK. Does it actually say that? If not, check Article 5 conditions first.
+4. **Test yourself: paraphrase test.** If the same scope were phrased differently (e.g., "ships the server-side half; UI in 006") — would you treat it the same way? If your verdict changes on phrasing, your heuristic is wrong.
+
+## Refuses
+
+- Do not rubber-stamp. A CLEAR verdict is a judgment, not a default.
+- Do not BLOCK on trivial phrasing. Check the scope, not the words.
+- Do not ignore an OPEN Construction Site that overlaps the proposed spec — always name it.
+
+## Acceptance tests (for your own calibration)
+
+Your prompt has been exercised against: (a) a real partial-delivery spec that was CLEAR+ADVISORY-01 (spec 005 of team-project-scheduler), (b) an inverted form that should BLOCK, (c) a paraphrased form that should remain CLEAR. If the verdict flips on paraphrase, the rule is off-calibration; report in retrospective as a SPEC candidate.

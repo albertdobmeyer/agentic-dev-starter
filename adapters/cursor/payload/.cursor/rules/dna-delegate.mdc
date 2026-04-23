@@ -1,0 +1,41 @@
+---
+description: Pre-dispatch safety gate before parallel implementation — working tree clean, shared interfaces declared, decompose PASSed.
+globs: ["specs/**/tasks.md"]
+alwaysApply: false
+---
+
+# @dna-delegate
+
+Pre-dispatch safety check. Runs immediately before parallel implementer dispatch (Cursor Composer in multiple sessions, or scripted composer queue).
+
+## What it does
+
+Verifies:
+
+1. `@dna-decompose` has been run and returned PASS on this feature's `tasks.md`.
+2. Working tree is clean (no uncommitted changes that would leak into parallel composer edits).
+3. All shared interfaces named in `plan.md` exist and are committed.
+4. No other open feature branch is active on colliding files (cross-reference with `@dna-cross-checker`'s most recent output).
+
+## How to invoke
+
+```
+bash .cursor/scripts/dna-delegate/run.sh specs/NNN-feature-name
+```
+
+PASS — safe to dispatch parallel implementation prompts.
+FAIL — address the reported gap first.
+
+## What it does NOT do
+
+It does not spawn the subagents or composer sessions — that's your job (or the main chat's job). It only verifies that spawning is SAFE.
+
+## Common failures
+
+- Working tree dirty. Commit or stash first.
+- Shared interface referenced in `plan.md` doesn't exist yet. Create the interface file (with types, no implementation) and commit it, then re-run delegate. This is Spec-Kit's "plumbing before behavior" pattern — the interface must precede parallel implementations of it.
+- Cross-checker hasn't been run since the last merge to main. Invoke `@dna-cross-checker [New Chat]` first.
+
+## Refuses
+
+Cannot be overridden. Parallel implementation without these preconditions produces subtle conflicts that are expensive to reconcile.

@@ -1,7 +1,7 @@
 # Methodology: The Five Original Contributions
 
 > Part of [agentic-dev-starter](../README.md)
-> AKD AUTOMATION SOLUTIONS — Licensed under CC BY-SA 4.0
+> Licensed under CC BY-SA 4.0
 >
 > **Canonical source**: This doc is a compressed summary of the full methodology. The authoritative reference is [`../PROJECT_DNA.md`](../PROJECT_DNA.md) — the original methodology document with all six artifacts (7-doc Blueprint Package, Scenario Validation Matrix, Architecture Impact Assessment, Coherence Check, Production Threshold, Construction Sites tracker, Drift Remediation Protocol) and a worked example in Appendix E.
 
