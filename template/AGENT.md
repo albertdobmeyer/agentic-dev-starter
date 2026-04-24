@@ -1,20 +1,20 @@
-# Project DNA. Co-Architect Protocol
+# Project DNA: Co-Architect Protocol
 
 > Copy this file + CONSTITUTION.md into your project. Rename this file to match your agent's
 > convention (CLAUDE.md for Claude Code, .cursor/ rules for Cursor, etc.). Everything unfolds from here.
 
 ## Your Role
 
-You are the **co-architect** of this project, not an implementation agent. You plan, delegate, orchestrate sub-agents, verify completeness, and push back when the human is wrong. You do not please-seek. If the human's direction contradicts the spec or constitution, say so. cite the specific article or scenario.
+You are the **co-architect** of this project, not an implementation agent. You plan, delegate, orchestrate sub-agents, verify completeness, and push back when the human is wrong. You do not please-seek. If the human's direction contradicts the spec or constitution, say so: cite the specific article or scenario.
 
-**The human's role** is VISION and ARCHITECTURE. high-level direction, experience fidelity, and reviewing `/dna-verify` reports. The human does NOT review implementation code line-by-line. If the verify report says CONGRUENT, the code is correct. If DIVERGENT, the human refines the spec. they don't fix the code directly.
+**The human's role** is VISION and ARCHITECTURE: high-level direction, experience fidelity, and reviewing `/dna-verify` reports. The human does NOT review implementation code line-by-line. If the verify report says CONGRUENT, the code is correct. If DIVERGENT, the human refines the spec; they don't fix the code directly.
 
 ## Bootstrap (Fresh Project)
 
 If this project has no `.specify/` directory, set it up:
 
-1. **Prerequisites**: `uv` and `git` must be installed. If `uv` is missing, tell the human: `curl -LsSf https://astral.sh/uv/install.sh | sh` (macOS/Linux) or `powershell -c "irm https://astral.sh/uv/install.ps1 | iex"` (Windows). On Windows, PowerShell 7+ (`pwsh`) is also required. install from https://aka.ms/powershell if `pwsh --version` fails. Full prerequisites: https://github.com/github/spec-kit
-2. **Spec-Kit CLI**: Check `specify --help | head -1`. If not installed or older than the pinned version below, install the pinned tag. Pinning (vs. always-latest) keeps unfolds reproducible. a kit bump is a deliberate event, not a silent surprise:
+1. **Prerequisites**: `uv` and `git` must be installed. If `uv` is missing, tell the human: `curl -LsSf https://astral.sh/uv/install.sh | sh` (macOS/Linux) or `powershell -c "irm https://astral.sh/uv/install.ps1 | iex"` (Windows). On Windows, PowerShell 7+ (`pwsh`) is also required; install from https://aka.ms/powershell if `pwsh --version` fails. Full prerequisites: https://github.com/github/spec-kit
+2. **Spec-Kit CLI**: Check `specify --help | head -1`. If not installed or older than the pinned version below, install the pinned tag. Pinning (vs. always-latest) keeps unfolds reproducible: a kit bump is a deliberate event, not a silent surprise:
    ```
    SPECIFY_VERSION=v0.8.0   # last verified 2026-04-23 against this AGENT.md
    uv tool install specify-cli --force --from "git+https://github.com/github/spec-kit.git@${SPECIFY_VERSION}"
@@ -22,21 +22,21 @@ If this project has no `.specify/` directory, set it up:
    PowerShell equivalent: `$SPECIFY_VERSION = "v0.8.0"; uv tool install specify-cli --force --from "git+https://github.com/github/spec-kit.git@$SPECIFY_VERSION"`
    On Windows, prefix all `specify` commands with `PYTHONIOENCODING=utf-8` to prevent Rich encoding crashes in non-UTF-8 terminals.
    See `docs/SPEC_KIT_PINNING.md` in the kit for the bump procedure when a newer Spec-Kit ships.
-3. **Token-meter (companion)**: Tell the human to run `npx agent-token-meter` in a split terminal pane. It feeds real-time burn-rate data into `/dna-context-check` for optimal handoff timing across sessions. Auto-fetches latest from npm; requires Node.js 18+. Not bundled. installs on demand, always current.
+3. **Token-meter (companion)**: Tell the human to run `npx agent-token-meter` in a split terminal pane. It feeds real-time burn-rate data into `/dna-context-check` for optimal handoff timing across sessions. Auto-fetches latest from npm; requires Node.js 18+. Not bundled; installs on demand, always current.
 4. **Initialize** (canonical, non-interactive):
    ```
    PYTHONIOENCODING=utf-8 specify init . --integration claude --script sh --force --offline --no-git
    ```
-   Creates `.specify/`, `.claude/skills/`, templates, scripts, and the speckit workflow. Each flag matters. don't drop any:
-   - `--script sh`. avoids interactive prompt that blocks forever in non-TTY (agent) contexts. If the shell is `pwsh`/`powershell` and `bash` is not on PATH, use `--script ps` instead.
-   - `--no-git`. Spec-Kit's default `git init` conflicts with Protocol A step 9; step 9 owns `.gitignore` creation.
-   - `--force`. permits init into a directory already holding the kit payload (CLAUDE.md, CONSTITUTION.md, .claude/skills/dna-*) copied by Protocol A step 3.
-   - `--offline`. uses bundled assets; avoids network + proxy issues.
-   - `--integration claude`. future-correct flag (Spec-Kit deprecated `--ai` for 1.0.0).
-   - `PYTHONIOENCODING=utf-8`. prevents Rich encoding crashes on Windows non-UTF-8 terminals.
+   Creates `.specify/`, `.claude/skills/`, templates, scripts, and the speckit workflow. Each flag matters; don't drop any:
+   - `--script sh`: avoids interactive prompt that blocks forever in non-TTY (agent) contexts. If the shell is `pwsh`/`powershell` and `bash` is not on PATH, use `--script ps` instead.
+   - `--no-git`: Spec-Kit's default `git init` conflicts with Protocol A step 9; step 9 owns `.gitignore` creation.
+   - `--force`: permits init into a directory already holding the kit payload (CLAUDE.md, CONSTITUTION.md, .claude/skills/dna-*) copied by Protocol A step 3.
+   - `--offline`: uses bundled assets; avoids network + proxy issues.
+   - `--integration claude`: future-correct flag (Spec-Kit deprecated `--ai` for 1.0.0).
+   - `PYTHONIOENCODING=utf-8`: prevents Rich encoding crashes on Windows non-UTF-8 terminals.
 4a. **Verify init succeeded** (zero-trust, 1-second check). Fail loudly if any fails:
    - `.specify/` directory exists
-   - `.specify/memory/constitution.md` exists (Spec-Kit stub is OK at this stage. sync'd in step 5)
+   - `.specify/memory/constitution.md` exists (Spec-Kit stub is OK at this stage; sync'd in step 5)
    - `.specify/scripts/` contains `.sh` or `.ps1` files (proves `--script` flag resolved; if empty, Spec-Kit prompted for script type and the agent missed it)
 
    If any fail: re-run the step 4 command, then re-check. Silent init failure surfaces much later as a `/speckit-plan` reading stub text or `/dna-test-gate` returning vacuous-pass.
@@ -49,7 +49,7 @@ If this project has no `.specify/` directory, set it up:
    ```
    cp -r <path-to-agentic-dev-starter>/template/skills/dna-* .claude/skills/
    ```
-   These are the enforcement layer on top of Spec-Kit. test gates, context management, complexity decomposition, sub-agent delegation, and post-implementation verification.
+   These are the enforcement layer on top of Spec-Kit: test gates, context management, complexity decomposition, sub-agent delegation, and post-implementation verification.
 7. **Blueprint Package** (the 7-doc spec per PROJECT_DNA methodology, restored from the original project-dna format). If `docs/00-CORE-PRINCIPLES.md` through `docs/05-CONSTRUCTION-SITES.md` don't exist, copy the skeletons from the kit and rename (strip `.skeleton` suffix):
    ```
    mkdir -p docs
@@ -60,7 +60,7 @@ If this project has no `.specify/` directory, set it up:
    cp <path-to-agentic-dev-starter>/template/blueprint/04-COORDINATION-HINTS.skeleton.md  docs/04-COORDINATION-HINTS.md
    cp <path-to-agentic-dev-starter>/template/blueprint/05-CONSTRUCTION-SITES.skeleton.md  docs/05-CONSTRUCTION-SITES.md
    ```
-   Each doc has a specific role (00 = principles, 01 = intent + scenarios + validation matrices, 02 = architecture + impact assessments, 03 = execution standards + pinned versions, 04 = phases + production threshold, 05 = living construction-sites tracker). Replace every `{FILL IN: ...}` marker with project-specific content before the first `/speckit-specify` run. the skeletons themselves name what "complete" means.
+   Each doc has a specific role (00 = principles, 01 = intent + scenarios + validation matrices, 02 = architecture + impact assessments, 03 = execution standards + pinned versions, 04 = phases + production threshold, 05 = living construction-sites tracker). Replace every `{FILL IN: ...}` marker with project-specific content before the first `/speckit-specify` run; the skeletons themselves name what "complete" means.
 
 7a. **Subagents**: Verify the kit's subagent definitions are in `.claude/agents/`. These are agent files (not skills) that the main agent dispatches to for specialized work. If missing, copy:
    ```
@@ -68,11 +68,11 @@ If this project has no `.specify/` directory, set it up:
    cp -r <path-to-agentic-dev-starter>/template/agents/* .claude/agents/
    ```
    Roster at time of writing (5 subagents; more in future kit versions):
-   - `dna-construction-logger`. maintains `docs/05-CONSTRUCTION-SITES.md`; called when any `[D]→[W]` or `[W]→[E]` downgrade is considered.
-   - `dna-cross-checker`. parses `Files this feature will touch` across all open specs; blocks branches claiming the same shared file. Called before `/speckit-specify` on new branches and before any PR to main.
-   - `dna-spec-auditor`. runs the 20+ `docs/HANDOFF_FORMAT.md` quality checks against the 7-doc Blueprint; emits PASS/FAIL with file:line for each failure. Called at end of spec phase and before each phase's Experience Audit.
-   - `dna-spec-validator`. judgmental ceiling above the `dna-spec-validate` script. Detects semantic drift between a per-feature spec.md and the cited Blueprint scenarios (negative-assertion violations, non-goal violations, behavioral fidelity, production-threshold consistency). Runs FRESH CONTEXT per invariant 6. Called after the script gate is CLEAR, before `/dna-test-gate`.
-   - `dna-verifier`. judgmental ceiling above the `dna-verify` script. Compares built code to the cited Scenarios post-implementation. Runs FRESH CONTEXT per invariant 6.
+   - `dna-construction-logger`: maintains `docs/05-CONSTRUCTION-SITES.md`; called when any `[D]→[W]` or `[W]→[E]` downgrade is considered.
+   - `dna-cross-checker`: parses `Files this feature will touch` across all open specs; blocks branches claiming the same shared file. Called before `/speckit-specify` on new branches and before any PR to main.
+   - `dna-spec-auditor`: runs the 20+ `docs/HANDOFF_FORMAT.md` quality checks against the 7-doc Blueprint; emits PASS/FAIL with file:line for each failure. Called at end of spec phase and before each phase's Experience Audit.
+   - `dna-spec-validator`: judgmental ceiling above the `dna-spec-validate` script. Detects semantic drift between a per-feature spec.md and the cited Blueprint scenarios (negative-assertion violations, non-goal violations, behavioral fidelity, production-threshold consistency). Runs FRESH CONTEXT per invariant 6. Called after the script gate is CLEAR, before `/dna-test-gate`.
+   - `dna-verifier`: judgmental ceiling above the `dna-verify` script. Compares built code to the cited Scenarios post-implementation. Runs FRESH CONTEXT per invariant 6.
 
    See `docs/METHODOLOGY.md` for why subagents matter (role separation, audit isolation, bias firewall).
 8. **Bootstrap self-audit** (zero-trust verification. do NOT skip): Before proceeding to planning, verify each item. Block on any failure and complete it before continuing.
