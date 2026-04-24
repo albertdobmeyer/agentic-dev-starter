@@ -12,7 +12,7 @@
 ## Scope
 
 - [ ] Kit methodology / kernel (affects every future unfold)
-- [ ] Adapter (Claude Code / Cursor / other — specify)
+- [ ] Adapter (Claude Code / Cursor / other; specify)
 - [ ] Enforcement script (`template/skills/*/run.sh` or `.cursor/scripts/*`)
 - [ ] Subagent prompt / rule (`template/agents/*` or `.cursor/rules/*.mdc`)
 - [ ] Blueprint skeleton (`template/blueprint/*`)
@@ -21,14 +21,14 @@
 
 ## Files touched
 
-<!-- `Files this PR touches` block — matches the kit's cross-checker convention. -->
+<!-- `Files this PR touches` block; matches the kit's cross-checker convention. -->
 
 -
 
 ## Adapter sync
 
 - [ ] Claude Code and Cursor adapters both updated (if the change affects shared mechanisms)
-- [ ] N/A — adapter-specific change
+- [ ] N/A: adapter-specific change
 
 ## Tests / verification
 
@@ -36,7 +36,7 @@
 
 - [ ] `tools/unfold-smoke.sh` passes (if the change touches Spec-Kit invocation)
 - [ ] Manual verification described below
-- [ ] N/A — docs-only change
+- [ ] N/A: docs-only change
 
 ## Non-goals
 

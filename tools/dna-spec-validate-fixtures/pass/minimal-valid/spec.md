@@ -4,12 +4,12 @@
 
 ## Depth
 
-`[W]` — pure validator function.
+`[W]`. pure validator function.
 
 ## Files this feature will touch
 
-- `src/models/task.ts` (SHARED — adds a helper)
-- `src/models/task.test.ts` (new — unit tests)
+- `src/models/task.ts` (SHARED. adds a helper)
+- `src/models/task.test.ts` (new. unit tests)
 
 ## Scenarios touched
 

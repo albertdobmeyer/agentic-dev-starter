@@ -8,7 +8,7 @@
 
 ## Notes
 
-This work belongs in Phase 99, which is not defined in the dogfood Blueprint (only Phases 0–4 exist).
+This work belongs in Phase 99, which is not defined in the dogfood Blueprint (only Phases 0-4 exist).
 
 ## Files this feature will touch
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# parse-files-touched.sh — extract structured file ownership from a spec.md.
+# parse-files-touched.sh. extract structured file ownership from a spec.md.
 #
 # Reads the "## Files this feature will touch" section and emits one line
 # per file in the format:
@@ -13,7 +13,7 @@
 # `src/calendar/` should be expanded with a glob).
 #
 # Reusable by dna-spec-validate (cross-spec ownership check, SPEC-19) and the
-# dna:cross-checker subagent. Read-only — does not mutate any spec or Blueprint.
+# dna:cross-checker subagent. Read-only. does not mutate any spec or Blueprint.
 #
 # Usage:
 #   parse-files-touched.sh <path-to-spec.md>

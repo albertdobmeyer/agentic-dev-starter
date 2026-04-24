@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 #
-# dna-test-gate — executable enforcement of CONSTITUTION.md Article 1
+# dna-test-gate. executable enforcement of CONSTITUTION.md Article 1
 # (write tests BEFORE implementation, and they must fail before you write code).
 #
 # Exit codes:
-#   0  Gate PASSED — every implementation task has a test file that exists and fails.
-#   1  Gate FAILED — tests missing, or tests already pass before implementation.
-#   2  Setup problem — can't locate tasks.md, can't detect test runner, etc.
+#   0  Gate PASSED. every implementation task has a test file that exists and fails.
+#   1  Gate FAILED. tests missing, or tests already pass before implementation.
+#   2  Setup problem. can't locate tasks.md, can't detect test runner, etc.
 #
 # Usage:
 #   run.sh                        # auto-detect current feature from tasks.md in repo
@@ -37,13 +37,13 @@ if [ -z "$FEATURE_DIR" ]; then
 fi
 
 if [ -z "$FEATURE_DIR" ] || [ ! -d "$FEATURE_DIR" ]; then
-  echo "[dna-test-gate] SETUP — cannot locate feature directory. Pass as arg: run.sh specs/NNN-name" >&2
+  echo "[dna-test-gate] SETUP. cannot locate feature directory. Pass as arg: run.sh specs/NNN-name" >&2
   exit 2
 fi
 
 TASKS_FILE="$FEATURE_DIR/tasks.md"
 if [ ! -f "$TASKS_FILE" ]; then
-  echo "[dna-test-gate] SETUP — $TASKS_FILE not found. Run /speckit-tasks first." >&2
+  echo "[dna-test-gate] SETUP. $TASKS_FILE not found. Run /speckit-tasks first." >&2
   exit 2
 fi
 
@@ -76,7 +76,7 @@ if [ -z "$RUNNER" ] && [ -f "go.mod" ]; then
 fi
 
 if [ -z "$RUNNER" ]; then
-  echo "[dna-test-gate] SETUP — no test runner detected in package.json / pyproject.toml / go.mod" >&2
+  echo "[dna-test-gate] SETUP. no test runner detected in package.json / pyproject.toml / go.mod" >&2
   echo "  Supported: vitest, jest, mocha, pytest, go test." >&2
   echo "  Configure one per docs/03-EXECUTION-CONTEXT.md Testing section." >&2
   exit 2
@@ -125,9 +125,9 @@ while IFS= read -r line; do
 
   # Skip verification-only / log-only tasks whose body starts with a known
   # non-implementation verb. These invoke scripts, append to logs, or update
-  # markdown — they aren't themselves gate-able impl tasks.
+  # markdown. they aren't themselves gate-able impl tasks.
   # (Line is "NN:- [ ] TNNN <body>" because the outer grep used -En.)
-  # SPEC-20 / RE-14: extended verb list beyond Run|Verify|Check — added
+  # SPEC-20 / RE-14: extended verb list beyond Run|Verify|Check. added
   # Log|Append|Close|Document|Update|Flip|Remove for construction-site
   # bookkeeping, scenario-ref test flipping, and retrospective authoring.
   if echo "$line" | grep -qE '^[0-9]+:- \[ \] T[0-9]+ (Run|Verify|Check|Log|Append|Close|Document|Update|Flip|Remove|Rename|Delete)\b'; then
@@ -147,7 +147,7 @@ while IFS= read -r line; do
   IMPL_PATH=$(echo "$IMPL_PATHS" | head -n 1 || true)
 
   if [ -z "$IMPL_PATH" ]; then
-    echo "  $TASK_ID  UNINSPECTABLE (no impl path in task body) — add explicit file reference"
+    echo "  $TASK_ID  UNINSPECTABLE (no impl path in task body). add explicit file reference"
     MISSING=$((MISSING+1))
     continue
   fi
@@ -160,7 +160,7 @@ while IFS= read -r line; do
   SKIP_TASK=0
 
   for IP in $IMPL_PATHS; do
-    # If this path IS a test/spec file, the task is authoring a test — uncount and skip.
+    # If this path IS a test/spec file, the task is authoring a test. uncount and skip.
     case "$IP" in
       *.test.ts|*.test.tsx|*.test.js|*.test.jsx|*.spec.ts|*.spec.tsx|*.spec.js|*.spec.jsx|*_test.go)
         SKIP_TASK=1
@@ -226,7 +226,7 @@ while IFS= read -r line; do
     echo "  $TASK_ID  RED (ok)    $TEST_FILE  → test fails before impl (as required)"
     RED_COUNT=$((RED_COUNT+1))
   else
-    echo "  $TASK_ID  GREEN (bad) $TEST_FILE  → test passes WITHOUT impl — test is trivial, wrong, or impl already exists"
+    echo "  $TASK_ID  GREEN (bad) $TEST_FILE  → test passes WITHOUT impl. test is trivial, wrong, or impl already exists"
     WRONG_GREEN=$((WRONG_GREEN+1))
   fi
 done <<< "$MAPFILE_TASKS"
@@ -239,10 +239,10 @@ echo
 echo "[dna-test-gate] Summary: total=$TOTAL  red(ok)=$RED_COUNT  green(bad)=$WRONG_GREEN  missing=$MISSING"
 
 if [ $MISSING -eq 0 ] && [ $WRONG_GREEN -eq 0 ] && [ $RED_COUNT -gt 0 ]; then
-  echo "[dna-test-gate] PASS — all implementation tasks have red tests. Proceed to /speckit-implement."
+  echo "[dna-test-gate] PASS. all implementation tasks have red tests. Proceed to /speckit-implement."
   exit 0
 else
-  echo "[dna-test-gate] FAIL — Article 1 violation. Write tests first; verify they fail; then implement."
+  echo "[dna-test-gate] FAIL. Article 1 violation. Write tests first; verify they fail; then implement."
   if [ $MISSING -gt 0 ]; then
     echo "  $MISSING task(s) have no test file. Write the tests before /speckit-implement."
   fi

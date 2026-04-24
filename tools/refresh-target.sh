@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# refresh-target.sh — sync kit payload into an existing unfolded target.
+# refresh-target.sh. sync kit payload into an existing unfolded target.
 #
 # Solves the SPEC-10-dogfood problem: every new run.sh, new subagent, or
 # updated SKILL.md shipped in the kit after the target's unfold is orphaned
@@ -16,7 +16,7 @@
 #
 # Exit codes:
 #   0  Refresh completed cleanly (all files IDENTICAL or ADDED).
-#   1  Drift detected — target has files that differ from kit. Inspect
+#   1  Drift detected. target has files that differ from kit. Inspect
 #      before using --force.
 #   2  Setup problem (target not a directory, missing .claude/, bad args).
 
@@ -45,21 +45,21 @@ while [ $# -gt 0 ]; do
     --scope)
       SCOPE="${2:-}"
       if [ "$SCOPE" != "skills" ] && [ "$SCOPE" != "agents" ] && [ "$SCOPE" != "workflows" ] && [ "$SCOPE" != "all" ]; then
-        echo "[refresh] SETUP — --scope must be one of: skills, agents, workflows, all" >&2
+        echo "[refresh] SETUP. --scope must be one of: skills, agents, workflows, all" >&2
         exit 2
       fi
       shift 2
       ;;
     --help|-h) usage 0 ;;
     -*)
-      echo "[refresh] SETUP — unknown flag: $1" >&2
+      echo "[refresh] SETUP. unknown flag: $1" >&2
       usage
       ;;
     *)
       if [ -z "$TARGET" ]; then
         TARGET="$1"
       else
-        echo "[refresh] SETUP — unexpected extra argument: $1" >&2
+        echo "[refresh] SETUP. unexpected extra argument: $1" >&2
         usage
       fi
       shift
@@ -68,7 +68,7 @@ while [ $# -gt 0 ]; do
 done
 
 if [ -z "$TARGET" ]; then
-  echo "[refresh] SETUP — <target-path> is required." >&2
+  echo "[refresh] SETUP. <target-path> is required." >&2
   usage
 fi
 
@@ -79,19 +79,19 @@ fi
 KIT_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 
 if [ ! -d "$KIT_ROOT/template" ]; then
-  echo "[refresh] SETUP — kit root $KIT_ROOT missing template/. Is this script in tools/ of the kit?" >&2
+  echo "[refresh] SETUP. kit root $KIT_ROOT missing template/. Is this script in tools/ of the kit?" >&2
   exit 2
 fi
 
 if [ ! -d "$TARGET" ]; then
-  echo "[refresh] SETUP — target $TARGET is not a directory." >&2
+  echo "[refresh] SETUP. target $TARGET is not a directory." >&2
   exit 2
 fi
 
 TARGET="$(cd "$TARGET" && pwd)"
 
 if [ ! -d "$TARGET/.claude" ]; then
-  echo "[refresh] SETUP — target $TARGET has no .claude/ directory. Was this target unfolded by Protocol A?" >&2
+  echo "[refresh] SETUP. target $TARGET has no .claude/ directory. Was this target unfolded by Protocol A?" >&2
   exit 2
 fi
 
@@ -215,7 +215,7 @@ fi
 echo "[refresh] Summary: $ADDED added, $OVERWROTE overwrote, $DRIFT drift, $IDENTICAL identical"
 
 if [ $DRIFT -gt 0 ]; then
-  echo "[refresh] DRIFT — $DRIFT file(s) differ between kit and target."
+  echo "[refresh] DRIFT. $DRIFT file(s) differ between kit and target."
   echo "  Inspect each with: diff <kit-path> <target-path>"
   echo "  Keep target version: do nothing."
   echo "  Adopt kit version: re-run with --force (overwrites all drift)."
@@ -223,8 +223,8 @@ if [ $DRIFT -gt 0 ]; then
 fi
 
 if [ $DRY_RUN -eq 1 ]; then
-  echo "[refresh] DRY-RUN complete — no changes written. Re-run without --dry-run to apply."
+  echo "[refresh] DRY-RUN complete. no changes written. Re-run without --dry-run to apply."
 else
-  echo "[refresh] PASS — target synced to kit (commit $KIT_HEAD)."
+  echo "[refresh] PASS. target synced to kit (commit $KIT_HEAD)."
 fi
 exit 0

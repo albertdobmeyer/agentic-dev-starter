@@ -1,6 +1,6 @@
 ---
 name: Adopter feedback (retrospective from the field)
-about: You used the kit on a real project — what happened
+about: You used the kit on a real project, what happened
 title: "[FIELD] "
 labels: adopter-feedback, field-notes
 ---

@@ -6,7 +6,7 @@ We pledge to make participation in this project a harassment-free experience for
 
 ## Expected behavior
 
-- Be respectful in issues, PRs, and discussions — this kit is used by teams with mixed seniority; comments should be approachable to juniors.
+- Be respectful in issues, PRs, and discussions. This kit is used by teams with mixed seniority; comments should be approachable to juniors.
 - Prefer concrete, citable feedback over vague criticism. If the methodology doesn't work for your project, describe the specific failure mode; "I tried X, expected Y, got Z" beats "this is bad."
 - Give credit for work you build on. The methodology itself is derived from multiple sources; acknowledge them in commits and retrospectives.
 - When proposing changes, reference the kernel invariants (`kernel/methodology.md`) and cite the specific rule the change clarifies, contradicts, or extends.
@@ -20,7 +20,7 @@ We pledge to make participation in this project a harassment-free experience for
 
 ## Enforcement
 
-Maintainers will review reports privately and act proportionately — warning, temporary ban, or permanent ban, depending on severity. Report issues via the repo's Security tab or by emailing the maintainer directly.
+Maintainers will review reports privately and act proportionately: warning, temporary ban, or permanent ban, depending on severity. Report issues via the repo's Security tab or by emailing the maintainer directly.
 
 ## Attribution
 

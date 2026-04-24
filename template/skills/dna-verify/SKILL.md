@@ -18,18 +18,18 @@ $ARGUMENTS
 
 ## Purpose
 
-The true cost of agentic coding is verification — confirming that what was built is congruent with what was planned. Tests passing is necessary but not sufficient. This skill closes the gap between "agent says it's done" and "it actually matches the spec."
+The true cost of agentic coding is verification. confirming that what was built is congruent with what was planned. Tests passing is necessary but not sufficient. This skill closes the gap between "agent says it's done" and "it actually matches the spec."
 
 This is the post-implementation counterpart to `/dna-test-gate` (pre-implementation). Together they bookend every implementation phase:
 - `/dna-test-gate` → tests exist and fail → implement → `/dna-verify` → outcomes match spec
 
-The human reviews `/dna-verify` reports, not implementation code. If the report says CONGRUENT, the code is correct by definition. If DIVERGENT, the human refines the spec — they don't fix the code directly.
+The human reviews `/dna-verify` reports, not implementation code. If the report says CONGRUENT, the code is correct by definition. If DIVERGENT, the human refines the spec. they don't fix the code directly.
 
-## Execution — two layers
+## Execution. two layers
 
 The verification has a mechanical floor and a judgmental ceiling. Run them in order.
 
-### Layer 1 — mechanical floor (script)
+### Layer 1. mechanical floor (script)
 
 ```bash
 bash .claude/skills/dna-verify/run.sh
@@ -41,7 +41,7 @@ Checks: test suite passes, coverage ≥ CONSTITUTION threshold, every `[D]` requ
 - Exit `1` → floor not met. Fix before the subagent audit. The subagent cannot credibly audit fidelity on a broken test floor.
 - Exit `2` → setup problem (no Blueprint, no tests dir).
 
-### Layer 2 — judgmental ceiling (subagent)
+### Layer 2. judgmental ceiling (subagent)
 
 Invoke the `dna:verifier` subagent. It starts with **zero carryover from the build conversation** (PROJECT_DNA Section 4.3 audit-isolation principle), reads spec + code from disk, walks every Experience Fidelity Scenario against current code, and returns a verdict.
 
@@ -49,17 +49,17 @@ Invoke the `dna:verifier` subagent. It starts with **zero carryover from the bui
 - `PARTIAL` → escalate to architect; optionally log construction sites via `dna:construction-logger`.
 - `DIVERGENT` → PHASE DOES NOT CLOSE. Every FAIL either gets implemented or logged as an architect-approved deferral in `docs/05-CONSTRUCTION-SITES.md`.
 
-## Fallback (prose path — when neither layer runs)
+## Fallback (prose path. when neither layer runs)
 
-If the project lacks a supported test runner AND the subagent is unavailable, the main agent replicates the scenario walkthrough manually using the structured steps below. This is a last resort — whenever possible, the subagent should do the walkthrough with fresh context to avoid builder-as-auditor bias.
+If the project lacks a supported test runner AND the subagent is unavailable, the main agent replicates the scenario walkthrough manually using the structured steps below. This is a last resort. whenever possible, the subagent should do the walkthrough with fresh context to avoid builder-as-auditor bias.
 
 ## Pre-Execution
 
 1. Run `.specify/scripts/powershell/check-prerequisites.ps1 -Json -RequireTasks -IncludeTasks` to locate FEATURE_DIR.
-2. Read `spec.md` from FEATURE_DIR — the acceptance scenarios.
-3. Read `tasks.md` from FEATURE_DIR — the task list.
-4. Read `plan.md` from FEATURE_DIR — the technical plan.
-5. Read `CONSTITUTION.md` from project root — the engineering contract.
+2. Read `spec.md` from FEATURE_DIR. the acceptance scenarios.
+3. Read `tasks.md` from FEATURE_DIR. the task list.
+4. Read `plan.md` from FEATURE_DIR. the technical plan.
+5. Read `CONSTITUTION.md` from project root. the engineering contract.
 
 ## Verification Steps
 
@@ -90,13 +90,13 @@ Run the full test suite for the project (detect runner from project config):
 
 Any failing tests → report as DIVERGENT immediately with the specific failure.
 
-### Step 3: Spec Fidelity — Acceptance Scenario Walkthrough
+### Step 3: Spec Fidelity. Acceptance Scenario Walkthrough
 
 For each acceptance scenario in spec.md (Given/When/Then):
 
-1. **Trace** the scenario through the implementation — does the code path exist?
-2. **Map** the scenario to tests — is there a test that directly verifies this scenario?
-3. **Check depth** — is it tested at the right depth?
+1. **Trace** the scenario through the implementation. does the code path exist?
+2. **Map** the scenario to tests. is there a test that directly verifies this scenario?
+3. **Check depth**. is it tested at the right depth?
    - `[W]` requirements: unit test is sufficient
    - `[D]` requirements: MUST have an integration test that exercises multiple components together. A unit test alone is NOT sufficient for `[D]`.
 
@@ -105,7 +105,7 @@ For each acceptance scenario in spec.md (Given/When/Then):
 |----------|-------|---------------|-------------|---------|
 | US1-S1: User creates account | [D] | test_auth_integration.py | Integration ✓ | PASS |
 | US1-S2: User resets password | [W] | test_auth_unit.py | Unit ✓ | PASS |
-| US2-S1: User views dashboard | [D] | test_dashboard_unit.py | Unit only ✗ | FAIL — [D] needs integration test |
+| US2-S1: User views dashboard | [D] | test_dashboard_unit.py | Unit only ✗ | FAIL. [D] needs integration test |
 ```
 
 ### Step 4: Negative Assertion Audit
@@ -121,7 +121,7 @@ These are the first things that get silently dropped. If a negative assertion ha
 | Negative Assertion | Test Exists | Implementation Respects | Verdict |
 |-------------------|-------------|------------------------|---------|
 | Never manually visit each bookmark | test_auto_check.py | ✓ | PASS |
-| Never lose original bookmarks | (none) | unclear | FAIL — unverified |
+| Never lose original bookmarks | (none) | unclear | FAIL. unverified |
 ```
 
 ### Step 5: Simplification Audit (Article 5)
@@ -131,11 +131,11 @@ Search the codebase and conversation for logged simplifications:
 - Check for TODO/FIXME comments that indicate deferred work
 - Compare original depth tags in spec.md vs what was actually delivered
 
-Any unlogged downgrade is a silent flattening event — the most dangerous kind.
+Any unlogged downgrade is a silent flattening event. the most dangerous kind.
 
 ### Step 6: Verdict
 
-**CONGRUENT** — All of:
+**CONGRUENT**. All of:
 - All tasks complete
 - All tests pass
 - Every acceptance scenario has a test at the correct depth
@@ -144,7 +144,7 @@ Any unlogged downgrade is a silent flattening event — the most dangerous kind.
 
 → Output: "Verification CONGRUENT. Implementation matches spec. Ready for human review of this report."
 
-**DIVERGENT** — Any of:
+**DIVERGENT**. Any of:
 - Incomplete tasks
 - Failing tests
 - Acceptance scenarios without tests or at wrong depth
@@ -160,9 +160,9 @@ Any unlogged downgrade is a silent flattening event — the most dangerous kind.
 ## After Verification
 
 The human reviews this report. Their options:
-1. **Accept** — divergences are acceptable, log as Article 5 simplifications
-2. **Refine spec** — the spec was wrong or incomplete, update spec.md, re-run /speckit-tasks
-3. **Fix implementation** — the code is wrong, go back to /speckit-implement for specific tasks
-4. **Ship** — everything is congruent, merge the feature branch
+1. **Accept**. divergences are acceptable, log as Article 5 simplifications
+2. **Refine spec**. the spec was wrong or incomplete, update spec.md, re-run /speckit-tasks
+3. **Fix implementation**. the code is wrong, go back to /speckit-implement for specific tasks
+4. **Ship**. everything is congruent, merge the feature branch
 
 The human decides at the architecture level. They do not debug code.

@@ -13,7 +13,7 @@ Run the quality checks from `docs/HANDOFF_FORMAT.md` against the project's Bluep
 
 ## Inputs
 
-1. `docs/HANDOFF_FORMAT.md` — the canonical check list (source of truth — your check descriptions must match this file)
+1. `docs/HANDOFF_FORMAT.md`. the canonical check list (source of truth. your check descriptions must match this file)
 2. `docs/00-CORE-PRINCIPLES.md`
 3. `docs/01-SYSTEM-INTENT.md`
 4. `docs/02-ARCHITECTURE.md`
@@ -36,8 +36,8 @@ For each check: PASS / FAIL (with `file:line` + one-sentence remediation).
 
 ## Output
 
-- **CLEAR** — all checks PASS. Proceed to `/speckit-specify`.
-- **FAIL (N issues)** — list each with file:line + remediation. Block until fixed.
+- **CLEAR**. all checks PASS. Proceed to `/speckit-specify`.
+- **FAIL (N issues)**. list each with file:line + remediation. Block until fixed.
 
 ## Refuses
 

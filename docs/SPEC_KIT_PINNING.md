@@ -1,6 +1,6 @@
 # Spec-Kit version pinning
 
-The kit pins a specific Spec-Kit tag rather than tracking `latest`. Reproducibility of unfolds is more valuable than freshness — when Spec-Kit renames a flag or changes init behavior, the kit should handle that migration in one deliberate bump, not let every user's unfold silently break on the day a breaking change ships.
+The kit pins a specific Spec-Kit tag rather than tracking `latest`. Reproducibility of unfolds is more valuable than freshness: when Spec-Kit renames a flag or changes init behavior, the kit should handle that migration in one deliberate bump, not let every user's unfold silently break on the day a breaking change ships.
 
 ## Current pin
 
@@ -41,7 +41,7 @@ When a new Spec-Kit tag ships and you want to adopt it:
    ```
    bash tools/unfold-smoke.sh
    ```
-   The harness unfolds both adapters into throwaway temp dirs, asserts the expected file trees, and runs a guardrail that confirms `--integration cursor` (without `-agent`) still errors. Exits 0 on pass, 1 on any breakage. Review output — a WARN is non-blocking but notable; a FAIL means the bump broke something.
+   The harness unfolds both adapters into throwaway temp dirs, asserts the expected file trees, and runs a guardrail that confirms `--integration cursor` (without `-agent`) still errors. Exits 0 on pass, 1 on any breakage. Review output: a WARN is non-blocking but notable; a FAIL means the bump broke something.
 3. If the smoke harness FAILed, something has changed in Spec-Kit:
    - Compare `specify init --help` output against the Flag Contract table above
    - Identify the renamed/removed flag or integration name
@@ -52,9 +52,9 @@ When a new Spec-Kit tag ships and you want to adopt it:
    - `CLAUDE.md` (kit root, Protocol A)
    - `adapters/cursor/README.md`
 5. Update the pinned version in three places (to match):
-   - `template/AGENT.md` — `SPECIFY_VERSION=vX.Y.Z`
-   - `adapters/cursor/payload/CURSOR.md` — `SPECIFY_VERSION=vX.Y.Z`
-   - This doc — "Current pin" table
+   - `template/AGENT.md`: `SPECIFY_VERSION=vX.Y.Z`
+   - `adapters/cursor/payload/CURSOR.md`: `SPECIFY_VERSION=vX.Y.Z`
+   - This doc: "Current pin" table
 6. Update the "Last verified" date in this doc.
 7. Run `tools/refresh-target.sh` (dry-run first) against any known target project to confirm the refresh propagates correctly.
 8. Commit with message `chore(spec-kit): bump to vX.Y.Z`. Include any flag-contract changes in the commit body.
@@ -71,4 +71,4 @@ The kit's zero-infrastructure philosophy (`CLAUDE.md` §Philosophy) forbids bund
 
 | Date | Pinned to | Changed by | Reason |
 |---|---|---|---|
-| 2026-04-23 | v0.8.0 | Session 8 productization sprint | Initial pin (prior state was dynamic-latest via `LATEST=$(git ls-remote...)` substitution, which fails under PowerShell and breaks silently on Spec-Kit breaking changes). Paired with the correction of `--integration cursor` → `--integration cursor-agent` after verification against the real CLI. |
+| 2026-04-23 | v0.8.0 | Session 8 productization sprint | Initial pin (prior state was dynamic-latest via `LATEST=$(git ls-remote...)` substitution, which fails under PowerShell and breaks silently on Spec-Kit breaking changes). Paired with the correction of `--integration cursor` to `--integration cursor-agent` after verification against the real CLI. |

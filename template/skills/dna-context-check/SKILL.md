@@ -18,14 +18,14 @@ $ARGUMENTS
 
 ## Purpose
 
-AI agents have a context window. Even at 1M tokens, there is a "dumb zone" — a region past ~100k tokens where response quality degrades and costs grow quadratically. This skill manages the agent's working memory:
+AI agents have a context window. Even at 1M tokens, there is a "dumb zone". a region past ~100k tokens where response quality degrades and costs grow quadratically. This skill manages the agent's working memory:
 
 - **Detect** when context is growing dangerously deep
 - **Trigger** structured handoffs at natural workflow boundaries
 - **Preserve** continuity across sessions via handoff documents
 - **Integrate** with agent-token-meter for precise burn-rate data
 
-## Execution — run the script
+## Execution. run the script
 
 ```bash
 bash .claude/skills/dna-context-check/run.sh
@@ -34,7 +34,7 @@ bash .claude/skills/dna-context-check/run.sh
 The script reads `agent-token-meter` output (if running) and emits:
 
 - Exit `0` → SAFE (< 70k tokens used). Continue.
-- Exit `1` → WARNING (70k–100k). Plan to finish current logical unit; write handoff within next ~30k tokens.
+- Exit `1` → WARNING (70k-100k). Plan to finish current logical unit; write handoff within next ~30k tokens.
 - Exit `2` → HANDOFF_REQUIRED (> 100k). Write session handoff NOW before continuing. Required artifact is outlined in the script's output.
 - Exit `3` → UNMEASURED (token-meter not running). Start it: `npx agent-token-meter` in a split pane. Without it, the 100k handoff rule is on the honor system; main agent must self-estimate.
 
@@ -57,9 +57,9 @@ If token meter data is available, read it for precise numbers. If not, estimate 
 
 | Zone | Token Range | Action |
 |------|-------------|--------|
-| **Green** | 0 – 60k | Continue working. No action needed. |
-| **Yellow** | 60k – 100k | Awareness. Finish current task, then consider handoff. |
-| **Red** | 100k – 150k | **Handoff now.** Complete the immediate task, write handoff, `/clear`. |
+| **Green** | 0. 60k | Continue working. No action needed. |
+| **Yellow** | 60k. 100k | Awareness. Finish current task, then consider handoff. |
+| **Red** | 100k. 150k | **Handoff now.** Complete the immediate task, write handoff, `/clear`. |
 | **Critical** | 150k+ | **Emergency handoff.** Stop, write handoff immediately, `/clear`. Quality is degrading. |
 
 ### Step 2: Identify Natural Handoff Boundaries
@@ -98,7 +98,7 @@ When a handoff is triggered:
    File: `FEATURE_DIR/handoff.md` (append if exists, create if not)
 
    ```markdown
-   ## Handoff — [TIMESTAMP]
+   ## Handoff. [TIMESTAMP]
 
    ### Done
    - [List completed tasks with IDs from tasks.md]
@@ -117,7 +117,7 @@ When a handoff is triggered:
    - [Files modified, tests written, tests passing/failing]
    ```
 
-2. **Update tasks.md** — mark completed tasks as `[X]`.
+2. **Update tasks.md**. mark completed tasks as `[X]`.
 
 3. **Tell the user:**
    ```
@@ -132,4 +132,4 @@ This skill should be invoked automatically by the agent at these points:
 - After completing a phase of implementation tasks
 - When the agent notices degraded response quality (repeating itself, losing track of requirements, hallucinating file contents)
 
-The agent does not need the user to invoke `/dna-context-check` — it should self-monitor and trigger when needed. The skill exists for manual invocation and as a reference for the auto-trigger behavior.
+The agent does not need the user to invoke `/dna-context-check`. it should self-monitor and trigger when needed. The skill exists for manual invocation and as a reference for the auto-trigger behavior.

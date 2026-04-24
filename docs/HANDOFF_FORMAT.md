@@ -37,7 +37,7 @@ target/
 | "What gets built first? What depends on what?" | `04-COORDINATION-HINTS.md` |
 | "What must ship at `[D]` depth vs what's v1.1?" | `04-COORDINATION-HINTS.md` (Production Threshold) |
 | "What was simplified during implementation, and why?" | `05-CONSTRUCTION-SITES.md` (agent-maintained via `dna-construction-logger` subagent) |
-| "What hard rules never bend?" | `CONSTITUTION.md` (Articles 1–9 universal, Article 10 project-specific) |
+| "What hard rules never bend?" | `CONSTITUTION.md` (Articles 1-9 universal, Article 10 project-specific) |
 
 ---
 
@@ -45,41 +45,41 @@ target/
 
 ### `00-CORE-PRINCIPLES.md`
 - Problem statement (one paragraph)
-- Target users (2–3 segments with context, pain, %)
+- Target users (2-3 segments with context, pain, %)
 - Domain model (entities as nouns, not features)
-- Core principles (3–7 typical; each must produce a scenario in `01-SYSTEM-INTENT.md`)
+- Core principles (3-7 typical; each must produce a scenario in `01-SYSTEM-INTENT.md`)
 - Business model, hard constraints, anti-principles
 
-> **See example**: [team-project-scheduler-example/docs/00-CORE-PRINCIPLES.md](https://github.com/albertdobmeyer/team-project-scheduler-example/blob/c084166/docs/00-CORE-PRINCIPLES.md) — three principles each paired to a scenario, domain model named as nouns (Task, User, TaskStatus), anti-principles explicit.
+> **See example**: [team-project-scheduler-example/docs/00-CORE-PRINCIPLES.md](https://github.com/albertdobmeyer/team-project-scheduler-example/blob/c084166/docs/00-CORE-PRINCIPLES.md). three principles each paired to a scenario, domain model named as nouns (Task, User, TaskStatus), anti-principles explicit.
 
-### `01-SYSTEM-INTENT.md` — the most load-bearing doc
-- Entity schemas (all fields, all types, all constraints — no "TBD")
+### `01-SYSTEM-INTENT.md`. the most load-bearing doc
+- Entity schemas (all fields, all types, all constraints. no "TBD")
 - State machines (transitions, triggers, reversibility)
 - Invariants ("the system NEVER...")
-- **Experience Fidelity Scenarios** — one per principle, each with:
+- **Experience Fidelity Scenarios**. one per principle, each with:
   - Context (when/where/carrying/time budget)
-  - What they see/hear, what they do (2–3 behavioral variations + error/correction flow)
+  - What they see/hear, what they do (2-3 behavioral variations + error/correction flow)
   - **≥3 negative assertions** ("user NEVER has to...")
-  - Why this matters (≥1 quantified comparison — numbers, not adjectives)
+  - Why this matters (≥1 quantified comparison. numbers, not adjectives)
   - Filmable success criterion
   - Depth tag
-- **Scenario Validation Matrix** — **mandatory**, one per scenario:
+- **Scenario Validation Matrix**. **mandatory**, one per scenario:
   - Columns: `#`, assertion, required task(s), load-bearing?, depth, without-this-task-what-breaks
   - "Uncovered Assertions" row must be empty before `/speckit-plan`
   - "Tasks Without Assertions" row must be empty before `/speckit-plan`
 - Depth classification summary (every requirement tagged `[E]`/`[W]`/`[D]`)
 
-> **See example**: [team-project-scheduler-example/docs/01-SYSTEM-INTENT.md](https://github.com/albertdobmeyer/team-project-scheduler-example/blob/c084166/docs/01-SYSTEM-INTENT.md) — Scenario 1 shows ≥3 negative assertions, filmable success at ≤15s, behavioral variation (happy/edge/error), and a Validation Matrix with real task IDs from specs/001-*/ and specs/005-*/. "Uncovered Assertions" is empty.
+> **See example**: [team-project-scheduler-example/docs/01-SYSTEM-INTENT.md](https://github.com/albertdobmeyer/team-project-scheduler-example/blob/c084166/docs/01-SYSTEM-INTENT.md). Scenario 1 shows ≥3 negative assertions, filmable success at ≤15s, behavioral variation (happy/edge/error), and a Validation Matrix with real task IDs from specs/001-*/ and specs/005-*/. "Uncovered Assertions" is empty.
 
 ### `02-ARCHITECTURE.md`
 - Module boundaries, interface contracts, API surface
 - Data flows + event/sync flows (every data structure that implies automatic behavior names its trigger here)
 - Infrastructure decisions (chosen + rejected)
-- **Architecture Impact Assessment** — one per scenario:
+- **Architecture Impact Assessment**. one per scenario:
   - Fits existing patterns / requires new infrastructure / requires subsystem redesign / cross-scenario conflicts
   - New-infrastructure items must be reflected as requirements in `04-COORDINATION-HINTS.md` phases
 
-> **See example**: [team-project-scheduler-example/docs/02-ARCHITECTURE.md](https://github.com/albertdobmeyer/team-project-scheduler-example/blob/c084166/docs/02-ARCHITECTURE.md) — Architecture Impact Assessment per scenario. Scenario 1's assessment names the calendar/view module boundary and the HTTP contract surface; Scenario 2's assessment forced Slack client infrastructure to be listed as a Phase 2 prerequisite in 04-COORDINATION-HINTS.md.
+> **See example**: [team-project-scheduler-example/docs/02-ARCHITECTURE.md](https://github.com/albertdobmeyer/team-project-scheduler-example/blob/c084166/docs/02-ARCHITECTURE.md). Architecture Impact Assessment per scenario. Scenario 1's assessment names the calendar/view module boundary and the HTTP contract surface; Scenario 2's assessment forced Slack client infrastructure to be listed as a Phase 2 prerequisite in 04-COORDINATION-HINTS.md.
 
 ### `03-EXECUTION-CONTEXT.md`
 - Tech stack (every row pinned to exact `major.minor` + rationale)
@@ -89,14 +89,14 @@ target/
 - Environment / secrets / infra setup (≤ 4 commands from `git clone` to running tests)
 
 ### `04-COORDINATION-HINTS.md`
-- Phases: "what exists after" (one sentence), "done when" (3–8 criteria each depth-tagged), "correctness > speed" flags, Experience Audit step
+- Phases: "what exists after" (one sentence), "done when" (3-8 criteria each depth-tagged), "correctness > speed" flags, Experience Audit step
 - Every phase touching a core principle has ≥1 `[D]` done-criterion
 - **Production Threshold**: must-close scenarios vs deferred-to-v1.1 (each with rationale)
 - Risk hotspots + mitigation
 - Seed data requirements per phase
 - Non-goals (8+ explicit)
 
-> **See example**: [team-project-scheduler-example/docs/04-COORDINATION-HINTS.md](https://github.com/albertdobmeyer/team-project-scheduler-example/blob/c084166/docs/04-COORDINATION-HINTS.md) — five phases with depth-tagged done criteria; Phase 2 (Calendar rendering) has three `[D]` done criteria (`:48-:50`) that remain **open** because 005 shipped only the server read path — an intentionally open gate until 006 ships. 10 non-goals, Production Threshold explicit.
+> **See example**: [team-project-scheduler-example/docs/04-COORDINATION-HINTS.md](https://github.com/albertdobmeyer/team-project-scheduler-example/blob/c084166/docs/04-COORDINATION-HINTS.md). five phases with depth-tagged done criteria; Phase 2 (Calendar rendering) has three `[D]` done criteria (`:48-:50`) that remain **open** because 005 shipped only the server read path. an intentionally open gate until 006 ships. 10 non-goals, Production Threshold explicit.
 
 ### `05-CONSTRUCTION-SITES.md`
 - Initialized at bootstrap (empty "Active sites" table)
@@ -104,14 +104,14 @@ target/
 - Every `[D]→[W]` or `[W]→[E]` downgrade logged with scenario impact, reason, resolution plan
 - Accumulation of 3+ entries on one scenario → escalate (architecture problem, not patching problem)
 
-> **See example**: [team-project-scheduler-example/docs/05-CONSTRUCTION-SITES.md](https://github.com/albertdobmeyer/team-project-scheduler-example/blob/c084166/docs/05-CONSTRUCTION-SITES.md) — **CS-001 RESOLVED** (cross-feature shared-model merge conflict, addressed by installing `dna:cross-checker`) and **CS-002 OPEN** (`[D]`-depth scenario partially delivered: server contract in 005, UI deferred to committed sibling 006). CS-002 is the canonical demonstration of legitimate Article 5 scope-deferral: logged at merge time, committed sibling named, phase not closed until sibling ships.
+> **See example**: [team-project-scheduler-example/docs/05-CONSTRUCTION-SITES.md](https://github.com/albertdobmeyer/team-project-scheduler-example/blob/c084166/docs/05-CONSTRUCTION-SITES.md). **CS-001 RESOLVED** (cross-feature shared-model merge conflict, addressed by installing `dna:cross-checker`) and **CS-002 OPEN** (`[D]`-depth scenario partially delivered: server contract in 005, UI deferred to committed sibling 006). CS-002 is the canonical demonstration of legitimate Article 5 scope-deferral: logged at merge time, committed sibling named, phase not closed until sibling ships.
 
 ### `CONSTITUTION.md`
-- Articles 1–9 universal (testing, specs, anti-flattening, depth, simplification logging, behavior specs, drift, workflow, reserved)
-- Article 10 project-specific (4–8 rules customized during Protocol A step 6)
-- Pre-Implementation Gate Checklist at the bottom — every box must be checkable before building starts
+- Articles 1-9 universal (testing, specs, anti-flattening, depth, simplification logging, behavior specs, drift, workflow, reserved)
+- Article 10 project-specific (4-8 rules customized during Protocol A step 6)
+- Pre-Implementation Gate Checklist at the bottom. every box must be checkable before building starts
 
-> **See example**: [team-project-scheduler-example/CONSTITUTION.md](https://github.com/albertdobmeyer/team-project-scheduler-example/blob/c084166/CONSTITUTION.md) — Article 10 customized for a small Node/TS team (coverage threshold, shared-code PR gate with explicit file globs, review depth rules). Compare against the kit's uncustomized [template/CONSTITUTION.md](../template/CONSTITUTION.md) to see what project-specific customization looks like in practice.
+> **See example**: [team-project-scheduler-example/CONSTITUTION.md](https://github.com/albertdobmeyer/team-project-scheduler-example/blob/c084166/CONSTITUTION.md). Article 10 customized for a small Node/TS team (coverage threshold, shared-code PR gate with explicit file globs, review depth rules). Compare against the kit's uncustomized [template/CONSTITUTION.md](../template/CONSTITUTION.md) to see what project-specific customization looks like in practice.
 
 ---
 
@@ -122,7 +122,7 @@ Run these against every doc. Every failure is blocking.
 ### Structural
 - [ ] All 6 `docs/NN-*.md` files exist plus root `CONSTITUTION.md`
 - [ ] No file contains the literal string `{FILL IN` (all markers resolved)
-- [ ] No file contains `[PROJECT_NAME] Constitution` (Spec-Kit stub marker — indicates constitution sync failed)
+- [ ] No file contains `[PROJECT_NAME] Constitution` (Spec-Kit stub marker. indicates constitution sync failed)
 
 ### Scenario fidelity (from `01-SYSTEM-INTENT.md`)
 - [ ] Every principle in `00-CORE-PRINCIPLES.md` has a corresponding Experience Fidelity Scenario

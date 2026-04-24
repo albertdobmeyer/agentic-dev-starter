@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# unfold-smoke.sh — SPEC-02b smoke harness for Spec-Kit version bumps.
+# unfold-smoke.sh. SPEC-02b smoke harness for Spec-Kit version bumps.
 #
 # Runs the canonical specify init invocation for both adapters into temporary
 # directories, asserts the expected structure, and exits 0/nonzero.
@@ -80,7 +80,7 @@ if [ -d "$CLAUDE_DIR/.specify/scripts" ]; then
   if [ "$SCRIPT_COUNT" -gt 0 ]; then
     PASS ".specify/scripts/ populated ($SCRIPT_COUNT script(s))"
   else
-    FAIL ".specify/scripts/ is empty — --script flag did not resolve"
+    FAIL ".specify/scripts/ is empty. --script flag did not resolve"
     CLAUDE_ERRORS=$((CLAUDE_ERRORS+1))
   fi
 else
@@ -119,7 +119,7 @@ GUARDRAIL_DIR="$TMP_ROOT/guardrail"
 mkdir -p "$GUARDRAIL_DIR"
 
 if (cd "$GUARDRAIL_DIR" && PYTHONIOENCODING=utf-8 specify init . --integration cursor --script sh --force --offline --no-git >/dev/null 2>&1); then
-  WARN "--integration cursor succeeded — Spec-Kit may have added it as a synonym for cursor-agent. Review and update docs if intentional."
+  WARN "--integration cursor succeeded. Spec-Kit may have added it as a synonym for cursor-agent. Review and update docs if intentional."
 else
   PASS "--integration cursor errors as expected"
 fi
@@ -138,10 +138,10 @@ echo "[unfold-smoke] Total:              $TOTAL_ERRORS"
 
 if [ "$TOTAL_ERRORS" -eq 0 ]; then
   echo
-  echo -e "${GREEN}[unfold-smoke] PASS — both adapters unfold cleanly at the pinned Spec-Kit version.${NC}"
+  echo -e "${GREEN}[unfold-smoke] PASS. both adapters unfold cleanly at the pinned Spec-Kit version.${NC}"
   exit 0
 else
   echo
-  echo -e "${RED}[unfold-smoke] FAIL — one or both adapters broke. Check docs/SPEC_KIT_PINNING.md for the bump procedure.${NC}"
+  echo -e "${RED}[unfold-smoke] FAIL. one or both adapters broke. Check docs/SPEC_KIT_PINNING.md for the bump procedure.${NC}"
   exit 1
 fi

@@ -1,5 +1,5 @@
 ---
-description: Mechanical spec validator — 9 checks ensuring per-feature spec references and depth are structurally sound.
+description: Mechanical spec validator. 9 checks ensuring per-feature spec references and depth are structurally sound.
 globs: ["specs/**/spec.md"]
 alwaysApply: false
 ---
@@ -12,15 +12,15 @@ Mechanical pre-implementation gate on `specs/NNN-*/spec.md`. The lowest-cost che
 
 Nine structural checks:
 
-1. `depth-tag-presence` — spec has a `## Depth` section with `[E]`/`[W]`/`[D]` tag
-2. `principle-references-resolve` — every Principle reference resolves to `docs/00-CORE-PRINCIPLES.md`
-3. `scenario-references-resolve` — every Scenario reference resolves to `docs/01-SYSTEM-INTENT.md`
-4. `phase-references-resolve` — every Phase reference resolves to `docs/04-COORDINATION-HINTS.md`
-5. `entity-references-resolve` — every entity reference resolves to `01-SYSTEM-INTENT.md` or `02-ARCHITECTURE.md`
-6. `doc-line-citations-exist` — inline `file:line` citations point to real lines
-7. `depth-tag-matches-scenario` — if the spec cites a `[D]` scenario, the spec's own depth tag is `[D]` (or explicitly documents partial delivery per Article 5)
-8. `file-paths-inside-modules` — `Files this feature will touch` paths fall inside modules declared in `02-ARCHITECTURE.md` `## Module paths` block
-9. `cross-spec-ownership` — files claimed here don't overlap with another open spec's claims (complements `@dna-cross-checker` at the mechanical layer)
+1. `depth-tag-presence`. spec has a `## Depth` section with `[E]`/`[W]`/`[D]` tag
+2. `principle-references-resolve`. every Principle reference resolves to `docs/00-CORE-PRINCIPLES.md`
+3. `scenario-references-resolve`. every Scenario reference resolves to `docs/01-SYSTEM-INTENT.md`
+4. `phase-references-resolve`. every Phase reference resolves to `docs/04-COORDINATION-HINTS.md`
+5. `entity-references-resolve`. every entity reference resolves to `01-SYSTEM-INTENT.md` or `02-ARCHITECTURE.md`
+6. `doc-line-citations-exist`. inline `file:line` citations point to real lines
+7. `depth-tag-matches-scenario`. if the spec cites a `[D]` scenario, the spec's own depth tag is `[D]` (or explicitly documents partial delivery per Article 5)
+8. `file-paths-inside-modules`. `Files this feature will touch` paths fall inside modules declared in `02-ARCHITECTURE.md` `## Module paths` block
+9. `cross-spec-ownership`. files claimed here don't overlap with another open spec's claims (complements `@dna-cross-checker` at the mechanical layer)
 
 ## How to invoke
 
@@ -30,9 +30,9 @@ bash .cursor/scripts/dna-spec-validate/run.sh specs/NNN-feature-name
 
 ## Output
 
-- **PASS** — proceed to `@dna-spec-validator [New Chat]` for the judgmental layer.
-- **WARN** — non-blocking issues (e.g., legacy `02-ARCHITECTURE.md` without `## Module paths` block; script falls back to ASCII-tree parse).
-- **BLOCK** — structural integrity violated. Fix the spec before proceeding.
+- **PASS**. proceed to `@dna-spec-validator [New Chat]` for the judgmental layer.
+- **WARN**. non-blocking issues (e.g., legacy `02-ARCHITECTURE.md` without `## Module paths` block; script falls back to ASCII-tree parse).
+- **BLOCK**. structural integrity violated. Fix the spec before proceeding.
 
 ## When to skip
 
@@ -40,4 +40,4 @@ Never. The script runs in seconds. If a BLOCK appears legitimate (false positive
 
 ## Refuses
 
-Cannot be overridden. BLOCK failures indicate the spec is structurally broken — implementing against it will produce drift.
+Cannot be overridden. BLOCK failures indicate the spec is structurally broken. implementing against it will produce drift.

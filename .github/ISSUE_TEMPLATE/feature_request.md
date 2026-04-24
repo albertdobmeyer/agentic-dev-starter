@@ -7,7 +7,7 @@ labels: enhancement
 
 ## What problem does this solve
 
-<!-- Describe the failure mode, friction, or gap you're hitting. The kit exists to prevent specific, documented failure modes — new features should too. Name yours. -->
+<!-- Describe the failure mode, friction, or gap you're hitting. The kit exists to prevent specific, documented failure modes; new features should too. Name yours. -->
 
 ## Current workaround (if any)
 
@@ -15,11 +15,11 @@ labels: enhancement
 
 ## Proposed approach
 
-<!-- What you'd add or change. Be concrete — file paths, rule names, script behaviors. -->
+<!-- What you'd add or change. Be concrete: file paths, rule names, script behaviors. -->
 
 ## Which kernel role does this touch
 
-<!-- See `kernel/roles.md`. Is this a new role (11+), or an extension of an existing one (1–10)? -->
+<!-- See `kernel/roles.md`. Is this a new role (11+), or an extension of an existing one (1-10)? -->
 
 ## Adapter impact
 

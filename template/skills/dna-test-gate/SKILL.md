@@ -18,11 +18,11 @@ $ARGUMENTS
 
 ## Purpose
 
-This is a **zero-trust gate**. The agent MUST NOT implement production code until this gate passes. "Test-first" is not guidance — it is a structural requirement enforced by this skill.
+This is a **zero-trust gate**. The agent MUST NOT implement production code until this gate passes. "Test-first" is not guidance. it is a structural requirement enforced by this skill.
 
 This skill enforces CONSTITUTION.md Article 1: "Write the test BEFORE the implementation. No exceptions."
 
-## Primary execution path — invoke the runnable script
+## Primary execution path. invoke the runnable script
 
 Most projects can use the bundled bash script for the gate check. Run it first:
 
@@ -30,15 +30,15 @@ Most projects can use the bundled bash script for the gate check. Run it first:
 bash .claude/skills/dna-test-gate/run.sh
 ```
 
-- Exit code `0` = gate **PASSED** — every implementation task has a test file that fails before implementation. Proceed to `/speckit-implement`.
-- Exit code `1` = gate **FAILED** — tests missing or already-green. Fix per the script's output; do NOT implement.
+- Exit code `0` = gate **PASSED**. every implementation task has a test file that fails before implementation. Proceed to `/speckit-implement`.
+- Exit code `1` = gate **FAILED**. tests missing or already-green. Fix per the script's output; do NOT implement.
 - Exit code `2` = setup problem (no `tasks.md`, no test runner detected). Fall through to the manual checks below.
 
 The script auto-detects feature directory (from branch name or `specs/` mtime), test runner (vitest, jest, mocha, pytest, go test), and infers test file paths from implementation file paths in each task's body.
 
 Arguments: `bash run.sh specs/NNN-feature-name` (explicit directory) or `bash run.sh specs/NNN "T012"` (single task).
 
-## Fallback — manual gate when the script can't run
+## Fallback. manual gate when the script can't run
 
 If the script exits `2` (setup problem) or the project uses a test runner the script doesn't know about (rust, php, ruby, …), run the prose checks below. Your job is then to replicate the script's logic for the unsupported runner and escalate a PR to add that runner to `run.sh`.
 
@@ -46,7 +46,7 @@ If the script exits `2` (setup problem) or the project uses a test runner the sc
 
 1. Run `.specify/scripts/powershell/check-prerequisites.ps1 -Json -RequireTasks -IncludeTasks` to locate FEATURE_DIR.
 2. Read `tasks.md` from FEATURE_DIR.
-3. Identify the **current phase** — the first phase with unchecked (`- [ ]`) tasks. If user input specifies a phase or task, use that instead.
+3. Identify the **current phase**. the first phase with unchecked (`- [ ]`) tasks. If user input specifies a phase or task, use that instead.
 
 ## Gate Check
 
@@ -77,29 +77,29 @@ For every test file that exists, run it and verify it **fails**:
 ```
 
 A test that passes before implementation is either:
-- **Trivial** — testing nothing meaningful
-- **Wrong** — not testing what the implementation task requires
-- **Leftover** — from a previous implementation that already exists
+- **Trivial**. testing nothing meaningful
+- **Wrong**. not testing what the implementation task requires
+- **Leftover**. from a previous implementation that already exists
 
 **Report:**
 
 ```
 | Test File | Status | Verdict |
 |-----------|--------|---------|
-| tests/test_user.py | FAILS (3 assertions) | PASS — ready for implementation |
-| tests/test_auth.py | PASSES | BLOCKED — test passes before implementation, review test |
-| tests/test_payment.py | MISSING | BLOCKED — write test first |
+| tests/test_user.py | FAILS (3 assertions) | PASS. ready for implementation |
+| tests/test_auth.py | PASSES | BLOCKED. test passes before implementation, review test |
+| tests/test_payment.py | MISSING | BLOCKED. write test first |
 ```
 
 ### Step 3: Gate Decision
 
-**PASS** — All implementation tasks in the current phase have:
+**PASS**. All implementation tasks in the current phase have:
 - A corresponding test file that exists
 - That test file fails (proving it tests something the implementation must satisfy)
 
 → Output: "Test gate PASSED for Phase N. Proceed to /speckit-implement."
 
-**FAIL** — One or more implementation tasks are missing tests or have tests that already pass.
+**FAIL**. One or more implementation tasks are missing tests or have tests that already pass.
 
 → Output: "Test gate FAILED. N tasks blocked. Write the following tests before proceeding:"
 → List each blocked task with the expected test file path and what it should assert.

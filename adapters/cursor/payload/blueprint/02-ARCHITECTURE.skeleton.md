@@ -1,8 +1,8 @@
-# 02-ARCHITECTURE — {PROJECT_NAME}
+# 02-ARCHITECTURE. {PROJECT_NAME}
 
-> **Purpose**: Layer 2 — system SHAPE. Module boundaries, interface contracts, API surface, data flows, event flows. This doc is stack-specific but should stay declarative ("the system accepts X and produces Y"), not procedural ("create file foo.ts with function bar").
+> **Purpose**: Layer 2. system SHAPE. Module boundaries, interface contracts, API surface, data flows, event flows. This doc is stack-specific but should stay declarative ("the system accepts X and produces Y"), not procedural ("create file foo.ts with function bar").
 >
-> **Architecture Impact Assessments** (per PROJECT_DNA Section 3.5.5) live at the bottom of this file — one per scenario. They are produced during specification, not discovered during implementation.
+> **Architecture Impact Assessments** (per PROJECT_DNA Section 3.5.5) live at the bottom of this file. one per scenario. They are produced during specification, not discovered during implementation.
 
 ## Module boundaries
 
@@ -45,7 +45,7 @@ modules:
 
 **Exempt paths** (always allowed, never need a module): `tools/**`, `tests/**`, `docs/**`, `scripts/**`, `.specify/**`, `.github/**`. Feature spec.md files may list paths in these locations without triggering a module-boundary failure.
 
-**Authoring rule**: a file path that does not match any `path:` glob and is not in the exempt set is "homeless" — either a missing module declaration above, or a sign the file belongs in a different module. Resolve before `/speckit-plan`.
+**Authoring rule**: a file path that does not match any `path:` glob and is not in the exempt set is "homeless". either a missing module declaration above, or a sign the file belongs in a different module. Resolve before `/speckit-plan`.
 
 ## Interface contracts
 
@@ -63,17 +63,17 @@ modules:
 
 ## Event / sync flows
 
-{FILL IN: Scheduled jobs, event-driven pipelines, external integrations. For every data structure that implies automatic behavior (reports, notifications, scheduled deliveries), name the trigger mechanism here. Data structures without their triggering flow become inert features — this is a PROJECT_DNA "data-structure-without-behavior" failure mode.}
+{FILL IN: Scheduled jobs, event-driven pipelines, external integrations. For every data structure that implies automatic behavior (reports, notifications, scheduled deliveries), name the trigger mechanism here. Data structures without their triggering flow become inert features. this is a PROJECT_DNA "data-structure-without-behavior" failure mode.}
 
-- {Trigger 1 — e.g., "Monthly report batch job — BullMQ scheduled at 10 PM UTC on last day of month"}
+- {Trigger 1. e.g., "Monthly report batch job. BullMQ scheduled at 10 PM UTC on last day of month"}
 - {Trigger 2}
 
 ## Infrastructure decisions
 
 ### Chosen
-- **Hosting**: {e.g., Fly.io / DigitalOcean / Vercel} — {why}
-- **Database**: {e.g., managed Postgres} — {why}
-- **Observability**: {e.g., OpenTelemetry → Honeycomb} — {why}
+- **Hosting**: {e.g., Fly.io / DigitalOcean / Vercel}. {why}
+- **Database**: {e.g., managed Postgres}. {why}
+- **Observability**: {e.g., OpenTelemetry → Honeycomb}. {why}
 
 ### Rejected
 - **{alternative}**: {why not}
@@ -84,21 +84,21 @@ modules:
 
 > One block per Experience Fidelity Scenario in `01-SYSTEM-INTENT.md`. Catches cases where closing a scenario gap requires structural changes that can't be patched component-by-component. **Produced during specification, not implementation.**
 
-### Impact: Scenario 1 — {name}
+### Impact: Scenario 1. {name}
 
 **Fits existing patterns**
-- {task or component} — {why it fits}
+- {task or component}. {why it fits}
 
 **Requires new infrastructure**
-- {new service / queue / pipeline} — {what it does, which existing subsystem it plugs into}
+- {new service / queue / pipeline}. {what it does, which existing subsystem it plugs into}
 
 **Requires subsystem redesign**
-- {subsystem} — {what changes, who must approve (architect escalation)}
+- {subsystem}. {what changes, who must approve (architect escalation)}
 
 **Cross-scenario conflicts**
 - {describe any conflict with another scenario, OR "none identified"}
 
-### Impact: Scenario 2 — {name}
+### Impact: Scenario 2. {name}
 _(Same structure.)_
 
 ---

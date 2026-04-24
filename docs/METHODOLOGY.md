@@ -3,9 +3,9 @@
 > Part of [agentic-dev-starter](../README.md)
 > Licensed under CC BY-SA 4.0
 >
-> **Canonical source**: This doc is a compressed summary of the full methodology. The authoritative reference is [`../PROJECT_DNA.md`](../PROJECT_DNA.md) — the original methodology document with all six artifacts (7-doc Blueprint Package, Scenario Validation Matrix, Architecture Impact Assessment, Coherence Check, Production Threshold, Construction Sites tracker, Drift Remediation Protocol) and a worked example in Appendix E.
+> **Canonical sources**: The kernel docs are authoritative. See `kernel/methodology.md` for agent-agnostic invariants and the 12-step workflow, `kernel/vocabulary.md` for terminology, and `kernel/roles.md` for the 17 role taxonomy. All six mechanisms that support these articles (7-doc Blueprint Package, Scenario Validation Matrix, Architecture Impact Assessment, Coherence Check, Production Threshold, Construction Sites tracker, Drift Remediation Protocol) are either absorbed into the constitution template directly or enforced at gate/subagent level.
 
-This document explains the *why* behind Articles 3-7 of the constitution template. Each article addresses a specific, documented failure mode in spec-driven AI-assisted development. For the full operational mechanisms that prevent each failure mode, read `PROJECT_DNA.md`.
+This document explains the *why* behind Articles 3-7 of the constitution template. Each article addresses a specific, documented failure mode in spec-driven AI-assisted development. For the full operational mechanisms that prevent each failure mode, read `kernel/methodology.md` and the relevant article of `template/CONSTITUTION.md`.
 
 ---
 
@@ -15,7 +15,7 @@ This document explains the *why* behind Articles 3-7 of the constitution templat
 
 You spec a feature: "Users receive a weekly summary email with their activity stats, personalized recommendations, and a motivational message based on their progress."
 
-The agent decomposes this into tasks. Every task passes its test. But the email arrives with generic stats, recommendations that don't reference the user's actual behavior, and a motivational message that feels like it was written for someone else. Each component *works* — but the experience is flat.
+The agent decomposes this into tasks. Every task passes its test. But the email arrives with generic stats, recommendations that don't reference the user's actual behavior, and a motivational message that feels like it was written for someone else. Each component *works*. but the experience is flat.
 
 **Flattening** is when a rich user experience gets decomposed into component tasks that each pass tests individually but never compose into the intended experience.
 
@@ -23,10 +23,10 @@ The agent decomposes this into tasks. Every task passes its test. But the email 
 
 **Experience Fidelity Scenarios** force the spec to describe what the user *experiences*, not what the system *does*. Each scenario includes:
 
-- **Negative assertions** ("what the user NEVER has to do") — the most powerful drift detectors because they're the first things cut during implementation
-- **Behavioral variation** (happy path + edge case + error flow) — prevents single-path implementations
-- **Filmable success criteria** — "Video of user doing X in Y seconds without Z"
-- **Quantified impact** — becomes a regression threshold
+- **Negative assertions** ("what the user NEVER has to do"). the most powerful drift detectors because they're the first things cut during implementation
+- **Behavioral variation** (happy path + edge case + error flow). prevents single-path implementations
+- **Filmable success criteria**. "Video of user doing X in Y seconds without Z"
+- **Quantified impact**. becomes a regression threshold
 
 ---
 
@@ -56,7 +56,7 @@ The agent simplifies a `[D]` requirement to `[W]`. The test passes. Nobody logs 
 
 ### The Prevention
 
-Every `[D]`→`[W]` downgrade is logged at the moment it happens — with the specific negative assertions that now fail. 3+ downgrades on one scenario means the implementation approach needs rethinking — it's an architecture problem, not a patching problem.
+Every `[D]`→`[W]` downgrade is logged at the moment it happens. with the specific negative assertions that now fail. 3+ downgrades on one scenario means the implementation approach needs rethinking. it's an architecture problem, not a patching problem.
 
 **Unlogged downgrades are the mechanism by which flattening becomes invisible.**
 
@@ -84,7 +84,7 @@ QA finds 12 gaps. The team fixes them top-to-bottom. Each fix is correct in isol
 
 ### The Prevention
 
-Don't patch gap-by-gap. Write scenarios for the gaps first, derive tasks from those scenarios, run the coherence check, classify against the production threshold, then implement as a coherent phase — not a patch list.
+Don't patch gap-by-gap. Write scenarios for the gaps first, derive tasks from those scenarios, run the coherence check, classify against the production threshold, then implement as a coherent phase. not a patch list.
 
 ---
 

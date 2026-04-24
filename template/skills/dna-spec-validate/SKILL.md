@@ -20,15 +20,15 @@ $ARGUMENTS
 
 The kit audits the **Blueprint** (via `dna:spec-auditor`) and the **implementation** (via `dna-verify` + `dna:verifier`). It does NOT audit the layer in between: per-feature `specs/NNN-feature/spec.md` files that translate Blueprint scenarios into testable contracts.
 
-When the spec drifts from the Blueprint — wrong depth claim, file path outside any module, undefined scenario reference, sentence violating a "never has to do" assertion — the build proceeds on a false contract. Tests pass. The implementation ships. The user experience is wrong.
+When the spec drifts from the Blueprint. wrong depth claim, file path outside any module, undefined scenario reference, sentence violating a "never has to do" assertion. the build proceeds on a false contract. Tests pass. The implementation ships. The user experience is wrong.
 
 This skill closes that gap. Run after `/speckit-tasks` (or as early as `/speckit-specify` if plan/tasks aren't authored yet), before `/dna-test-gate`.
 
-## Execution — two layers
+## Execution. two layers
 
 The validation has a mechanical floor and a judgmental ceiling. Run them in order. Same pattern as `/dna-verify`.
 
-### Layer 1 — mechanical floor (script)
+### Layer 1. mechanical floor (script)
 
 ```bash
 bash .claude/skills/dna-spec-validate/run.sh                     # auto-detect feature dir
@@ -39,33 +39,33 @@ bash .claude/skills/dna-spec-validate/run.sh --help              # docstring
 ```
 
 Checks (mechanical, deterministic regex):
-- **Depth tag matches scenario** — spec.md's declared depth (`[D]` / `[W]` / `[E]`) matches the cited Scenario's depth in `01-SYSTEM-INTENT.md`.
-- **File paths inside modules** — every `src/...` path under `## Files this feature will touch` falls within a module declared in `02-ARCHITECTURE.md`'s `## Module paths` block. Exempt: `tools/**`, `tests/**`, `docs/**`, `scripts/**`, `.specify/**`, `.github/**`.
-- **Principle / Scenario / Phase / entity references resolve** — every `Principle N`, `Scenario N`, `Phase N`, and entity-name reference in spec.md exists in the corresponding Blueprint doc.
-- **Doc line citations exist** — cited `docs/NN-X.md:line` line refs point at lines that exist and look like the expected pattern.
-- **Cross-spec ownership** — across all OPEN specs (filtered via `git branch --merged main`), no two specs claim write access to the same path without `(SHARED)`.
+- **Depth tag matches scenario**. spec.md's declared depth (`[D]` / `[W]` / `[E]`) matches the cited Scenario's depth in `01-SYSTEM-INTENT.md`.
+- **File paths inside modules**. every `src/...` path under `## Files this feature will touch` falls within a module declared in `02-ARCHITECTURE.md`'s `## Module paths` block. Exempt: `tools/**`, `tests/**`, `docs/**`, `scripts/**`, `.specify/**`, `.github/**`.
+- **Principle / Scenario / Phase / entity references resolve**. every `Principle N`, `Scenario N`, `Phase N`, and entity-name reference in spec.md exists in the corresponding Blueprint doc.
+- **Doc line citations exist**. cited `docs/NN-X.md:line` line refs point at lines that exist and look like the expected pattern.
+- **Cross-spec ownership**. across all OPEN specs (filtered via `git branch --merged main`), no two specs claim write access to the same path without `(SHARED)`.
 
 Exit codes:
 - `0` PASS → mechanical floor met. Proceed to Layer 2.
 - `1` FAIL → at least one blocking finding (in `blocking` mode). Fix before invoking the subagent.
 - `2` SETUP → no spec.md, no Blueprint, no feature directory.
 
-Mode toggle: `--mode {blocking|advisory}` CLI flag overrides `DNA_SPEC_VALIDATE_MODE` env var. Default: `advisory` for SPEC-19 Stages 1–2; flips to `blocking` once Stage 3 ships and the dogfood passes cleanly. CI (template/workflows/dna.yml) uses `blocking`.
+Mode toggle: `--mode {blocking|advisory}` CLI flag overrides `DNA_SPEC_VALIDATE_MODE` env var. Default: `advisory` for SPEC-19 Stages 1-2; flips to `blocking` once Stage 3 ships and the dogfood passes cleanly. CI (template/workflows/dna.yml) uses `blocking`.
 
-### Layer 2 — judgmental ceiling (subagent)
+### Layer 2. judgmental ceiling (subagent)
 
 Invoke the `dna:spec-validator` subagent (lands in SPEC-19 Stage 4). It starts with **zero carryover from the build conversation** (PROJECT_DNA Section 4.3 audit-isolation principle), reads spec.md + Blueprint scenarios from disk, and detects semantic drift the script cannot see:
 
-- **Negative-assertion violations** — spec language implying user must do something the cited scenario's "What they NEVER have to do" list forbids.
-- **Non-goal violations** — spec describes work explicitly listed in `04-COORDINATION-HINTS.md` Non-goals.
-- **Behavioral fidelity** — paraphrase OK; inversion / addition / omission of assertions = drift.
-- **Production-threshold consistency** — spec for "deferred to v1.1" feature being treated as must-close.
+- **Negative-assertion violations**. spec language implying user must do something the cited scenario's "What they NEVER have to do" list forbids.
+- **Non-goal violations**. spec describes work explicitly listed in `04-COORDINATION-HINTS.md` Non-goals.
+- **Behavioral fidelity**. paraphrase OK; inversion / addition / omission of assertions = drift.
+- **Production-threshold consistency**. spec for "deferred to v1.1" feature being treated as must-close.
 
 Verdict: `CLEAR` / `WARN` / `BLOCK` with file:line refs.
 
 ## Pre-condition
 
-This gate assumes `dna:spec-auditor` has reported CLEAR for the Blueprint. The auditor's report is an LLM artifact and not machine-readable; the script cannot programmatically verify it. Run the auditor first; if it returns BLOCK, do not run this gate — fix the Blueprint first, then re-run both.
+This gate assumes `dna:spec-auditor` has reported CLEAR for the Blueprint. The auditor's report is an LLM artifact and not machine-readable; the script cannot programmatically verify it. Run the auditor first; if it returns BLOCK, do not run this gate. fix the Blueprint first, then re-run both.
 
 ## Relationship to other DNA gates
 

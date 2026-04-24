@@ -18,8 +18,8 @@ Parses `specs/NNN-*/tasks.md` for tasks marked `[P]`. For each `[P]` group in a 
 bash .cursor/scripts/dna-decompose/run.sh specs/NNN-feature-name
 ```
 
-PASS — safe to decompose and run parallel implementations (see `@dna-delegate`).
-FAIL — two or more `[P]` tasks claim overlapping files. Either serialize them (remove the `[P]` marker from one), or split the file touches more granularly.
+PASS. safe to decompose and run parallel implementations (see `@dna-delegate`).
+FAIL. two or more `[P]` tasks claim overlapping files. Either serialize them (remove the `[P]` marker from one), or split the file touches more granularly.
 
 ## Common failures
 

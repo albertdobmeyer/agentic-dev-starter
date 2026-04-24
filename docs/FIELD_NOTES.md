@@ -2,7 +2,7 @@
 
 > **Project:** agentic-bookmark-organizer (CLI tool, Python, Ollama)
 > **Build date:** 2026-04-13
-> **Scope:** Full workflow — handoff docs → /specify → /plan → /tasks → /implement
+> **Scope:** Full workflow. handoff docs → /specify → /plan → /tasks → /implement
 > **Result:** 47 tasks, 259 tests, 4 phases, working pipeline
 
 These findings were captured during the first complete end-to-end build using this methodology. Each finding led to a specific revision in the framework. A methodology that demonstrates self-correction under production use is more trustworthy than one presented as static doctrine.
@@ -27,7 +27,7 @@ These findings were captured during the first complete end-to-end build using th
 
 ## Finding 2: Commit-Per-Task Creates Artificial Fragmentation
 
-**Observed friction:** 47 tasks would have required 47 commits. In practice, the agent batched by phase — 4 commits for 47 tasks. The constitution's original Article 8 ("commit after every completed task") was routinely violated because it was impractical.
+**Observed friction:** 47 tasks would have required 47 commits. In practice, the agent batched by phase. 4 commits for 47 tasks. The constitution's original Article 8 ("commit after every completed task") was routinely violated because it was impractical.
 
 **Root cause:** The rule optimized for traceability at the expense of meaningful version history. Micro-commits for 5-line changes create noise without adding review value.
 
@@ -42,7 +42,7 @@ This preserves traceability (every phase boundary is a commit) without forcing m
 
 ## Finding 3: [P] Markers Without Execution Semantics
 
-**Observed friction:** The task template correctly marked parallel-safe tasks with `[P]`, but the workflow never documented how to execute them in parallel. The agent independently discovered sub-agent delegation and reported it halved implementation time — but said "the workflow doesn't suggest spawning sub-agents."
+**Observed friction:** The task template correctly marked parallel-safe tasks with `[P]`, but the workflow never documented how to execute them in parallel. The agent independently discovered sub-agent delegation and reported it halved implementation time. but said "the workflow doesn't suggest spawning sub-agents."
 
 **Root cause:** The `[P]` marker was a structural annotation without operational guidance. Its existence implied parallelization was possible, but the methodology didn't say how.
 
@@ -67,9 +67,9 @@ This preserves traceability (every phase boundary is a commit) without forcing m
 
 ## Finding 5: Constitution Checks Catch Real Problems
 
-**Observed value:** The constitution gate check during /plan caught a real architectural deviation — the agent had silently changed a core dependency (swapping `agentic-ollama/client.py` for a project-specific `llm.py`). Without the formal constitution check, the deviation would have shipped undocumented.
+**Observed value:** The constitution gate check during /plan caught a real architectural deviation. the agent had silently changed a core dependency (swapping `agentic-ollama/client.py` for a project-specific `llm.py`). Without the formal constitution check, the deviation would have shipped undocumented.
 
-**Observation:** The constitution check is the most underrated phase in the workflow. It's where structural problems surface — not formatting issues, but genuine violations of project axioms. The agent noted: "Without the gate, I would have just made the change silently. The formal check forced me to document the justification."
+**Observation:** The constitution check is the most underrated phase in the workflow. It's where structural problems surface. not formatting issues, but genuine violations of project axioms. The agent noted: "Without the gate, I would have just made the change silently. The formal check forced me to document the justification."
 
 **No revision needed.** This validates the existing design. The constitution check works exactly as intended.
 
@@ -79,11 +79,11 @@ This preserves traceability (every phase boundary is a commit) without forcing m
 
 These aspects of the methodology required no revision after e2e testing:
 
-- **Handoff document structure** (VISION, ARCHITECTURE, CONSTITUTION, SCOPE) — provided excellent agent onboarding
-- **Anti-flattening Articles 3-7** — depth classification and experience fidelity scenarios drove real engineering decisions
-- **Test-first mandate** (Article 1) — produced 259 tests that caught real issues, including integration wiring problems
-- **Spec-Kit workflow progression** (specify → plan → tasks → implement) — each phase produced useful artifacts
-- **CLAUDE.md as quick reference** — short, scannable, immediately oriented the agent
+- **Handoff document structure** (VISION, ARCHITECTURE, CONSTITUTION, SCOPE). provided excellent agent onboarding
+- **Anti-flattening Articles 3-7**. depth classification and experience fidelity scenarios drove real engineering decisions
+- **Test-first mandate** (Article 1). produced 259 tests that caught real issues, including integration wiring problems
+- **Spec-Kit workflow progression** (specify → plan → tasks → implement). each phase produced useful artifacts
+- **CLAUDE.md as quick reference**. short, scannable, immediately oriented the agent
 
 ---
 
@@ -91,13 +91,13 @@ These aspects of the methodology required no revision after e2e testing:
 
 Five findings. Three methodology revisions. Two validations. Zero showstoppers.
 
-The methodology refines itself. Every rule that changed was changed because live execution revealed a better formulation — not because the rule was wrong in principle, but because its expression was imprecise. The framework is now tighter than before the build.
+The methodology refines itself. Every rule that changed was changed because live execution revealed a better formulation. not because the rule was wrong in principle, but because its expression was imprecise. The framework is now tighter than before the build.
 
 *Every rule exists because it was tested. The methodology evolves by its own use.*
 
 ---
 
-# Second validation — team-project-scheduler (2026-04-22 → 2026-04-23)
+# Second validation. team-project-scheduler (2026-04-22 → 2026-04-23)
 
 > **Project:** team-project-scheduler (worked-example published at [github.com/albertdobmeyer/team-project-scheduler-example](https://github.com/albertdobmeyer/team-project-scheduler-example))
 > **Build dates:** 2026-04-22 (feature 004, `[W]`-depth dogfood) + 2026-04-23 (feature 005, `[D]`-depth dogfood)
@@ -111,7 +111,7 @@ Raw session walkthroughs preserved at [dogfood-evidence/](https://github.com/alb
 
 **Observed value:** On feature 004 (`[W]`-depth), the Pass-1 `dna-verifier` subagent passed the feature. A Pass-2 invocation with a fresh context (no build-conversation history) caught a subtle scenario-assertion gap that the in-context Pass-1 missed. Evidence preserved at [DOGFOOD-NOTES-2026-04-22.md §Pass 2](https://github.com/albertdobmeyer/team-project-scheduler-example/blob/c084166/dogfood-evidence/DOGFOOD-NOTES-2026-04-22.md).
 
-**Observation:** Build-conversation context carries implicit trust — the verifier "knows what we meant." A fresh-context pass strips that trust. The bias firewall only works when the verifier is genuinely independent.
+**Observation:** Build-conversation context carries implicit trust. the verifier "knows what we meant." A fresh-context pass strips that trust. The bias firewall only works when the verifier is genuinely independent.
 
 **No revision needed.** This validates the design of running verifier + validator in fresh-context isolation. The pattern was hypothesized; 004 proved it.
 
@@ -119,7 +119,7 @@ Raw session walkthroughs preserved at [dogfood-evidence/](https://github.com/alb
 
 ## Finding 7: Judgmental subagent correctly distinguishes scope-deferral from drift
 
-**Observed value:** On feature 005 (`[D]`-depth), the spec deliberately deferred the UI layer to a committed sibling feature (006-calendar-ui). SPEC-19's `dna-spec-validator` subagent was invoked to assess whether this was legitimate Article 5 scoping or production-threshold drift. It returned CLEAR + ADVISORY-01 correctly identifying it as legitimate — and named the required Construction Site entry before merge. Evidence at [DOGFOOD-NOTES-2026-04-23.md §Phase 5](https://github.com/albertdobmeyer/team-project-scheduler-example/blob/c084166/dogfood-evidence/DOGFOOD-NOTES-2026-04-23.md).
+**Observed value:** On feature 005 (`[D]`-depth), the spec deliberately deferred the UI layer to a committed sibling feature (006-calendar-ui). SPEC-19's `dna-spec-validator` subagent was invoked to assess whether this was legitimate Article 5 scoping or production-threshold drift. It returned CLEAR + ADVISORY-01 correctly identifying it as legitimate. and named the required Construction Site entry before merge. Evidence at [DOGFOOD-NOTES-2026-04-23.md §Phase 5](https://github.com/albertdobmeyer/team-project-scheduler-example/blob/c084166/dogfood-evidence/DOGFOOD-NOTES-2026-04-23.md).
 
 **Observation:** The ruleset encoded in the subagent's prompt actually reasons about the pattern rather than rubber-stamping. A subagent that returned CLEAR without ADVISORY would be indistinguishable from a stub; one that returned BLOCK would force false positives. ADVISORY-01 is the mark of a judgment call being made.
 
@@ -131,7 +131,7 @@ Raw session walkthroughs preserved at [dogfood-evidence/](https://github.com/alb
 
 **Observed value:** CS-002 was logged at merge time (not post-hoc) for feature 005's partial-delivery. The entry in [docs/05-CONSTRUCTION-SITES.md](https://github.com/albertdobmeyer/team-project-scheduler-example/blob/c084166/docs/05-CONSTRUCTION-SITES.md) explicitly blocks Phase 2 closure until 006 ships. Without the logged entry, the gap between "server read path shipped" and "filmable user experience achievable" would have been invisible.
 
-**Observation:** Construction Sites are not a post-implementation debt tracker — they're a *phase-closure gate*. An unresolved CS blocks Production Threshold. This makes Article 5 scope-deferral safe because the consequences stay visible.
+**Observation:** Construction Sites are not a post-implementation debt tracker. they're a *phase-closure gate*. An unresolved CS blocks Production Threshold. This makes Article 5 scope-deferral safe because the consequences stay visible.
 
 **No revision needed.** Validates the invariant added to HANDOFF-2026-04-23 §invariants #11: partial-delivery of `[D]` is legitimate only with (a) explicit out-of-scope statement, (b) committed sibling feature, (c) merge-time CS entry, (d) phase remains open.
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# aggregate-retros.sh — kit-level aggregator that collects every feature's
+# aggregate-retros.sh. kit-level aggregator that collects every feature's
 # retrospective across one or more target projects and produces a corpus
 # file that makes the methodology's validation data visible.
 #
@@ -49,7 +49,7 @@ for target in "$@"; do
     elif [ -d "$KIT_ROOT/REPOS/$target" ]; then
       target="$KIT_ROOT/REPOS/$target"
     else
-      echo "[aggregate-retros] SKIP — $target is not a directory (tried ../$target and REPOS/$target)" >&2
+      echo "[aggregate-retros] SKIP. $target is not a directory (tried ../$target and REPOS/$target)" >&2
       continue
     fi
   fi
@@ -58,7 +58,7 @@ for target in "$@"; do
   RETROS=$(find "$target/specs" -maxdepth 3 -name "retrospective.md" 2>/dev/null | sort)
 
   if [ -z "$RETROS" ]; then
-    echo "[aggregate-retros] $target — no retrospective.md files found"
+    echo "[aggregate-retros] $target. no retrospective.md files found"
     continue
   fi
 

@@ -31,7 +31,7 @@ For methodology improvements, explain the failure mode your change addresses and
 
 ## Code of Conduct
 
-Be professional, be constructive, be kind. This project exists to help people build better software — contributions should serve that goal.
+Be professional, be constructive, be kind. This project exists to help people build better software; contributions should serve that goal.
 
 ## License
 

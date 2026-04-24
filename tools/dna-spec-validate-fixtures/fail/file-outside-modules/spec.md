@@ -8,5 +8,5 @@
 
 ## Files this feature will touch
 
-- `src/zoo/widget.ts` (new — there is no `zoo` module declared in 02-ARCHITECTURE.md)
+- `src/zoo/widget.ts` (new. there is no `zoo` module declared in 02-ARCHITECTURE.md)
 - `src/models/task.ts` (SHARED)

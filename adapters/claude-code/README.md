@@ -1,4 +1,4 @@
-# Claude Code adapter — reference implementation
+# Claude Code adapter. reference implementation
 
 > **Status**: Complete. This is the reference adapter; the kit's `template/` directory IS this adapter's payload.
 
@@ -6,9 +6,9 @@
 
 | Kernel role | Claude Code mechanism | File / path |
 |---|---|---|
-| specifier | slash command + main-agent execution | `/speckit-specify` — provided by Spec-Kit, installed via `specify init` during Bootstrap |
-| planner | slash command | `/speckit-plan` — Spec-Kit |
-| tasker | slash command | `/speckit-tasks` — Spec-Kit |
+| specifier | slash command + main-agent execution | `/speckit-specify`. provided by Spec-Kit, installed via `specify init` during Bootstrap |
+| planner | slash command | `/speckit-plan`. Spec-Kit |
+| tasker | slash command | `/speckit-tasks`. Spec-Kit |
 | implementer | main agent calls Agent tool with `subagent_type: general-purpose` scoped to one file | no dedicated subagent file; main agent dispatches |
 | test-gatekeeper | skill with `run.sh` | `.claude/skills/dna-test-gate/SKILL.md` + `run.sh` |
 | cross-checker | subagent | `.claude/agents/dna-cross-checker.md` |
@@ -78,7 +78,7 @@ Things in this adapter that won't port cleanly to other platforms:
 - `.claude/skills/NAME/SKILL.md` with frontmatter convention.
 - `.claude/agents/NAME.md` with `name`/`description`/`tools`/`model` frontmatter.
 - Slash commands (`/speckit-*`, `/dna-*`) as the primary invocation surface.
-- Model references (`sonnet`, `opus`) in subagent frontmatter — adapter-specific naming.
+- Model references (`sonnet`, `opus`) in subagent frontmatter. adapter-specific naming.
 - Spec-Kit's `--integration claude` flag (other agents have different integrations).
 
 All of these are documented here so a future adapter contributor knows what needs translation.
@@ -86,6 +86,6 @@ All of these are documented here so a future adapter contributor knows what need
 ## Dogfooding evidence
 
 - `team-project-scheduler` (in `B:\A5DS-HQ\REPOS\`) unfolded via this adapter; 3 features shipped; migration to 7-doc Blueprint validated end-to-end 2026-04-21.
-- `agentic-bookmark-organizer` (external) — prior production build that informed PROJECT_DNA.
+- `agentic-bookmark-organizer` (external). prior production build that informed PROJECT_DNA.
 
 Two targets, four total features shipped through the workflow. Corpus visible via `tools/aggregate-retros.sh`.

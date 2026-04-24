@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# dna-spec-validate — mechanical layer for the spec ↔ Blueprint validator.
+# dna-spec-validate. mechanical layer for the spec ↔ Blueprint validator.
 # Pairs with the dna:spec-validator subagent (which does the judgmental
 # semantic-drift detection: negative-assertion violations, behavioral fidelity,
 # non-goal violations, production-threshold consistency).
@@ -12,14 +12,14 @@
 #   - cited `docs/NN-X.md:line` line refs exist and look like the expected pattern
 #   - cross-spec file ownership: no two OPEN specs claim write access to the same path without (SHARED)
 #
-# Pre-condition (NOT programmatically checked — discipline only): dna:spec-auditor
+# Pre-condition (NOT programmatically checked. discipline only): dna:spec-auditor
 # has reported CLEAR for the Blueprint. The auditor's report is an LLM artifact
 # and not machine-readable. If you skip the auditor, this gate cannot warn you.
 #
 # Exit codes:
-#   0  PASS — mechanical checks all green (or all WARN in advisory mode). Proceed to dna:spec-validator subagent.
-#   1  FAIL — at least one BLOCKING check failed in blocking mode.
-#   2  SETUP — no spec.md, no Blueprint, no feature directory, etc.
+#   0  PASS. mechanical checks all green (or all WARN in advisory mode). Proceed to dna:spec-validator subagent.
+#   1  FAIL. at least one BLOCKING check failed in blocking mode.
+#   2  SETUP. no spec.md, no Blueprint, no feature directory, etc.
 #
 # Usage:
 #   run.sh                                  # auto-detect feature dir from branch name
@@ -55,7 +55,7 @@ while [ "$#" -gt 0 ]; do
       ;;
     --mode)
       shift
-      [ "$#" -eq 0 ] && { echo "[dna-spec-validate] SETUP — --mode requires an argument (blocking|advisory)" >&2; exit 2; }
+      [ "$#" -eq 0 ] && { echo "[dna-spec-validate] SETUP. --mode requires an argument (blocking|advisory)" >&2; exit 2; }
       MODE_CLI="$1"
       shift
       ;;
@@ -64,7 +64,7 @@ while [ "$#" -gt 0 ]; do
       shift
       ;;
     -*)
-      echo "[dna-spec-validate] SETUP — unknown flag: $1" >&2
+      echo "[dna-spec-validate] SETUP. unknown flag: $1" >&2
       exit 2
       ;;
     *)
@@ -75,12 +75,12 @@ while [ "$#" -gt 0 ]; do
 done
 
 # Mode resolution: CLI > env > default. Default flipped to `blocking` in
-# Stage 3 (was `advisory` in Stages 1–2 for trust-building).
+# Stage 3 (was `advisory` in Stages 1-2 for trust-building).
 MODE="${MODE_CLI:-${DNA_SPEC_VALIDATE_MODE:-blocking}}"
 case "$MODE" in
   blocking|advisory) ;;
   *)
-    echo "[dna-spec-validate] SETUP — invalid mode '$MODE'. Use blocking|advisory." >&2
+    echo "[dna-spec-validate] SETUP. invalid mode '$MODE'. Use blocking|advisory." >&2
     exit 2
     ;;
 esac
@@ -109,7 +109,7 @@ if [ -z "$FEATURE_DIR" ]; then
 fi
 
 if [ -z "$FEATURE_DIR" ] || [ ! -d "$FEATURE_DIR" ]; then
-  echo "[dna-spec-validate] SETUP — cannot locate feature directory. Pass as arg: run.sh specs/NNN-name" >&2
+  echo "[dna-spec-validate] SETUP. cannot locate feature directory. Pass as arg: run.sh specs/NNN-name" >&2
   exit 2
 fi
 
@@ -118,7 +118,7 @@ PLAN_FILE="$FEATURE_DIR/plan.md"
 TASKS_FILE="$FEATURE_DIR/tasks.md"
 
 if [ ! -f "$SPEC_FILE" ]; then
-  echo "[dna-spec-validate] SETUP — $SPEC_FILE not found. Run /speckit-specify first." >&2
+  echo "[dna-spec-validate] SETUP. $SPEC_FILE not found. Run /speckit-specify first." >&2
   exit 2
 fi
 
@@ -142,7 +142,7 @@ REQUIRED_BLUEPRINT=(
 
 for f in "${REQUIRED_BLUEPRINT[@]}"; do
   if [ ! -f "$f" ]; then
-    echo "[dna-spec-validate] SETUP — required Blueprint file $f not found. Run dna:spec-auditor first." >&2
+    echo "[dna-spec-validate] SETUP. required Blueprint file $f not found. Run dna:spec-auditor first." >&2
     exit 2
   fi
 done
@@ -154,8 +154,8 @@ done
 echo "[dna-spec-validate] Feature: $FEATURE_DIR"
 echo "[dna-spec-validate] Mode:    $MODE"
 echo "[dna-spec-validate] Spec:    $SPEC_FILE"
-[ -n "$PLAN_FILE" ]  && echo "[dna-spec-validate] Plan:    $PLAN_FILE"  || echo "[dna-spec-validate] Plan:    (absent — tolerated)"
-[ -n "$TASKS_FILE" ] && echo "[dna-spec-validate] Tasks:   $TASKS_FILE" || echo "[dna-spec-validate] Tasks:   (absent — tolerated)"
+[ -n "$PLAN_FILE" ]  && echo "[dna-spec-validate] Plan:    $PLAN_FILE"  || echo "[dna-spec-validate] Plan:    (absent. tolerated)"
+[ -n "$TASKS_FILE" ] && echo "[dna-spec-validate] Tasks:   $TASKS_FILE" || echo "[dna-spec-validate] Tasks:   (absent. tolerated)"
 echo "[dna-spec-validate] Reminder: this gate assumes dna:spec-auditor has reported CLEAR. It cannot verify that."
 echo
 
@@ -261,7 +261,7 @@ fi
 # ------------------------------------------------------------------
 # 5.2 Principle references resolve
 # ------------------------------------------------------------------
-# Every "Principle N" cited in spec.md must exist as `^### Principle N —` in
+# Every "Principle N" cited in spec.md must exist as `^### Principle N -` in
 # 00-CORE-PRINCIPLES.md. Undefined → WARN (could be roadmap, not drift).
 
 CHECK_NAME="principle-references-resolve"
@@ -440,7 +440,7 @@ if [ "$SPEC_MAX_RANK" -gt 0 ] && [ -n "$CITED_SCENARIOS" ]; then
     if [ "$SPEC_MAX_RANK" -gt "$SCENARIO_RANK" ]; then
       LOC_SPEC=$(file_line_of "$SPEC_FILE" "\`\\[$SPEC_MAX_LETTER\\]\`")
       LOC_BP=$(file_line_of "$BLUEPRINT_DIR/01-SYSTEM-INTENT.md" "Scenario[[:space:]]+$n")
-      add_block "depth-tag-matches-scenario: spec claims [$SPEC_MAX_LETTER] (at $LOC_SPEC) but cited Scenario $n is classified [$SCENARIO_DEPTH] (at $LOC_BP) — claimed depth exceeds Blueprint."
+      add_block "depth-tag-matches-scenario: spec claims [$SPEC_MAX_LETTER] (at $LOC_SPEC) but cited Scenario $n is classified [$SCENARIO_DEPTH] (at $LOC_BP). claimed depth exceeds Blueprint."
       DEPTH_MATCH_FINDINGS=$((DEPTH_MATCH_FINDINGS + 1))
     fi
   done
@@ -484,7 +484,7 @@ if [ -z "$MODULE_PATHS" ]; then
     }
   ' "$ARCH_FILE")
   USED_FALLBACK=1
-  add_warn "file-paths-inside-modules: $ARCH_FILE has no '## Module paths' block — using ASCII-tree parse fallback (less reliable). Add the structured block (see template/blueprint/02-ARCHITECTURE.skeleton.md)."
+  add_warn "file-paths-inside-modules: $ARCH_FILE has no '## Module paths' block. using ASCII-tree parse fallback (less reliable). Add the structured block (see template/blueprint/02-ARCHITECTURE.skeleton.md)."
 fi
 
 PATH_FINDINGS=0
@@ -592,7 +592,7 @@ if [ "${#OPEN_SPECS[@]}" -ge 2 ]; then
   rm -f "$CLAIMS_FILE"
 fi
 if [ "$HAVE_GIT" -eq 0 ]; then
-  add_warn "cross-spec-ownership: not in a git repo — cannot filter merged branches; treated all specs as open."
+  add_warn "cross-spec-ownership: not in a git repo. cannot filter merged branches; treated all specs as open."
 fi
 
 if [ "$CROSS_FINDINGS" -eq 0 ]; then
@@ -630,18 +630,18 @@ fi
 
 if [ "$BLOCK_COUNT" -eq 0 ]; then
   if [ "$WARN_COUNT" -eq 0 ]; then
-    echo "[dna-spec-validate] PASS — all checks green. Proceed to dna:spec-validator subagent for semantic-drift audit."
+    echo "[dna-spec-validate] PASS. all checks green. Proceed to dna:spec-validator subagent for semantic-drift audit."
   else
-    echo "[dna-spec-validate] PASS (with warnings) — review warnings above before proceeding to subagent."
+    echo "[dna-spec-validate] PASS (with warnings). review warnings above before proceeding to subagent."
   fi
   exit 0
 fi
 
 # Block findings exist.
 if [ "$MODE" = "advisory" ]; then
-  echo "[dna-spec-validate] PASS (advisory mode) — $BLOCK_COUNT blocking finding(s) downgraded to advisory. Re-run with --mode blocking to enforce."
+  echo "[dna-spec-validate] PASS (advisory mode). $BLOCK_COUNT blocking finding(s) downgraded to advisory. Re-run with --mode blocking to enforce."
   exit 0
 else
-  echo "[dna-spec-validate] FAIL — $BLOCK_COUNT blocking finding(s) in blocking mode. Fix and re-run."
+  echo "[dna-spec-validate] FAIL. $BLOCK_COUNT blocking finding(s) in blocking mode. Fix and re-run."
   exit 1
 fi

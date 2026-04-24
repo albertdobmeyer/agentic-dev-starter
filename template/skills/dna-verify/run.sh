@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# dna-verify — mechanical verification layer.
+# dna-verify. mechanical verification layer.
 # Pairs with the dna:verifier subagent (which does the judgmental scenario-walk).
 # This script checks the things you CAN check mechanically:
 #   - test coverage threshold from CONSTITUTION Article 10
@@ -8,8 +8,8 @@
 #   - every Experience Fidelity Scenario has at least one test file referencing it
 #
 # Exit codes:
-#   0  PASS — mechanical checks all green. Main agent may proceed to dna:verifier subagent for scenario walk.
-#   1  FAIL — mechanical floor not met; subagent audit is premature.
+#   0  PASS. mechanical checks all green. Main agent may proceed to dna:verifier subagent for scenario walk.
+#   1  FAIL. mechanical floor not met; subagent audit is premature.
 #   2  Setup problem (no Blueprint, no tests dir, etc.)
 
 set -u
@@ -21,7 +21,7 @@ cd "$REPO_ROOT"
 # ------------------------------------------------------------------
 for f in docs/01-SYSTEM-INTENT.md CONSTITUTION.md; do
   if [ ! -f "$f" ]; then
-    echo "[dna-verify] SETUP — required file $f not found. Run dna:spec-auditor first." >&2
+    echo "[dna-verify] SETUP. required file $f not found. Run dna:spec-auditor first." >&2
     exit 2
   fi
 done
@@ -35,7 +35,7 @@ if [ -z "$TESTS_DIR" ]; then
   if ls src/**/*.test.* src/**/*.spec.* 2>/dev/null | head -1 >/dev/null; then
     TESTS_DIR="src (co-located)"
   else
-    echo "[dna-verify] SETUP — no tests/ directory and no co-located *.test.* / *.spec.* files found." >&2
+    echo "[dna-verify] SETUP. no tests/ directory and no co-located *.test.* / *.spec.* files found." >&2
     exit 2
   fi
 fi
@@ -50,7 +50,7 @@ echo "[dna-verify] Tests location: $TESTS_DIR"
 COVERAGE_THRESHOLD=$(grep -oE '[0-9]+ ?%' CONSTITUTION.md | head -1 | tr -d ' %')
 if [ -z "$COVERAGE_THRESHOLD" ]; then
   COVERAGE_THRESHOLD=80  # methodology default
-  echo "[dna-verify] No coverage threshold found in CONSTITUTION.md — using methodology default: 80%"
+  echo "[dna-verify] No coverage threshold found in CONSTITUTION.md. using methodology default: 80%"
 else
   echo "[dna-verify] Coverage threshold from CONSTITUTION.md: ${COVERAGE_THRESHOLD}%"
 fi
@@ -77,7 +77,7 @@ if [ -n "$CHANGED_FILES" ]; then
   CHANGED_COUNT=$(echo "$CHANGED_FILES" | wc -l | tr -d ' ')
   echo "[dna-verify] Branch-diff mode: $CHANGED_COUNT source file(s) changed vs $BASE_BRANCH"
 else
-  echo "[dna-verify] No source-file diff vs $BASE_BRANCH — falling back to project-wide coverage"
+  echo "[dna-verify] No source-file diff vs $BASE_BRANCH. falling back to project-wide coverage"
 fi
 
 # ------------------------------------------------------------------
@@ -98,7 +98,7 @@ if [ -f "package.json" ]; then
       RC=$?
       set -e
       if [ $RC -ne 0 ]; then
-        echo "[dna-verify] FAIL — test suite did not pass (vitest exit $RC)"
+        echo "[dna-verify] FAIL. test suite did not pass (vitest exit $RC)"
         echo "$OUTPUT" | tail -20
         exit 1
       fi
@@ -141,7 +141,7 @@ except Exception as e:
     print('MISSING')
 " "$rel" 2>/dev/null)
           else
-            echo "  [dna-verify] WARN — neither jq nor python available; cannot parse per-file coverage. Falling back to project-wide."
+            echo "  [dna-verify] WARN. neither jq nor python available; cannot parse per-file coverage. Falling back to project-wide."
             COVERAGE_PCT=$(echo "$OUTPUT" | grep -E "^All files" | awk -F'|' '{gsub(/ /,"",$2); print $2}' | head -1)
             break
           fi
@@ -181,7 +181,7 @@ except Exception as e:
     set -e
     COVERAGE_PCT=$(echo "$OUTPUT" | grep -E "All files" | awk -F'|' '{gsub(/ /,"",$2); print $2}' | head -1)
     if [ $RC -ne 0 ]; then
-      echo "[dna-verify] FAIL — test suite did not pass (jest exit $RC)"
+      echo "[dna-verify] FAIL. test suite did not pass (jest exit $RC)"
       exit 1
     fi
   fi
@@ -195,7 +195,7 @@ if [ -z "$COVERAGE_PCT" ] && [ -z "$COVERAGE_CHECK" ] && [ -f "pyproject.toml" ]
   set -e
   COVERAGE_PCT=$(echo "$OUTPUT" | grep -E "^TOTAL" | awk '{print $NF}' | tr -d '%')
   if [ $RC -ne 0 ]; then
-    echo "[dna-verify] FAIL — test suite did not pass (pytest exit $RC)"
+    echo "[dna-verify] FAIL. test suite did not pass (pytest exit $RC)"
     exit 1
   fi
 fi
@@ -203,7 +203,7 @@ fi
 # If per-file mode didn't set COVERAGE_CHECK, apply the legacy aggregate check.
 if [ -z "$COVERAGE_CHECK" ]; then
   if [ -z "$COVERAGE_PCT" ]; then
-    echo "[dna-verify] WARN — could not measure coverage (no supported runner or coverage tooling). Skipping coverage check; sub-agent audit should still run."
+    echo "[dna-verify] WARN. could not measure coverage (no supported runner or coverage tooling). Skipping coverage check; sub-agent audit should still run."
     COVERAGE_CHECK="SKIPPED"
   else
     COVERAGE_INT=${COVERAGE_PCT%.*}
@@ -256,10 +256,10 @@ fi
 # ------------------------------------------------------------------
 # 5. Every Experience Fidelity Scenario has at least one referenced test
 # ------------------------------------------------------------------
-# Parse scenario names from 01-SYSTEM-INTENT.md (headings containing "Scenario N — ..."),
+# Parse scenario names from 01-SYSTEM-INTENT.md (headings containing "Scenario N. ..."),
 # grep tests/ for any file that mentions the scenario name.
 
-SCENARIO_NAMES=$(grep -E '^### Scenario [0-9]+ —' docs/01-SYSTEM-INTENT.md | sed -E 's/^### Scenario [0-9]+ — //;s/,.*//' || true)
+SCENARIO_NAMES=$(grep -E '^### Scenario [0-9]+ -' docs/01-SYSTEM-INTENT.md | sed -E 's/^### Scenario [0-9]+. //;s/,.*//' || true)
 
 S_COUNT=0
 S_WITH_TEST=0
@@ -298,12 +298,12 @@ echo "  Scenario tests:        $S_CHECK"
 
 if [ "$COVERAGE_CHECK" = "FAIL" ] || [ "$D_CHECK" = "FAIL" ] || [ "$S_CHECK" = "FAIL" ]; then
   echo
-  echo "[dna-verify] FAIL — mechanical floor not met. Fix the above before invoking dna:verifier subagent."
+  echo "[dna-verify] FAIL. mechanical floor not met. Fix the above before invoking dna:verifier subagent."
   echo "  (The subagent's scenario-walk cannot credibly audit fidelity on a broken test floor.)"
   exit 1
 fi
 
 echo
-echo "[dna-verify] PASS — mechanical floor met. Now invoke dna:verifier subagent for the judgmental scenario walk."
+echo "[dna-verify] PASS. mechanical floor met. Now invoke dna:verifier subagent for the judgmental scenario walk."
 echo "  The subagent reads spec + code in FRESH context and produces the CONGRUENT/DIVERGENT verdict."
 exit 0

@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 #
-# dna-decompose — overlap validator for parallel task chunks.
+# dna-decompose. overlap validator for parallel task chunks.
 # The creative work (how to split tasks) is agentic; this script validates
-# the result — no two [P] (parallel) tasks may touch the same file.
+# the result. no two [P] (parallel) tasks may touch the same file.
 #
 # Exit codes:
-#   0  Decomposition is safe — all [P] chunks have zero file overlap.
-#   1  Decomposition is unsafe — named tasks overlap; fix before delegating.
+#   0  Decomposition is safe. all [P] chunks have zero file overlap.
+#   1  Decomposition is unsafe. named tasks overlap; fix before delegating.
 #   2  Setup problem (no tasks.md, unexpected format).
 #
 # Usage:
@@ -23,7 +23,7 @@ if [ -z "$FEATURE_DIR" ]; then
   [ -n "$BRANCH" ] && [ -d "specs/$BRANCH" ] && FEATURE_DIR="specs/$BRANCH"
 fi
 if [ -z "$FEATURE_DIR" ] || [ ! -f "$FEATURE_DIR/tasks.md" ]; then
-  echo "[dna-decompose] SETUP — could not locate tasks.md. Pass: run.sh specs/NNN-name" >&2
+  echo "[dna-decompose] SETUP. could not locate tasks.md. Pass: run.sh specs/NNN-name" >&2
   exit 2
 fi
 
@@ -40,7 +40,7 @@ echo "[dna-decompose] Validating $TASKS_FILE"
 declare -A TASK_FILES   # task_id → space-separated file list
 
 # SPEC-20 / RE-16: tasks may use backtick-wrapped `[P]` (Markdown-safe inline
-# code) instead of bare [P]. Accept both. Escaped backticks are optional —
+# code) instead of bare [P]. Accept both. Escaped backticks are optional -
 # the pattern `\`?\[P\]\`?` matches `[P]`, `\`[P]\``, and even weird half-wrapped forms.
 PARALLEL_TASKS=$(grep -E '^- \[[ x]\] T[0-9]+ `?\[P\]`?' "$TASKS_FILE" || true)
 
@@ -89,7 +89,7 @@ done
 UNINSPECTABLE=0
 for t in "${!TASK_FILES[@]}"; do
   if [ -z "${TASK_FILES[$t]// }" ]; then
-    echo "  UNINSPECTABLE: $t has no file references in its description — cannot verify parallelism is safe"
+    echo "  UNINSPECTABLE: $t has no file references in its description. cannot verify parallelism is safe"
     UNINSPECTABLE=$((UNINSPECTABLE+1))
   fi
 done
@@ -104,7 +104,7 @@ echo "[dna-decompose] Uninspectable:      $UNINSPECTABLE"
 
 if [ $OVERLAPS -gt 0 ] || [ $UNINSPECTABLE -gt 0 ]; then
   echo
-  echo "[dna-decompose] FAIL — decomposition is not merge-safe."
+  echo "[dna-decompose] FAIL. decomposition is not merge-safe."
   if [ $OVERLAPS -gt 0 ]; then
     echo "  Remove [P] from one of each overlapping pair, or split the shared file's"
     echo "  changes into a serial prerequisite task."
@@ -117,5 +117,5 @@ if [ $OVERLAPS -gt 0 ] || [ $UNINSPECTABLE -gt 0 ]; then
 fi
 
 echo
-echo "[dna-decompose] PASS — all [P] tasks have disjoint file sets. Safe to /dna-delegate."
+echo "[dna-decompose] PASS. all [P] tasks have disjoint file sets. Safe to /dna-delegate."
 exit 0

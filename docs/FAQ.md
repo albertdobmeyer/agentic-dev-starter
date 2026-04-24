@@ -12,7 +12,7 @@ A: No. You need Claude Code for building. For planning, you can either use Claud
 A: CONSTITUTION.md and VISION.md are the minimum. They give the agent enough to spec and build correctly. ARCHITECTURE.md adds value for any project with a tech stack decision. SCOPE.md prevents rabbit holes. The agent creates skeleton handoff docs during bootstrap if they don't exist.
 
 **Q: Can I use this with an existing project that already has code?**
-A: Yes. Copy `template/AGENT.md` and `template/CONSTITUTION.md` into your project. The agent's bootstrap step only creates handoff doc skeletons if they don't already exist — your source code, tests, and other project files are not touched.
+A: Yes. Copy `template/AGENT.md` and `template/CONSTITUTION.md` into your project. The agent's bootstrap step only creates handoff doc skeletons if they don't already exist. your source code, tests, and other project files are not touched.
 
 ## Planning Phase
 
@@ -28,10 +28,10 @@ A: Yes. Use [HANDOFF_FORMAT.md](HANDOFF_FORMAT.md) as your structural reference.
 ## Building Phase
 
 **Q: How does the bootstrap differ from `specify init`?**
-A: The agent runs `specify init` as part of bootstrap. If Spec-Kit CLI isn't installed, the agent installs it via `uv tool install specify-cli`. If `specify init` fails (known Windows issue with Rich library), the agent tells you — the workflow still functions with manual branch management.
+A: The agent runs `specify init` as part of bootstrap. If Spec-Kit CLI isn't installed, the agent installs it via `uv tool install specify-cli`. If `specify init` fails (known Windows issue with Rich library), the agent tells you. the workflow still functions with manual branch management.
 
 **Q: Claude Code tries to plan instead of build. How do I stop it?**
-A: Make sure Claude Code reads the target project's `CLAUDE.md` (the renamed `template/AGENT.md` from the kit). It frames the agent as the co-architect, not the planner: *"Do NOT write code until handoff docs are complete and the human confirms."* If the agent still drifts into open-ended planning when handoff docs exist, confirm `/dna-test-gate` and the other DNA skills are installed — those enforce build-not-plan behavior.
+A: Make sure Claude Code reads the target project's `CLAUDE.md` (the renamed `template/AGENT.md` from the kit). It frames the agent as the co-architect, not the planner: *"Do NOT write code until handoff docs are complete and the human confirms."* If the agent still drifts into open-ended planning when handoff docs exist, confirm `/dna-test-gate` and the other DNA skills are installed. those enforce build-not-plan behavior.
 
 **Q: Can I skip steps in the Spec-Kit workflow?**
 A: Yes. For well-specified handoff bundles, skip `/speckit-clarify` and `/speckit-analyze`. The minimum path: constitution → specify → plan → tasks → implement. The Pre-Implementation Gate Checklist in the constitution is the "ready to build?" test.
@@ -39,16 +39,16 @@ A: Yes. For well-specified handoff bundles, skip `/speckit-clarify` and `/specki
 ## The Methodology
 
 **Q: What's the difference between a negative assertion and a regular test?**
-A: A regular test says "this works." A negative assertion says "the user NEVER has to do X." Regular tests verify presence of functionality. Negative assertions verify absence of friction. They catch different failure modes — and negative assertions are the first things cut during implementation, which is why they're the most valuable to specify.
+A: A regular test says "this works." A negative assertion says "the user NEVER has to do X." Regular tests verify presence of functionality. Negative assertions verify absence of friction. They catch different failure modes. and negative assertions are the first things cut during implementation, which is why they're the most valuable to specify.
 
 **Q: How do I know if something is `[W]` or `[D]`?**
 A: Ask: "Can a single component satisfy this?" If yes, it's `[W]`. If it requires multiple components working together to deliver a user experience, it's `[D]`. A function that returns correct data is `[W]`. A user who sees correct, timely, personalized data without requesting it is `[D]`.
 
 **Q: Is this only for AI-assisted development?**
-A: The methodology works for human teams too. Flattening happens whenever a rich experience is decomposed into tasks — by AI agents or by developers following a ticket board.
+A: The methodology works for human teams too. Flattening happens whenever a rich experience is decomposed into tasks. by AI agents or by developers following a ticket board.
 
 **Q: My VISION.md already has scenarios and depth tags. Why does /specify ask for the same things?**
-A: VISION.md captures product intent — what the user experiences, aspirational scenarios, depth classifications. The /specify step translates that into testable contracts — Given/When/Then scenarios, measurable acceptance criteria, concrete success thresholds. VISION.md is the input; the spec is the output. Where they conflict on testable requirements, the spec wins. If you find yourself restating VISION.md verbatim in the spec, you're not refining enough — push for assertions an automated test suite can verify.
+A: VISION.md captures product intent. what the user experiences, aspirational scenarios, depth classifications. The /specify step translates that into testable contracts. Given/When/Then scenarios, measurable acceptance criteria, concrete success thresholds. VISION.md is the input; the spec is the output. Where they conflict on testable requirements, the spec wins. If you find yourself restating VISION.md verbatim in the spec, you're not refining enough. push for assertions an automated test suite can verify.
 
 **Q: The commit-per-task rule feels too granular. Can I batch commits?**
 A: Article 8 says "commit per logical milestone, phase boundary, or independently reviewable work unit." Committing per-phase or per logical group is fine. The rule prevents: (a) going a full day without committing, and (b) bundling unrelated changes across phases. A commit that covers 3 related tasks in the same phase is fine. A commit that spans two phases is not.
@@ -62,7 +62,7 @@ A: Yes. Team-oriented sections in Spec-Kit templates are designed for multi-deve
 ## Token Meter
 
 **Q: What is the token meter and why is it recommended?**
-A: [agent-token-meter](https://github.com/albertdobmeyer/agent-token-meter) monitors your Claude Code session's context growth and cost in real-time. It tells you when to write a handoff and `/clear`. Long sessions accumulate cost quadratically — the meter makes that visible.
+A: [agent-token-meter](https://github.com/albertdobmeyer/agent-token-meter) monitors your Claude Code session's context growth and cost in real-time. It tells you when to write a handoff and `/clear`. Long sessions accumulate cost quadratically. the meter makes that visible.
 
 **Q: Do I have to use the token meter?**
 A: No. The methodology works without it.

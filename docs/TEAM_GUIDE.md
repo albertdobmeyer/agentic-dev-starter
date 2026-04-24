@@ -1,4 +1,4 @@
-# Team Guide — Multi-Developer Workflow
+# Team Guide. Multi-Developer Workflow
 
 > **Purpose:** Guide for a team lead managing multiple developers on feature branches using Claude Code + Spec-Kit + the anti-flattening methodology.
 
@@ -18,7 +18,7 @@ Point your CLI agent at the `agentic-dev-starter` kit and invoke Protocol A (see
 
 > *"Read CLAUDE.md. Set up a new project for my team."*
 
-The agent handles the full unfold: directory scaffolding, Spec-Kit install (latest), token-meter startup, 5 DNA enforcement skills, Article 10 interview, handoff-doc authoring, `git init`, and remote push. Expect 60–90 minutes of real conversation during handoff-doc authoring — that's where your strategic thinking becomes binding contract.
+The agent handles the full unfold: directory scaffolding, Spec-Kit install (latest), token-meter startup, 5 DNA enforcement skills, Article 10 interview, handoff-doc authoring, `git init`, and remote push. Expect 60-90 minutes of real conversation during handoff-doc authoring. that's where your strategic thinking becomes binding contract.
 
 What you provide during the unfold:
 
@@ -26,7 +26,7 @@ What you provide during the unfold:
 |---|---|
 | **VISION.md** | Problem, target users, experience fidelity scenarios with 3+ negative assertions each |
 | **ARCHITECTURE.md** | Tech stack (pinned versions), module boundaries, data model, data flow |
-| **CONSTITUTION.md** | Answers to the Article 10 interview — rules specific to your stack and team risks |
+| **CONSTITUTION.md** | Answers to the Article 10 interview. rules specific to your stack and team risks |
 | **SCOPE.md** | 8+ explicit non-goals |
 
 The agent produces skeletons and interviews you; you steer the content.
@@ -38,13 +38,13 @@ Based on the interview, your agent may propose rules like:
 ```
 - All PRs require at least 1 approval before merge
 - Session budget: each feature implementation completes within 3 Claude Code sessions
-- No direct pushes to main — all changes via PR
+- No direct pushes to main. all changes via PR
 - Run full test suite locally before opening PR
 - Handoff note required at end of every Claude Code session
-- TypeScript strict mode everywhere — no `any` types
+- TypeScript strict mode everywhere. no `any` types
 ```
 
-Accept, edit, or reject each. Articles 1–9 are universal and not negotiable.
+Accept, edit, or reject each. Articles 1-9 are universal and not negotiable.
 
 **Main is now the contract.** Every developer builds against it.
 
@@ -55,7 +55,7 @@ Accept, edit, or reject each. Articles 1–9 are universal and not negotiable.
 For each developer joining the team, send this message:
 
 > Clone `<repo-url>`, `cd` into the project, open Claude Code. Say:
-> *"Read CLAUDE.md — I'm a new dev, onboard me."*
+> *"Read CLAUDE.md. I'm a new dev, onboard me."*
 >
 > Your agent handles per-machine installs (Spec-Kit CLI, token-meter) and walks you through the handoff docs. Requires: Claude Code, `uv`, `git`, Node.js 18+.
 
@@ -107,12 +107,12 @@ The lead reviews every PR against:
 ### Constitution Compliance
 - **Article 1:** Tests written first? Full suite green?
 - **Article 3:** Tasks derived from user behaviors, not feature names?
-- **Article 5:** Any simplifications logged? If 3+ on one scenario, escalate — it's an architecture problem.
+- **Article 5:** Any simplifications logged? If 3+ on one scenario, escalate. it's an architecture problem.
 - **Article 10:** Team-specific rules followed?
 
 ### Vision Fidelity
 - Do the Experience Fidelity Scenarios from VISION.md pass?
-- Check `[D]` requirements specifically — these are the most vulnerable to flattening.
+- Check `[D]` requirements specifically. these are the most vulnerable to flattening.
 - Were negative assertions preserved? (These are the first things cut.)
 
 ### Scope Boundaries
@@ -153,7 +153,7 @@ The lead reviews every PR against:
 
 - **Articles 1-9** are universal. They apply to every project built with this methodology. They are never changed.
 - **Article 10** is project-specific. Changes require a PR to main, reviewed and approved by the lead.
-- **The constitution is law.** Developers do not override it on feature branches. If a dev encounters a situation where the constitution seems wrong, they raise it with the lead — they do not work around it.
+- **The constitution is law.** Developers do not override it on feature branches. If a dev encounters a situation where the constitution seems wrong, they raise it with the lead. they do not work around it.
 - **`.specify/memory/constitution.md`** is synced from CONSTITUTION.md on main. When main updates, devs pull and the memory copy updates automatically.
 
 ---
@@ -195,7 +195,7 @@ Natural handoff points in the Spec-Kit workflow:
 - After `/speckit-specify` completes → handoff, `/clear`
 - After `/speckit-plan` completes → handoff, `/clear`
 - After `/speckit-tasks` completes → handoff, `/clear`
-- During `/speckit-implement` — after completing each phase of tasks
+- During `/speckit-implement`. after completing each phase of tasks
 
 ### Lead Monitoring
 
@@ -267,8 +267,8 @@ When conflicts happen despite prevention:
 
 1. **The second-to-merge developer resolves.** Whoever's PR is still open when the first one merges is responsible for rebasing and resolving.
 2. **Rebase on updated main, don't merge main into the feature branch.** This keeps the commit history clean.
-3. **If the conflict is architectural** (two features made incompatible design choices), escalate to the lead. Don't resolve by picking one side — the lead decides which pattern wins and may update ARCHITECTURE.md.
-4. **Re-run the full test suite after conflict resolution.** Constitution Article 1 — never commit on red.
+3. **If the conflict is architectural** (two features made incompatible design choices), escalate to the lead. Don't resolve by picking one side. the lead decides which pattern wins and may update ARCHITECTURE.md.
+4. **Re-run the full test suite after conflict resolution.** Constitution Article 1. never commit on red.
 5. **If the conflict is in spec artifacts** (`specs/` directory): both specs are valid historical records. Merge both. The code is what needs reconciling, not the specs.
 
 ---

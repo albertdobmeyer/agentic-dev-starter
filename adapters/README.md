@@ -6,8 +6,8 @@
 
 | Adapter | Status | Maps roles via | Source of payload |
 |---|---|---|---|
-| `claude-code/` | **Complete — reference adapter** | `.claude/skills/` + `.claude/agents/` + slash commands | `template/` at kit root (payload copied into target during Protocol A) |
-| `cursor/` | **Stub — not implemented** | TBD | TBD |
+| `claude-code/` | **Complete. reference adapter** | `.claude/skills/` + `.claude/agents/` + slash commands | `template/` at kit root (payload copied into target during Protocol A) |
+| `cursor/` | **Stub. not implemented** | TBD | TBD |
 | `amp/` | Stub | TBD | TBD |
 | `codex/` | Stub | TBD | TBD |
 
@@ -22,30 +22,30 @@ An adapter is complete when:
 
 ## Writing a new adapter
 
-### Step 1 — Read the kernel
+### Step 1. Read the kernel
 
 Read `kernel/README.md`, `kernel/methodology.md`, `kernel/roles.md`, `kernel/vocabulary.md` end to end. The vocabulary is fixed; the roles are fixed; the methodology invariants are fixed. Everything else is adapter freedom.
 
-### Step 2 — Map the roles
+### Step 2. Map the roles
 
 In your adapter's `README.md`, fill in the role-mapping table (see `claude-code/README.md` for the reference). Every role gets a concrete mechanism: "in this adapter, the `verifier` role is implemented as `<path to agent file / configuration / skill>`."
 
-### Step 3 — Author the payload
+### Step 3. Author the payload
 
 Create a directory that Protocol A can copy into a target project. Mirror `template/` but for your agent's conventions:
 - Primary instruction file (equivalent of `template/AGENT.md`)
 - Skill definitions (if your agent has skills)
 - Subagent definitions (if your agent has subagents)
-- The Blueprint skeletons from `template/blueprint/` — these are agent-agnostic; reuse verbatim
-- The scripts from `template/skills/*/run.sh` — these are agent-agnostic bash; reuse verbatim
+- The Blueprint skeletons from `template/blueprint/`. these are agent-agnostic; reuse verbatim
+- The scripts from `template/skills/*/run.sh`. these are agent-agnostic bash; reuse verbatim
 
-### Step 4 — Update Protocol A
+### Step 4. Update Protocol A
 
 In the kit's root `CLAUDE.md`, Protocol A step 3, add a branch that detects your agent and copies the right adapter's payload. The kit should always detect at bootstrap time, not require the team lead to configure.
 
-### Step 5 — Dogfood
+### Step 5. Dogfood
 
-Unfold a real target with your adapter. Ship at least one feature end-to-end through the workflow. File a retrospective in your target's `specs/NNN-*/retrospective.md`. Run `tools/aggregate-retros.sh` across your adapter's targets and add the corpus to `docs/FIELD_NOTES.md` — this is how the adapter earns its "Complete" status in the table above.
+Unfold a real target with your adapter. Ship at least one feature end-to-end through the workflow. File a retrospective in your target's `specs/NNN-*/retrospective.md`. Run `tools/aggregate-retros.sh` across your adapter's targets and add the corpus to `docs/FIELD_NOTES.md`. this is how the adapter earns its "Complete" status in the table above.
 
 ## Why not just fork Claude-Code-flavored files
 

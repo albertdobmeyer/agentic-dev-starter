@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #
 # cross-spec-conflict fixture setup. Creates two open spec dirs that both
-# claim write access to the same path WITHOUT (SHARED) markers — the cross-
+# claim write access to the same path WITHOUT (SHARED) markers. the cross-
 # spec-ownership check must BLOCK.
 #
 # Run inside the harness's temp dir. Echoes the feature dir to validate.

@@ -1,5 +1,5 @@
 ---
-description: Red-phase test gate — every implementation task must have a failing test before code is written.
+description: Red-phase test gate. every implementation task must have a failing test before code is written.
 globs: ["specs/**/tasks.md"]
 alwaysApply: false
 ---
@@ -24,10 +24,10 @@ The script prints PASS/FAIL per task + a summary. FAIL means: either the test fi
 
 ## Reading the output
 
-- **PASS** — every impl task has a genuine red test. Implementation may proceed.
-- **FAIL at "test file missing"** — author the test file first. Copy the assertion list from the user scenario + negative assertions in `spec.md`.
-- **FAIL at "test file passes vacuously"** — the test exists but asserts nothing real. Strengthen it (check actual behavior, not `expect(true).toBe(true)`).
-- **FAIL at "setup error"** — import path broken or dependency missing. Fix the setup, then re-run.
+- **PASS**. every impl task has a genuine red test. Implementation may proceed.
+- **FAIL at "test file missing"**. author the test file first. Copy the assertion list from the user scenario + negative assertions in `spec.md`.
+- **FAIL at "test file passes vacuously"**. the test exists but asserts nothing real. Strengthen it (check actual behavior, not `expect(true).toBe(true)`).
+- **FAIL at "setup error"**. import path broken or dependency missing. Fix the setup, then re-run.
 
 ## When NOT to run this
 
@@ -39,4 +39,4 @@ The script's own heuristics filter most of these; if a false positive appears, n
 
 ## Refuses
 
-This rule cannot be overridden. If a task's test file is missing or passing vacuously, implementation does NOT proceed — no exceptions for "small feature" or "obvious code." Article 1 is a hard gate. The human can override by explicitly editing the spec to remove the task, but cannot override the gate itself.
+This rule cannot be overridden. If a task's test file is missing or passing vacuously, implementation does NOT proceed. no exceptions for "small feature" or "obvious code." Article 1 is a hard gate. The human can override by explicitly editing the spec to remove the task, but cannot override the gate itself.

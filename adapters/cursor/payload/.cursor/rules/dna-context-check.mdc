@@ -1,5 +1,5 @@
 ---
-description: Context budget monitor — checks token-meter output and signals when to hand off.
+description: Context budget monitor. checks token-meter output and signals when to hand off.
 alwaysApply: false
 ---
 
@@ -21,14 +21,14 @@ bash .cursor/scripts/dna-context-check/run.sh
 
 ## Output
 
-- **GREEN** — proceed normally.
-- **YELLOW** — stop at the next phase boundary (end of current feature, end of Blueprint authoring pass, etc.). Draft a handoff note.
-- **RED** — stop NOW. Produce a handoff and let the human open a fresh chat.
+- **GREEN**. proceed normally.
+- **YELLOW**. stop at the next phase boundary (end of current feature, end of Blueprint authoring pass, etc.). Draft a handoff note.
+- **RED**. stop NOW. Produce a handoff and let the human open a fresh chat.
 
 ## When token-meter is absent
 
-The script returns UNMEASURED + a recommendation to install token-meter via `npx agent-token-meter`. Treat UNMEASURED as advisory GREEN — proceed, but be conservative and stop at natural boundaries.
+The script returns UNMEASURED + a recommendation to install token-meter via `npx agent-token-meter`. Treat UNMEASURED as advisory GREEN. proceed, but be conservative and stop at natural boundaries.
 
 ## Refuses
 
-Has authority to say STOP when meter is RED. Do not continue past RED even if mid-task — log the task as in-progress in `docs/05-CONSTRUCTION-SITES.md` with `IN-PROGRESS` status and hand off.
+Has authority to say STOP when meter is RED. Do not continue past RED even if mid-task. log the task as in-progress in `docs/05-CONSTRUCTION-SITES.md` with `IN-PROGRESS` status and hand off.

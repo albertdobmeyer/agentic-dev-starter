@@ -1,6 +1,6 @@
 # Cursor adapter
 
-> **Status**: In progress (SPEC-11 complete — payload authored 2026-04-23). Deferred to SPEC-11b: Protocol A auto-detection of Cursor vs Claude Code. Deferred to SPEC-11c: end-to-end dogfood on a Cursor-hosted target.
+> **Status**: In progress (SPEC-11 complete. payload authored 2026-04-23). Deferred to SPEC-11b: Protocol A auto-detection of Cursor vs Claude Code. Deferred to SPEC-11c: end-to-end dogfood on a Cursor-hosted target.
 
 ## What this adapter provides
 
@@ -16,7 +16,7 @@ payload/
 ├── CONSTITUTION.md                          ← copied from template/ (agent-agnostic, Article 10 customized during Bootstrap)
 ├── .cursor/
 │   ├── rules/
-│   │   ├── methodology-core.mdc             ← alwaysApply: true — invariants + workflow + pushback template
+│   │   ├── methodology-core.mdc             ← alwaysApply: true. invariants + workflow + pushback template
 │   │   ├── dna-test-gate.mdc
 │   │   ├── dna-verify.mdc
 │   │   ├── dna-decompose.mdc
@@ -56,23 +56,23 @@ payload/
 | tasker | Spec-Kit slash command | `/speckit-tasks` |
 | implementer | Cursor Composer (one file per focused prompt) | no dedicated file; Composer dispatched per task |
 | test-gatekeeper | `.mdc` rule + `run.sh` | `.cursor/rules/dna-test-gate.mdc` + `.cursor/scripts/dna-test-gate/run.sh` |
-| cross-checker | `.mdc` rule [New Chat] | `.cursor/rules/dna-cross-checker.mdc` — contains judgmental prompt; human clicks "New Chat" for isolation |
+| cross-checker | `.mdc` rule [New Chat] | `.cursor/rules/dna-cross-checker.mdc`. contains judgmental prompt; human clicks "New Chat" for isolation |
 | decomposer | `.mdc` rule + `run.sh` | `.cursor/rules/dna-decompose.mdc` + `.cursor/scripts/dna-decompose/run.sh` |
 | delegate-dispatcher | `.mdc` rule + `run.sh` | `.cursor/rules/dna-delegate.mdc` + `.cursor/scripts/dna-delegate/run.sh` |
 | construction-logger | `.mdc` rule | `.cursor/rules/dna-construction-logger.mdc` |
 | verifier (mechanical) | `.mdc` rule + `run.sh` | `.cursor/rules/dna-verify.mdc` + `.cursor/scripts/dna-verify/run.sh` |
-| verifier (judgmental) | `.mdc` rule [New Chat] | `.cursor/rules/dna-verifier.mdc` — fresh-chat prompt |
+| verifier (judgmental) | `.mdc` rule [New Chat] | `.cursor/rules/dna-verifier.mdc`. fresh-chat prompt |
 | spec-auditor | `.mdc` rule [New Chat] | `.cursor/rules/dna-spec-auditor.mdc` |
 | spec-validate (mechanical) | `.mdc` rule + `run.sh` | `.cursor/rules/dna-spec-validate.mdc` + `.cursor/scripts/dna-spec-validate/run.sh` |
 | spec-validator (judgmental) | `.mdc` rule [New Chat] | `.cursor/rules/dna-spec-validator.mdc` |
 | context-guardian | `.mdc` rule + `run.sh` | `.cursor/rules/dna-context-check.mdc` + `.cursor/scripts/dna-context-check/run.sh` |
-| architecture-impact | (not yet dedicated; main chat produces during spec phase) | deferred — same as Claude Code adapter |
+| architecture-impact | (not yet dedicated; main chat produces during spec phase) | deferred. same as Claude Code adapter |
 | coherence-gate | (not yet dedicated) | deferred |
 | drift-remediator | (not yet dedicated) | deferred |
 | pr-reviewer | (not yet dedicated; future `.mdc` rule [New Chat]) | deferred |
 | kit-graduate | (not yet built) | deferred |
 
-**12 of 17 roles have dedicated implementations** — parity with the Claude Code adapter.
+**12 of 17 roles have dedicated implementations**. parity with the Claude Code adapter.
 
 ## How this differs from the Claude Code adapter
 
@@ -83,8 +83,8 @@ payload/
 | Subagents convention | `.claude/agents/NAME.md` (scriptable dispatch) | `.cursor/rules/NAME.mdc` tagged `[New Chat]` (human-triggered isolation) |
 | Invocation | Slash commands + Agent tool | `@rule-name` mentions + auto-attach on globs + Composer for edits |
 | Role isolation | Scriptable subagent spawn | Human clicks "New Chat" before invoking isolation-required rules |
-| Model references | `sonnet`/`opus` frontmatter in subagents | No model pin — Cursor's user-selected model |
-| CI workflow | `.github/workflows/dna.yml` | `.github/workflows/dna.yml` (identical — scripts are agent-agnostic) |
+| Model references | `sonnet`/`opus` frontmatter in subagents | No model pin. Cursor's user-selected model |
+| CI workflow | `.github/workflows/dna.yml` | `.github/workflows/dna.yml` (identical. scripts are agent-agnostic) |
 
 ## Known limitations
 
@@ -92,7 +92,7 @@ payload/
 - **No dedicated pr-reviewer yet.** Shared with Claude Code adapter; deferred to a future SPEC.
 - **Protocol A does not yet auto-detect Cursor.** The kit's root `CLAUDE.md` Protocol A step 3 copies `template/*` unconditionally. For Cursor users today, the flow is:
   1. `npx tiged albertdobmeyer/agentic-dev-starter/adapters/cursor/payload my-project` (or equivalent subpath copy)
-  2. Open Cursor in `my-project/`, say "Read CURSOR.md — I'm setting up a new project"
+  2. Open Cursor in `my-project/`, say "Read CURSOR.md. I'm setting up a new project"
   3. Agent runs the Bootstrap flow described in `CURSOR.md`
   SPEC-11b will add agent detection to Protocol A so Cursor users can use the same kit-root CLAUDE.md invocation.
 
@@ -121,7 +121,7 @@ Refresh currently syncs `template/*` → `<target>/.claude/`. A future SPEC will
 
 This adapter has NOT been end-to-end dogfooded on a Cursor-hosted project. SPEC-11c covers that validation. The payload is authored against the same contract as the Claude Code adapter (which has 3 dogfoods on record) + the role taxonomy in `kernel/roles.md`.
 
-If you're a Cursor user adopting this — we want your retrospective. Open an issue on the kit repo with any friction you hit.
+If you're a Cursor user adopting this. we want your retrospective. Open an issue on the kit repo with any friction you hit.
 
 ## Contract for "complete"
 

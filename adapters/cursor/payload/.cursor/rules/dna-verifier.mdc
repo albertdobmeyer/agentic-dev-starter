@@ -1,5 +1,5 @@
 ---
-description: "[New Chat] Post-implementation judgmental scenario walk — the CONGRUENT/DIVERGENT verdict."
+description: "[New Chat] Post-implementation judgmental scenario walk. the CONGRUENT/DIVERGENT verdict."
 alwaysApply: false
 ---
 
@@ -13,13 +13,13 @@ After `@dna-verify` mechanical PASS, walk every Experience Fidelity Scenario the
 
 ## Inputs
 
-1. `specs/NNN-feature-name/spec.md` — the claim
-2. `docs/01-SYSTEM-INTENT.md` — scenarios, negative assertions, filmable success criteria
-3. `docs/04-COORDINATION-HINTS.md` — phase done-criteria the feature claims to close
-4. `docs/05-CONSTRUCTION-SITES.md` — open Construction Sites the feature claims to resolve
+1. `specs/NNN-feature-name/spec.md`. the claim
+2. `docs/01-SYSTEM-INTENT.md`. scenarios, negative assertions, filmable success criteria
+3. `docs/04-COORDINATION-HINTS.md`. phase done-criteria the feature claims to close
+4. `docs/05-CONSTRUCTION-SITES.md`. open Construction Sites the feature claims to resolve
 5. Shipped source: `src/**` changed files in the branch diff
 6. Shipped tests: `**/*.test.ts` changed files in the branch diff
-7. `CONSTITUTION.md` Article 5 — scope-boundary rules
+7. `CONSTITUTION.md` Article 5. scope-boundary rules
 
 ## Procedure
 
@@ -49,7 +49,7 @@ Under 500 words. Structured:
 
 ## Refuses
 
-- Do not grade the builder charitably. The builder does not grade its own work — that's why you exist.
+- Do not grade the builder charitably. The builder does not grade its own work. that's why you exist.
 - Do not rubber-stamp CONGRUENT. Every assertion must have named test-file evidence or an explicit scope-boundary justification.
 - Do not accept vague resolutions to Construction Sites. "This is fixed" is not sufficient; name the commit + the specific assertion that's now verified.
 

@@ -13,5 +13,8 @@ __pycache__/
 *.pyc
 *.pyo
 
-# Local exploration / assessment notes — never shipped
+# Local exploration / assessment notes (never shipped)
 .exploration/
+
+# Legacy methodology reference - maintained locally as internal-only
+PROJECT_DNA.md

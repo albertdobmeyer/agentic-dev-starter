@@ -16,7 +16,7 @@ Parse every open feature spec's `Files this feature will touch` block and report
 1. The proposed feature: either its spec.md (if already drafted) or a user-provided "I'm about to start feature NNN-name; files I'll touch: [list]"
 2. All open feature branches: `git branch --list --no-merged main` (branches not yet merged to main)
 3. For each open branch, the `specs/NNN-*/spec.md` `Files this feature will touch` block
-4. `CONSTITUTION.md` Article 10 `shared-code-glob:` block (if present) — files matching the glob have stricter cross-feature rules
+4. `CONSTITUTION.md` Article 10 `shared-code-glob:` block (if present). files matching the glob have stricter cross-feature rules
 
 ## Procedure
 
@@ -24,16 +24,16 @@ Parse every open feature spec's `Files this feature will touch` block and report
 2. For each, read `Files this feature will touch` section in its spec.md
 3. Cross-reference against the proposed new feature's file claims
 4. For any collision:
-   - If both claims are on a file matching Article 10 shared-code-glob: **BLOCK** — a shared-code PR must land first, then downstream feature branches rebase.
-   - If collision is on a non-shared file: **BLOCK** — two parallel branches editing the same file produce add/add merge conflicts. Serialize them.
+   - If both claims are on a file matching Article 10 shared-code-glob: **BLOCK**. a shared-code PR must land first, then downstream feature branches rebase.
+   - If collision is on a non-shared file: **BLOCK**. two parallel branches editing the same file produce add/add merge conflicts. Serialize them.
 5. If no collisions: **CLEAR**
-6. If Article 10 lacks an explicit `shared-code-glob:` block: emit ADVISORY `NEEDS_CONSTITUTION_UPDATE` — the glob needs to be added (see SPEC-17) but does not block this feature.
+6. If Article 10 lacks an explicit `shared-code-glob:` block: emit ADVISORY `NEEDS_CONSTITUTION_UPDATE`. the glob needs to be added (see SPEC-17) but does not block this feature.
 
 ## Output
 
-- **CLEAR** — safe to proceed with `/speckit-specify`
-- **CLEAR + ADVISORY-XX** — proceed with advisory noted (usually documentation-gap, not functional collision)
-- **BLOCK** — list each colliding file with (this feature, other feature, Article-10 glob match?). Recommend: serialize, or land shared-code PR first.
+- **CLEAR**. safe to proceed with `/speckit-specify`
+- **CLEAR + ADVISORY-XX**. proceed with advisory noted (usually documentation-gap, not functional collision)
+- **BLOCK**. list each colliding file with (this feature, other feature, Article-10 glob match?). Recommend: serialize, or land shared-code PR first.
 
 ## Refuses
 
@@ -43,7 +43,7 @@ Parse every open feature spec's `Files this feature will touch` block and report
 ## Example verdict
 
 ```
-dna:cross-checker — CLEAR + ADVISORY-01
+dna:cross-checker. CLEAR + ADVISORY-01
 
 Open feature branches: 003-task-priorities (merged), 005-calendar-week-grid (merged). No active branches touching src/ui/*.
 

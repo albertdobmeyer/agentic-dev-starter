@@ -1,4 +1,4 @@
-# Roles — subagent role taxonomy
+# Roles. subagent role taxonomy
 
 > What roles exist in the methodology, what they do, what they read, what they return. **Agent-agnostic.** Each adapter maps these to its own subagent / command / skill system.
 
@@ -15,7 +15,7 @@ A role is a **bounded responsibility** with its own context. Roles matter becaus
 | 5 | **test-gatekeeper** | Verifies every implementation task has a test file that is RED before implementation proceeds. Zero-trust; cannot be overridden. | Runs before implementer dispatch. |
 | 6 | **cross-checker** | Parses "Files this feature will touch" across every open spec; blocks branches claiming the same shared file. | Runs before new-feature-branch creation and before any PR to main. |
 | 7 | **decomposer** | Validates that `[P]` parallel tasks have zero file overlap. The split itself is agentic work; the validation is mechanical. | Runs between tasker and delegate. |
-| 8 | **delegate-dispatcher** | Pre-dispatch safety check: decompose passed, working tree clean, shared interfaces declared. Does not spawn — validates that spawning is safe. | Runs before implementer dispatch. |
+| 8 | **delegate-dispatcher** | Pre-dispatch safety check: decompose passed, working tree clean, shared interfaces declared. Does not spawn. validates that spawning is safe. | Runs before implementer dispatch. |
 | 9 | **construction-logger** | Owns `05-CONSTRUCTION-SITES.md`; appends a row for every depth downgrade at the moment it happens; enforces phase-closure rules around open `[D]` entries. | Called proactively during implementation when any simplification is considered. |
 | 10 | **verifier** | Fresh-context audit. Walks every Experience Fidelity Scenario against current code; verifies every negative assertion holds; emits CONGRUENT / PARTIAL / DIVERGENT. | Runs after implementer phase completes. MUST have zero carryover from build context. |
 
