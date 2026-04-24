@@ -2,6 +2,45 @@
 
 All notable changes to this kit are documented here. Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) style. Versioning per [SemVer](https://semver.org/).
 
+## [0.9.2] 2026-04-23
+
+Promotion-ready polish pass. No breaking changes.
+
+### Added
+
+- **SPEC-23 constitution re-sync step** in Protocol A-bis. After Article 10 promotion from SKIP defaults, the protocol now explicitly instructs `cp CONSTITUTION.md .specify/memory/constitution.md` so Spec-Kit consumes the graduated rules. Flagged as CRITICAL by the Cursor dogfood simulation.
+- **SPEC-11d adapter-agnostic path lookup** in `dna-delegate`. The script now checks both `.claude/skills/` and `.cursor/scripts/` for `dna-decompose/run.sh`, eliminating spurious "not found" warnings when running under the Cursor adapter.
+
+### Changed
+
+- **Public docs scrubbed of em-dashes and en-dashes**. README, CHANGELOG, CLAUDE.md, CURSOR.md, AGENT.md, all `.cursor/rules/*.mdc`, all blueprint skeletons, SECURITY, CODE_OF_CONDUCT, CONTRIBUTING, `.github/` templates, and `docs/` files all use ASCII-safe punctuation. LICENSE kept verbatim (legal text).
+- **`PROJECT_DNA.md` moved from tracked to gitignored.** The legacy 85KB methodology document is retained locally as an internal reference but no longer published. All load-bearing mechanisms are absorbed into `kernel/methodology.md`, `kernel/vocabulary.md`, `kernel/roles.md`, `template/CONSTITUTION.md`, and `docs/HANDOFF_FORMAT.md`. Audit report at `.exploration/` confirmed 85% direct absorption, 15% enhanced beyond original (automated enforcement layers replace manual checklists).
+- **`docs/METHODOLOGY.md`** canonical-source note updated to reference the kernel/ files instead of the (now-gitignored) PROJECT_DNA.md.
+- **`docs/WORKED_EXAMPLE.md`** "Follow the links" section rewritten to remove the dangling PROJECT_DNA.md hyperlink.
+
+### Fixed
+
+- **Dangling PROJECT_DNA.md hyperlinks** in `docs/WORKED_EXAMPLE.md` and `docs/METHODOLOGY.md`. Textual attribution references in `kernel/vocabulary.md`, `kernel/methodology.md`, `kernel/roles.md`, skeleton files, and subagent definitions are retained as historical credit; none of them break when PROJECT_DNA.md is absent because they do not hyperlink to the file.
+
+### PROJECT_DNA absorption audit summary
+
+| Mechanism | Coverage |
+|---|---|
+| 7-doc Blueprint Package | Fully absorbed + enforced by `dna-spec-auditor` |
+| Experience Fidelity Scenarios with 3+ negative assertions | Fully absorbed + enforced by Article 3 |
+| Scenario Validation Matrix | Fully absorbed + enforced by `dna-spec-validate` script + `dna-spec-validator` subagent |
+| Architecture Impact Assessment | Fully absorbed into `02-ARCHITECTURE.skeleton.md` + audited by `dna-spec-auditor` |
+| Depth Classification `[E]`/`[W]`/`[D]` | Fully absorbed + enforced by Article 4 + `dna-verify` script |
+| Construction Sites tracking | Fully absorbed + automated by `dna-construction-logger` subagent |
+| Production Threshold | Fully absorbed into `04-COORDINATION-HINTS.skeleton.md` + audited |
+| Drift Remediation Protocol | Partially absorbed (conceptual frame in Article 7; `kernel/roles.md` names a drift-remediator role); full 6-step procedure not yet replicated verbatim (low-priority future work) |
+| Five-Round Discovery Flow | Partially absorbed via `docs/PLANNING_INSTRUCTIONS.md` (rounds not explicitly named; future enhancement) |
+| AKD SOLUTIONS Reference Stack | Not absorbed (intentional; project-specific choices belong in Article 10 per-project) |
+
+Verdict: safe to gitignore. Kit operates fully without the legacy doc.
+
+---
+
 ## [0.9.1] 2026-04-23
 
 Session 8 continuation release. Closes remaining SEV-2 SPECs (03, 04, 11b, 20, 21, 02b, 11c-paper) and adds GitHub hygiene (SECURITY, CODE_OF_CONDUCT, issue + PR templates).
@@ -81,5 +120,6 @@ First publishable release. Field tested through three dogfood feature builds on 
 - Article 5 scope-deferral pattern: `dna-spec-validator` CLEAR + ADVISORY-01 on 005's partial delivery (005 retrospective).
 - Phase-closure via Construction Site resolution: CS-002 closed at 006 merge (006 retrospective).
 
+[0.9.2]: https://github.com/albertdobmeyer/agentic-dev-starter/releases/tag/v0.9.2
 [0.9.1]: https://github.com/albertdobmeyer/agentic-dev-starter/releases/tag/v0.9.1
 [0.9.0]: https://github.com/albertdobmeyer/agentic-dev-starter/releases/tag/v0.9.0
