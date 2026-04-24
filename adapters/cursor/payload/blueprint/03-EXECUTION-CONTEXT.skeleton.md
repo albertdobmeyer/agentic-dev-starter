@@ -1,10 +1,10 @@
-# 03-EXECUTION-CONTEXT. {PROJECT_NAME}
+# 03-EXECUTION-CONTEXT: {PROJECT_NAME}
 
-> **Purpose**: Layer 3. HOW to write code. Pinned versions, repo structure, coding standards, testing philosophy, error handling, infrastructure setup. The implementing agent reads this to act autonomously without asking.
+> **Purpose**: Layer 3 - HOW to write code. Pinned versions, repo structure, coding standards, testing philosophy, error handling, infrastructure setup. The implementing agent reads this to act autonomously without asking.
 
 ## Tech stack (pinned)
 
-> Pin every version to exact `major.minor`. Rationale column is not optional. it's what future devs read when a dep needs to change.
+> Pin every version to exact `major.minor`. Rationale column is not optional; it's what future devs read when a dep needs to change.
 
 | Layer | Technology | Version | Rationale |
 |---|---|---|---|
@@ -32,7 +32,7 @@
 │   ├── 02-ARCHITECTURE.md
 │   ├── 03-EXECUTION-CONTEXT.md   (this file)
 │   ├── 04-COORDINATION-HINTS.md
-│   └── 05-CONSTRUCTION-SITES.md  (living. agent maintains)
+│   └── 05-CONSTRUCTION-SITES.md  (living; agent maintains)
 ├── CONSTITUTION.md
 ├── CLAUDE.md                      (agent protocol)
 └── {package.json / pyproject.toml / etc.}
@@ -40,7 +40,7 @@
 
 ## Coding standards
 
-{FILL IN: Conventions the agent should default to. naming, file organization, type-strictness, comment policy. Example: "Files named by domain noun (`user.service.ts`), never by layer (`services/user.ts`). TypeScript strict mode. No implicit `any`."}
+{FILL IN: Conventions the agent should default to: naming, file organization, type-strictness, comment policy. Example: "Files named by domain noun (`user.service.ts`), never by layer (`services/user.ts`). TypeScript strict mode. No implicit `any`."}
 
 - {Standard 1}
 - {Standard 2}
@@ -50,15 +50,15 @@
 
 {FILL IN: The house style for errors. Do you throw? Return Result types? Use error-first callbacks? What's the user-facing surface vs internal? What gets logged, what gets reported?}
 
-- {Rule 1. e.g., "All domain errors extend `AppError` with a typed `code` field"}
-- {Rule 2. e.g., "Never swallow errors silently. Log + rethrow OR handle explicitly."}
+- {Rule 1, e.g., "All domain errors extend `AppError` with a typed `code` field"}
+- {Rule 2, e.g., "Never swallow errors silently. Log + rethrow OR handle explicitly."}
 
 ## Testing philosophy
 
 {FILL IN: What tests are mandatory. Coverage threshold. Unit vs integration split. See also `CONSTITUTION.md` Article 1.}
 
-- {Rule 1. e.g., "Unit test for every pure function; integration test for every API route"}
-- {Rule 2. e.g., "≥80% line coverage on domain logic; 100% on state transitions"}
+- {Rule 1, e.g., "Unit test for every pure function; integration test for every API route"}
+- {Rule 2, e.g., "≥80% line coverage on domain logic; 100% on state transitions"}
 - Test-first is non-negotiable (Constitution Article 1).
 
 ### Test file location convention
@@ -68,7 +68,7 @@ Tests live in one of two places, chosen by purpose:
 - **Co-located** (`src/path/to/module.test.ts` next to `src/path/to/module.ts`): the default. Unit and integration tests for the module.
 - **Scenario-reference tests** (`tests/scenario/scenario-N.test.ts`, one file per Experience Fidelity Scenario in `01-SYSTEM-INTENT.md`): anchors that `dna-verify`'s scenario-file discovery check looks for. These do NOT contain the full scenario assertions (those live in the co-located integration tests); they are discoverability pointers so the mechanical gate can confirm every scenario has at least one test file referencing it.
 
-If your test runner's config uses a glob like `include: ["src/**/*.test.ts"]` (vitest's default), it will NOT pick up `tests/scenario/**`. Either extend the include pattern (e.g., `["src/**/*.test.ts", "tests/**/*.test.ts"]`) or put scenario-reference tests under `src/scenario/`. but then `dna-verify`'s default scenario-file glob needs matching adjustment. The convention above (tests/scenario/) is what the kit's `dna-verify` script searches by default.
+If your test runner's config uses a glob like `include: ["src/**/*.test.ts"]` (vitest's default), it will NOT pick up `tests/scenario/**`. Either extend the include pattern (e.g., `["src/**/*.test.ts", "tests/**/*.test.ts"]`) or put scenario-reference tests under `src/scenario/`, but then `dna-verify`'s default scenario-file glob needs matching adjustment. The convention above (tests/scenario/) is what the kit's `dna-verify` script searches by default.
 
 ## Environment / secrets
 

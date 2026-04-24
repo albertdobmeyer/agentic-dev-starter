@@ -1,8 +1,8 @@
-# Retrospective. feature {NNN-name}
+# Retrospective: feature {NNN-name}
 
 > One retrospective per feature, written at the moment the feature merges to `main`. Lives at `specs/{NNN-name}/retrospective.md`. Appended into the kit's aggregate corpus by `tools/aggregate-retros.sh` so the methodology becomes **measured** instead of anecdotal.
 >
-> Fill each section honestly. A retrospective that says "everything went fine" on every feature is a methodology failure. either nothing is being surfaced, or the data is being sanitized. The point is to capture what the spec didn't anticipate.
+> Fill each section honestly. A retrospective that says "everything went fine" on every feature is a methodology failure: either nothing is being surfaced, or the data is being sanitized. The point is to capture what the spec didn't anticipate.
 
 ## Meta
 
@@ -49,8 +49,8 @@ _(Leave empty if none.)_
 ## Spec drift
 
 - **Spec changes during build** (how many times `spec.md`, `plan.md`, or `tasks.md` were edited after the first commit on this branch): {N}
-- **Cause of each drift**: {one line per event. e.g., "missed an edge case in Scenario 2", "architecture assumption about X was wrong", "ambiguity surfaced during implementation"}
-- **Could the drift have been caught by `dna:spec-auditor`?**: yes / no / partially. {explain}
+- **Cause of each drift**: {one line per event, e.g., "missed an edge case in Scenario 2", "architecture assumption about X was wrong", "ambiguity surfaced during implementation"}
+- **Could the drift have been caught by `dna:spec-auditor`?**: yes / no / partially; {explain}
 
 ## Agent pushback
 
@@ -65,11 +65,11 @@ If zero pushback: either the spec was unambiguous (good) or the agent is please-
 
 ## What surprised us
 
-{Free text. the spec said X, reality was Y. Future specs should account for this.}
+{Free text: the spec said X, reality was Y. Future specs should account for this.}
 
 ## What the methodology would have caught earlier
 
-{Free text. if we had a `dna:Z-checker` subagent, it would have flagged this at spec time. Name it; it becomes a SPEC candidate for the kit.}
+{Free text: if we had a `dna:Z-checker` subagent, it would have flagged this at spec time. Name it; it becomes a SPEC candidate for the kit.}
 
 ## Follow-ups
 

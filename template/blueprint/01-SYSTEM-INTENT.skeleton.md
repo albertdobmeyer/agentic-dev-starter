@@ -1,6 +1,6 @@
-# 01-SYSTEM-INTENT. {PROJECT_NAME}
+# 01-SYSTEM-INTENT: {PROJECT_NAME}
 
-> **Purpose**: Layer 1. WHAT must exist. Domain model, state machines, user flows, invariants, acceptance criteria, Experience Fidelity Scenarios, Scenario Validation Matrices, depth-classified requirements, non-goals.
+> **Purpose**: Layer 1 - WHAT must exist. Domain model, state machines, user flows, invariants, acceptance criteria, Experience Fidelity Scenarios, Scenario Validation Matrices, depth-classified requirements, non-goals.
 >
 > **This is the most load-bearing document in the Blueprint Package.** If it is thin, implementation will be flat.
 
@@ -8,7 +8,7 @@
 
 ### Entities
 
-{FILL IN: Every entity with complete schema. All fields with types, constraints, relationships. Use TypeScript/Python/SQL style. whichever matches the stack in `02-ARCHITECTURE.md`. "Add fields as needed" is not a spec; list them all now.}
+{FILL IN: Every entity with complete schema. All fields with types, constraints, relationships. Use TypeScript/Python/SQL style, whichever matches the stack in `02-ARCHITECTURE.md`. "Add fields as needed" is not a spec; list them all now.}
 
 ```typescript
 interface {Entity} {
@@ -35,9 +35,9 @@ interface {Entity} {
 
 ## User flows
 
-{FILL IN: For each core flow, write the narrative. Not as a feature list. as a sequence of user actions with acceptance criteria.}
+{FILL IN: For each core flow, write the narrative. Not as a feature list, but as a sequence of user actions with acceptance criteria.}
 
-### Flow 1. {name}
+### Flow 1: {name}
 **Trigger**: {what starts the flow}
 **Steps**: {numbered sequence}
 **Acceptance**: {testable outcome with quantified thresholds}
@@ -46,37 +46,37 @@ interface {Entity} {
 
 ## Experience Fidelity Scenarios
 
-> **One scenario per core principle** from `00-CORE-PRINCIPLES.md`. Each scenario follows the full format below. All five sections are mandatory. partial scenarios produce partial implementations.
+> **One scenario per core principle** from `00-CORE-PRINCIPLES.md`. Each scenario follows the full format below. All five sections are mandatory; partial scenarios produce partial implementations.
 
-### Scenario 1. {name}, satisfying Principle {N}
+### Scenario 1: {name}, satisfying Principle {N}
 
 **CONTEXT**
 {FILL IN: When and where this happens in the user's day. Time of day, environment, what they're carrying, what they just finished, what they need to accomplish, how much time they have. Specificity here prevents abstract implementations.}
 
-**USER EXPERIENCES. What they see/hear**
-{FILL IN: Sensory details. screen content, audio feedback, visual confirmations. What reaches the user without them seeking it out.}
+**USER EXPERIENCES - What they see/hear**
+{FILL IN: Sensory details: screen content, audio feedback, visual confirmations. What reaches the user without them seeking it out.}
 
-**USER EXPERIENCES. What they do**
-{FILL IN: Physical actions in sequence. taps, speaks, walks, points camera. Narrative of behavior, not feature list.
+**USER EXPERIENCES - What they do**
+{FILL IN: Physical actions in sequence: taps, speaks, walks, points camera. Narrative of behavior, not feature list.
 Must include at least 2-3 behavioral variations: nothing-to-act-on, standard action, and special case.
 Must include the error / correction flow: what happens when the system misunderstands, the user makes a mistake, or input is ambiguous.}
 
-**USER EXPERIENCES. What they NEVER have to do** (minimum 3 negative assertions)
-- {Negative assertion 1. e.g., "never opens a second tool to cross-reference"}
+**USER EXPERIENCES - What they NEVER have to do** (minimum 3 negative assertions)
+- {Negative assertion 1, e.g., "never opens a second tool to cross-reference"}
 - {Negative assertion 2}
 - {Negative assertion 3}
 
-**USER EXPERIENCES. Why this matters**
-{FILL IN: Connection to the principle. Include at least one quantified impact comparison with specific numbers. "Faster" is not testable. "45 minutes vs 90 minutes for 47 items. 2× productivity" is testable and becomes both success criterion and regression threshold.}
+**USER EXPERIENCES - Why this matters**
+{FILL IN: Connection to the principle. Include at least one quantified impact comparison with specific numbers. "Faster" is not testable. "45 minutes vs 90 minutes for 47 items, 2x productivity" is testable and becomes both success criterion and regression threshold.}
 
 **SUCCESS CRITERION** (filmable)
 {FILL IN: Describe a video that would prove the scenario works. Observable behaviors, measurable outcomes, time constraint. If you can't describe the verification video, the scenario isn't concrete enough.}
 
-**DEPTH**: `[D]`. requires {list of components that must work together}
+**DEPTH**: `[D]`; requires {list of components that must work together}
 
 ---
 
-### Scenario 2. {name}
+### Scenario 2: {name}
 _(Same structure as Scenario 1.)_
 
 ---
@@ -101,9 +101,9 @@ _(Same structure as Scenario 1.)_
 
 | Requirement | Depth | Rationale |
 |---|---|---|
-| {requirement} | `[D]` | {one line. why this needs full experience fidelity} |
-| {requirement} | `[W]` | {one line. why unit-correctness is sufficient} |
-| {requirement} | `[E]` | {one line. why scaffolding is sufficient} |
+| {requirement} | `[D]` | {one line: why this needs full experience fidelity} |
+| {requirement} | `[W]` | {one line: why unit-correctness is sufficient} |
+| {requirement} | `[E]` | {one line: why scaffolding is sufficient} |
 
 Rules (see `CONSTITUTION.md` Article 4):
 - Every core principle has ≥1 `[D]` requirement. If you can't find one, the principle isn't being specified adequately.

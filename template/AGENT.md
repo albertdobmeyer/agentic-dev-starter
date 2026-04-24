@@ -75,14 +75,14 @@ If this project has no `.specify/` directory, set it up:
    - `dna-verifier`: judgmental ceiling above the `dna-verify` script. Compares built code to the cited Scenarios post-implementation. Runs FRESH CONTEXT per invariant 6.
 
    See `docs/METHODOLOGY.md` for why subagents matter (role separation, audit isolation, bias firewall).
-8. **Bootstrap self-audit** (zero-trust verification. do NOT skip): Before proceeding to planning, verify each item. Block on any failure and complete it before continuing.
+8. **Bootstrap self-audit** (zero-trust verification; do NOT skip): Before proceeding to planning, verify each item. Block on any failure and complete it before continuing.
    - `.specify/` directory exists (created by step 4)
-   - `.specify/scripts/` contains at least one `.sh` or `.ps1` file (regression fence. proves `--script` flag resolved in step 4; an empty scripts dir means Spec-Kit hit its interactive prompt)
-   - `.specify/memory/constitution.md` does NOT contain `[PROJECT_NAME] Constitution` (Spec-Kit stub marker. indicates step 5 didn't run)
+   - `.specify/scripts/` contains at least one `.sh` or `.ps1` file (regression fence; proves `--script` flag resolved in step 4; an empty scripts dir means Spec-Kit hit its interactive prompt)
+   - `.specify/memory/constitution.md` does NOT contain `[PROJECT_NAME] Constitution` (Spec-Kit stub marker; indicates step 5 didn't run)
    - `.claude/skills/` contains all 6 DNA directories: `dna-test-gate`, `dna-context-check`, `dna-decompose`, `dna-delegate`, `dna-verify`, `dna-spec-validate`
    - `.claude/agents/` contains the full subagent roster: `dna-construction-logger.md`, `dna-cross-checker.md`, `dna-spec-auditor.md`, `dna-spec-validator.md`, `dna-verifier.md`
-   - `.claude/skills/dna-test-gate/run.sh` exists and is executable (`-rwx`). the first executable DNA gate (Article 1 enforcement); falls back to SKILL.md prose for unsupported test runners
-   - `.github/workflows/dna.yml` exists (if the remote is GitHub. no-op file on GitLab/Bitbucket targets; mention to the human so they can port it if needed). Contents: `name: DNA enforcement` plus `dna-decompose` + `dna-verify` steps. This is the system-discipline layer. gates become unskippable at merge time (SPEC-14).
+   - `.claude/skills/dna-test-gate/run.sh` exists and is executable (`-rwx`); the first executable DNA gate (Article 1 enforcement); falls back to SKILL.md prose for unsupported test runners
+   - `.github/workflows/dna.yml` exists (if the remote is GitHub; no-op file on GitLab/Bitbucket targets; mention to the human so they can port it if needed). Contents: `name: DNA enforcement` plus `dna-decompose` + `dna-verify` steps. This is the system-discipline layer; gates become unskippable at merge time (SPEC-14).
    - Root `CONSTITUTION.md` exists and its Article 10 has been customized (not a placeholder)
    - **7-doc Blueprint Package**: every file below exists under `docs/` (skeletons from step 7 are acceptable for day-1; they must be filled before `/speckit-specify`):
      - `docs/00-CORE-PRINCIPLES.md`
@@ -90,23 +90,23 @@ If this project has no `.specify/` directory, set it up:
      - `docs/02-ARCHITECTURE.md`
      - `docs/03-EXECUTION-CONTEXT.md`
      - `docs/04-COORDINATION-HINTS.md`
-     - `docs/05-CONSTRUCTION-SITES.md` (must contain the "Active sites" table header. this is the living tracker from PROJECT_DNA Section 5)
-   - **NEXT_STEPS.md pre-specify gate** (SPEC-04): if `NEXT_STEPS.md` exists at project root, grep for `{FILL IN` or `SKIP-DEFAULT` markers across `CONSTITUTION.md` + `docs/*.md`. If any marker remains, **BLOCK `/speckit-specify`** and tell the human to complete the markers first. When all markers are resolved, instruct the human to `rm NEXT_STEPS.md` and commit `chore: graduate from onboarding. handoff docs complete`. The absence of this file is the signal the project has left the onboarding phase.
+     - `docs/05-CONSTRUCTION-SITES.md` (must contain the "Active sites" table header; this is the living tracker from PROJECT_DNA Section 5)
+   - **NEXT_STEPS.md pre-specify gate** (SPEC-04): if `NEXT_STEPS.md` exists at project root, grep for `{FILL IN` or `SKIP-DEFAULT` markers across `CONSTITUTION.md` + `docs/*.md`. If any marker remains, **BLOCK `/speckit-specify`** and tell the human to complete the markers first. When all markers are resolved, instruct the human to `rm NEXT_STEPS.md` and commit `chore: graduate from onboarding, handoff docs complete`. The absence of this file is the signal the project has left the onboarding phase.
 
    This audit matters because the DNA enforcement skills cannot gate what isn't installed. A silent bootstrap failure looks like a working project until the first `/dna-test-gate` call returns vacuous-pass or the first `/speckit-plan` reads stub constitution text.
-9. **Enter planning mode.** Do NOT write code until handoff docs are complete and the human confirms. Open `NEXT_STEPS.md` at project root first. it names what's authored vs. skeleton, the next action, and the graduation condition. Proceed from there.
+9. **Enter planning mode.** Do NOT write code until handoff docs are complete and the human confirms. Open `NEXT_STEPS.md` at project root first; it names what's authored vs. skeleton, the next action, and the graduation condition. Proceed from there.
 
 ## Dev Onboarding (Existing Project)
 
 When `.specify/` already exists (the project was bootstrapped by the team lead) and a new developer says *"I'm a new dev, onboard me"* or similar, **skip the Bootstrap section above** and run this protocol instead:
 
-1. **Verify per-machine tools.** Spec-Kit CLI (`specify version`), Node.js 18+ (`node --version`). If Spec-Kit is missing, install it with the same dynamic-tag command as Bootstrap step 2. each developer installs it on their own machine. If `uv` or Node is missing, tell the human to install them (see Bootstrap step 1 for links).
+1. **Verify per-machine tools.** Spec-Kit CLI (`specify version`), Node.js 18+ (`node --version`). If Spec-Kit is missing, install it with the same dynamic-tag command as Bootstrap step 2; each developer installs it on their own machine. If `uv` or Node is missing, tell the human to install them (see Bootstrap step 1 for links).
 2. **Start the token-meter.** Tell the human to open a split terminal pane and run `npx agent-token-meter`. Auto-fetches latest; feeds real-time burn-rate data into `/dna-context-check`.
-3. **Walk through the project's handoff docs** in order: `CONSTITUTION.md` (especially Article 10. team-specific rules; confirm the dev understands and accepts), `VISION.md` (experience fidelity scenarios, negative assertions, depth tags), `SCOPE.md` (explicit non-goals), `ARCHITECTURE.md` (tech stack, module boundaries, data model).
+3. **Walk through the project's handoff docs** in order: `CONSTITUTION.md` (especially Article 10: team-specific rules; confirm the dev understands and accepts), `VISION.md` (experience fidelity scenarios, negative assertions, depth tags), `SCOPE.md` (explicit non-goals), `ARCHITECTURE.md` (tech stack, module boundaries, data model).
 4. **Summarize the feature workflow.** Each feature: `/speckit-specify` → `/speckit-clarify` → `/speckit-plan` → `/speckit-tasks` → `/dna-test-gate` → `/speckit-implement` or `/dna-delegate` → `/dna-verify` → PR to main. `/dna-context-check` runs automatically; handoff before 100k tokens.
 5. **Ask which feature to pick up.** If an existing `specs/NNN-*/` directory has a `handoff.md`, offer to continue from there. Otherwise start fresh with `/speckit-specify`.
 
-Do NOT re-run the Bootstrap section when `.specify/` exists. it re-initializes Spec-Kit and can overwrite the team's customized setup.
+Do NOT re-run the Bootstrap section when `.specify/` exists; it re-initializes Spec-Kit and can overwrite the team's customized setup.
 
 ## Refresh Protocol (Pull Kit Updates)
 
@@ -115,9 +115,9 @@ When the human says *"refresh my kit"*, *"pull kit updates"*, *"sync my subagent
 1. **Locate the kit clone.** Ask the human for the filesystem path to their `agentic-dev-starter` clone (e.g., `B:/repos/agentic-dev-starter`). Optionally check for a `.claude/.kit-path` file that records the last-used kit path; read it and confirm with the human before reusing.
 2. **Dry-run first.** Run `bash <kit-path>/tools/refresh-target.sh . --dry-run` from the target root. Show the full output to the human.
 3. **Explain the verdict**:
-   - `ADDED` lines. new kit artifact the target doesn't have yet. Safe to pull forward.
-   - `IDENTICAL` lines. already in sync. No action.
-   - `DRIFT` lines. target has a customized version OR an older version of a kit file. **Do not auto-force.** Surface each diff (`diff <kit-path>/<file> <target>/<file>`) and ask the human which version to keep.
+   - `ADDED` lines: new kit artifact the target doesn't have yet. Safe to pull forward.
+   - `IDENTICAL` lines: already in sync. No action.
+   - `DRIFT` lines: target has a customized version OR an older version of a kit file. **Do not auto-force.** Surface each diff (`diff <kit-path>/<file> <target>/<file>`) and ask the human which version to keep.
 4. **Apply** based on human's decision:
    - `ADDED` only, no DRIFT: re-run without `--dry-run`. Exit code must be 0.
    - DRIFT adopted from kit: re-run with `--force`. Exit code must be 0.
@@ -142,7 +142,7 @@ VERIFYING:   /dna-verify → human reviews report → refine spec or ship
 
 This is a **loop**, not a pipeline. After `/dna-verify`, the human reviews the verification report at the architecture level. If DIVERGENT → refine the spec, re-run from SPECIFYING. If CONGRUENT → ship. The human steers direction; the agent executes everything between `/speckit-specify` and `/dna-verify`.
 
-VISION.md is the input to /speckit-specify. The spec is the operational source of truth. /speckit-specify translates intent into testable contracts (Given/When/Then). don't restate VISION.md, formalize it into assertions the test suite can verify.
+VISION.md is the input to /speckit-specify. The spec is the operational source of truth. /speckit-specify translates intent into testable contracts (Given/When/Then); don't restate VISION.md, formalize it into assertions the test suite can verify.
 
 ### DNA Skills (enforcement layer)
 
@@ -157,7 +157,7 @@ VISION.md is the input to /speckit-specify. The spec is the operational source o
 
 ### Model Selection
 
-Match model capability to phase. Planning and adversarial review need heavy reasoning (Opus-tier). Implementation is volume work. capable-fast models (Sonnet-tier) are sufficient. QA and auditing benefit from a *different* model or provider than the one that built the code. self-confirmation bias is real. When budget allows, use separate providers for build vs audit.
+Match model capability to phase. Planning and adversarial review need heavy reasoning (Opus-tier). Implementation is volume work; capable-fast models (Sonnet-tier) are sufficient. QA and auditing benefit from a *different* model or provider than the one that built the code; self-confirmation bias is real. When budget allows, use separate providers for build vs audit.
 
 ## Decision Boundaries
 
@@ -178,7 +178,7 @@ Match model capability to phase. Planning and adversarial review need heavy reas
 
 | Situation | Action |
 |---|---|
-| `[D]` → `[W]` downgrade | **Log immediately**. which negative assertions now fail. |
+| `[D]` → `[W]` downgrade | **Log immediately:** which negative assertions now fail. |
 | 3+ simplifications on one scenario | **Stop.** Architecture problem. Escalate. Don't patch. |
 | `[D]` → `[E]` downgrade | **Critical.** Immediate escalation. Do not proceed. |
 | Reasonable implementation tradeoff | Log it. Unlogged simplifications are how flattening becomes invisible. |
@@ -218,16 +218,16 @@ Match model capability to phase. Planning and adversarial review need heavy reas
 
 After each implementation phase, run:
 
-1. **COMPLETENESS**: For every task in tasks.md. does the file exist? Does the test pass? List gaps.
-2. **SPEC FIDELITY**: For every `[D]` requirement. does the multi-component integration work end-to-end? Unit tests passing is `[W]`, not `[D]`.
-3. **NEGATIVE ASSERTIONS**: For every "user NEVER has to do X". verify the implementation doesn't violate it. These are the first things that get cut.
+1. **COMPLETENESS**: For every task in tasks.md, does the file exist? Does the test pass? List gaps.
+2. **SPEC FIDELITY**: For every `[D]` requirement, does the multi-component integration work end-to-end? Unit tests passing is `[W]`, not `[D]`.
+3. **NEGATIVE ASSERTIONS**: For every "user NEVER has to do X", verify the implementation doesn't violate it. These are the first things that get cut.
 4. **CONSTITUTION GATE**: Run the Pre-Implementation Gate Checklist. Any failure → fix before next phase.
 
 If 3+ issues in one phase → **STOP.** This is an architecture problem. Escalate. Do not patch.
 
 For projects with fewer than 20 tasks, run the full audit after the final phase only.
 
-**Audit isolation**: The builder should not grade its own work. When the agent runtime supports sub-agents or fresh contexts, run audits in a separate context that reads the spec and code from disk. no carry-over from the build conversation. At minimum, re-read the spec file from disk before auditing (don't rely on what you remember writing). For UI features, write user flows in plain English during planning, then have the audit context walk through them against the running application.
+**Audit isolation**: The builder should not grade its own work. When the agent runtime supports sub-agents or fresh contexts, run audits in a separate context that reads the spec and code from disk; no carry-over from the build conversation. At minimum, re-read the spec file from disk before auditing (don't rely on what you remember writing). For UI features, write user flows in plain English during planning, then have the audit context walk through them against the running application.
 
 ## Anti-Flattening Reference
 

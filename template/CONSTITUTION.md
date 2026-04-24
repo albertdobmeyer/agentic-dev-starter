@@ -1,4 +1,4 @@
-# Constitution. Project DNA
+# Constitution: Project DNA
 ## Hard Rules for Spec-Driven, Test-First Agentic Development
 
 > Copy this file into your project alongside AGENT.md (renamed to your agent's convention).
@@ -12,7 +12,7 @@
 - Write the test BEFORE the implementation. No exceptions.
 - Every commit leaves the full test suite green. Never commit on red.
 - Build only on working code. If any test is failing, fix it before starting new work.
-- Every acceptance criterion must be directly testable. If you can't write a test for it, the spec is too vague. refine it before proceeding.
+- Every acceptance criterion must be directly testable. If you can't write a test for it, the spec is too vague; refine it before proceeding.
 - Every invariant is a test. "The system never does X" is both a design constraint and a test case.
 - Run the full test suite before every phase completion, not just per-task tests.
 
@@ -28,7 +28,7 @@
 ## Article 3: Anti-Flattening
 
 - Derive tasks from user BEHAVIORS, not feature NAMES.
-- Every core principle must have an Experience Fidelity Scenario. a concrete narrative of what the user experiences. Principles without scenarios are wishes, not specifications.
+- Every core principle must have an Experience Fidelity Scenario: a concrete narrative of what the user experiences. Principles without scenarios are wishes, not specifications.
 - Every scenario must have at least 3 negative assertions: things the user NEVER has to do.
 - Every scenario must include behavioral variation: happy path, edge case, AND error flow.
 - Success criteria must be filmable. "Video of user doing X in Y seconds without Z."
@@ -74,7 +74,7 @@
 ## Article 9: Agent Conduct
 
 - The agent operates as co-architect. It plans, delegates, orchestrates, verifies, and pushes back.
-- The agent does NOT please-seek. If the human's direction contradicts the spec, the agent says so. citing the specific article or scenario.
+- The agent does NOT please-seek. If the human's direction contradicts the spec, the agent says so, citing the specific article or scenario.
 - When unclear, ask the human. Don't guess. Don't assume.
 - After every correction, update CLAUDE.md so the mistake doesn't repeat.
 - Keep CLAUDE.md under 200 lines. Use `@path` imports for detailed docs.
@@ -88,17 +88,17 @@
 Customize for your project. Examples:
 
 ```
-- Only Python standard library. no pip dependencies
-- All state in SQLite. no external databases
-- Mobile-first. test at 375px minimum width
-- No TypeScript enums. use string literal unions
+- Only Python standard library; no pip dependencies
+- All state in SQLite; no external databases
+- Mobile-first; test at 375px minimum width
+- No TypeScript enums; use string literal unions
 - All API responses follow JSON:API spec
 ```
 
 **Project-DNA defaults** (remove if not applicable):
-- Merge conflict prevention is a design constraint. If `[P]` tasks overlap on files, the task decomposition is wrong. fix the tasks, not the conflicts.
+- Merge conflict prevention is a design constraint. If `[P]` tasks overlap on files, the task decomposition is wrong; fix the tasks, not the conflicts.
 - Sub-agents get ONE file each. Interfaces defined before delegation.
-- **Shared-code glob** (consumed by `dna:cross-checker`. a file matching any pattern below is shared-code; changes to it must PR to main first before feature-branch adoption). Customize this list for your project:
+- **Shared-code glob** (consumed by `dna:cross-checker`; a file matching any pattern below is shared-code; changes to it must PR to main first before feature-branch adoption). Customize this list for your project:
   ```
   shared-code-glob:
     - src/models/**
