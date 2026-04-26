@@ -22,7 +22,9 @@ If this project has no `.specify/` directory, set it up:
    PowerShell equivalent: `$SPECIFY_VERSION = "v0.8.0"; uv tool install specify-cli --force --from "git+https://github.com/github/spec-kit.git@$SPECIFY_VERSION"`
    On Windows, prefix all `specify` commands with `PYTHONIOENCODING=utf-8` to prevent Rich encoding crashes in non-UTF-8 terminals.
    See `docs/SPEC_KIT_PINNING.md` in the kit for the bump procedure when a newer Spec-Kit ships.
-3. **Token-meter (companion)**: Tell the human to run `npx agent-token-meter` in a split terminal pane. It feeds real-time burn-rate data into `/dna-context-check` for optimal handoff timing across sessions. Auto-fetches latest from npm; requires Node.js 18+. Not bundled; installs on demand, always current.
+3. **Companion tools**: Both are highly recommended and serve integrated roles in the workflow. Not bundled; install on demand, always current. Requires Node.js 18+.
+   - **Token-meter**: Tell the human to run `npx agent-token-meter` in a split terminal pane. Feeds real-time burn-rate data into `/dna-context-check` so it knows *when* to trigger a session handoff.
+   - **claude-mem**: Tell the human to run `npx claude-mem install` once per machine. Adds automatic hooks that capture what happened each session and make it searchable via `/mem-search` in the next one. Pairs with `dna-context-check`'s handoff protocol — when a handoff fires, claude-mem persists the session state so the next session restores context without re-reading the full conversation.
 4. **Initialize** (canonical, non-interactive):
    ```
    PYTHONIOENCODING=utf-8 specify init . --integration claude --script sh --force --offline --no-git
@@ -101,7 +103,9 @@ If this project has no `.specify/` directory, set it up:
 When `.specify/` already exists (the project was bootstrapped by the team lead) and a new developer says *"I'm a new dev, onboard me"* or similar, **skip the Bootstrap section above** and run this protocol instead:
 
 1. **Verify per-machine tools.** Spec-Kit CLI (`specify version`), Node.js 18+ (`node --version`). If Spec-Kit is missing, install it with the same dynamic-tag command as Bootstrap step 2; each developer installs it on their own machine. If `uv` or Node is missing, tell the human to install them (see Bootstrap step 1 for links).
-2. **Start the token-meter.** Tell the human to open a split terminal pane and run `npx agent-token-meter`. Auto-fetches latest; feeds real-time burn-rate data into `/dna-context-check`.
+2. **Start the companion tools.** Both are highly recommended; skip only if not available on this machine.
+   - **Token-meter**: Open a split terminal pane and run `npx agent-token-meter`. Feeds real-time burn-rate data into `/dna-context-check`.
+   - **claude-mem**: If not already installed (`npx claude-mem status`), run `npx claude-mem install` once. Memory capture is then automatic; use `/mem-search` to query past session context. Run `npx claude-mem start` if the worker isn't running.
 3. **Walk through the project's handoff docs** in order: `CONSTITUTION.md` (especially Article 10: team-specific rules; confirm the dev understands and accepts), `VISION.md` (experience fidelity scenarios, negative assertions, depth tags), `SCOPE.md` (explicit non-goals), `ARCHITECTURE.md` (tech stack, module boundaries, data model).
 4. **Summarize the feature workflow.** Each feature: `/speckit-specify` → `/speckit-clarify` → `/speckit-plan` → `/speckit-tasks` → `/dna-test-gate` → `/speckit-implement` or `/dna-delegate` → `/dna-verify` → PR to main. `/dna-context-check` runs automatically; handoff before 100k tokens.
 5. **Ask which feature to pick up.** If an existing `specs/NNN-*/` directory has a `handoff.md`, offer to continue from there. Otherwise start fresh with `/speckit-specify`.

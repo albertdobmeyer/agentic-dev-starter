@@ -31,7 +31,10 @@ Three layers stacked:
 2. **DNA enforcement layer (the guardrails).** 6 executable gates (`dna-test-gate`, `dna-verify`, `dna-decompose`, `dna-delegate`, `dna-context-check`, `dna-spec-validate`) plus 5 judgmental subagents (`dna-cross-checker`, `dna-spec-auditor`, `dna-spec-validator`, `dna-verifier`, `dna-construction-logger`). Each runs at a specific point in the workflow. The judgmental subagents run in fresh context so the builder does not grade its own work.
 3. **7-doc Blueprint Package (the contract).** `docs/00-CORE-PRINCIPLES.md` through `docs/05-CONSTRUCTION-SITES.md` plus root `CONSTITUTION.md`. Authored during Bootstrap with the team lead. Becomes the binding reference every subsequent feature is specified and verified against.
 
-Optional companion: [agent-token-meter](https://github.com/albertdobmeyer/agent-token-meter), a real time token burn dashboard that `dna-context-check` reads to decide when to hand off between sessions. Not bundled; installs on demand via `npx`.
+**Companion tools** — both are highly recommended and serve integrated roles in the workflow. Not bundled; each installs on demand via `npx`:
+
+- **[agent-token-meter](https://github.com/albertdobmeyer/agent-token-meter)** — real-time token burn dashboard. `dna-context-check` reads it to decide *when* to hand off between sessions.
+- **[claude-mem](https://github.com/thedotmack/claude-mem)** — persistent session memory for Claude Code. Automatically captures what happened each session and makes it searchable in the next one. Pairs with `dna-context-check`'s handoff protocol to carry context across session boundaries so the next session picks up from exactly where the last one stopped.
 
 ## Install
 
@@ -124,9 +127,9 @@ Each developer's machine needs:
 - [Claude Code](https://claude.ai/code) or [Cursor](https://cursor.com). Other agents (Amp, Codex) have stub adapters pending.
 - `git`
 - `uv` ([install guide](https://docs.astral.sh/uv/getting-started/installation/)) for the Spec-Kit CLI
-- Node.js 18+ for `npx tiged` and the optional token-meter
+- Node.js 18+ for `npx tiged`, agent-token-meter, and claude-mem
 
-The kit bundles nothing. Spec-Kit and agent-token-meter install on demand from their official sources, always at the latest version.
+The kit bundles nothing. Spec-Kit, agent-token-meter, and claude-mem install on demand from their official sources, always at the latest version.
 
 ## Deep dives
 
@@ -144,4 +147,4 @@ An iterative synthesis of spec driven development patterns validated on multiple
 
 Contributors: Albert Dobmeyer, with Claude (Anthropic) as co-architect during methodology refinement.
 
-Licensed under [CC BY-SA 4.0](LICENSE). Companion tool: [agent-token-meter](https://github.com/albertdobmeyer/agent-token-meter).
+Licensed under [CC BY-SA 4.0](LICENSE). Companion tools: [agent-token-meter](https://github.com/albertdobmeyer/agent-token-meter) · [claude-mem](https://github.com/thedotmack/claude-mem).

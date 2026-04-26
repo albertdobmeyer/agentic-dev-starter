@@ -159,7 +159,7 @@ Trigger: *"help me understand"*, *"what is this"*, *"show me around"*.
 
 Summarize in 3 bullets:
 - The kit is a seed that unfolds into a fully-configured target project.
-- A target unfold delivers: Spec-Kit installed (pinned), 5 DNA enforcement skills (4 with executable `run.sh`), 4 subagents (construction-logger, cross-checker, spec-auditor, verifier), token-meter running, 7-doc Blueprint Package authored with human input, git initialized, remote pushed.
+- A target unfold delivers: Spec-Kit installed (pinned), 5 DNA enforcement skills (4 with executable `run.sh`), 4 subagents (construction-logger, cross-checker, spec-auditor, verifier), token-meter running, claude-mem installed (persistent session memory), 7-doc Blueprint Package authored with human input, git initialized, remote pushed.
 - The human's job is vision + Article 10 customization + Blueprint content. The agent handles installs, scaffolding, audits, git.
 
 ### Architecture. kernel + adapters (added 2026-04-21)
@@ -194,7 +194,7 @@ Do NOT refresh `CONSTITUTION.md`, `CLAUDE.md`, or `docs/*.md` in the target. tho
 
 ## Philosophy
 
-**Zero infrastructure, agent-orchestrated.** Spec-Kit and agent-token-meter are NOT bundled. they install at unfold time against their latest versions. The repo is a small seed of templates + protocols. No scaffolder scripts, no manual shell commands for the human, no OS-specific setup instructions. The CLI agent interprets the protocols above and handles execution on whatever platform it's running on.
+**Zero infrastructure, agent-orchestrated.** Spec-Kit, agent-token-meter, and claude-mem are NOT bundled. they install at unfold time against their latest versions. The repo is a small seed of templates + protocols. No scaffolder scripts, no manual shell commands for the human, no OS-specific setup instructions. The CLI agent interprets the protocols above and handles execution on whatever platform it's running on.
 
 ## Do not, in this repo
 
