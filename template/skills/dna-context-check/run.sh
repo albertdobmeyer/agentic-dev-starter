@@ -79,13 +79,18 @@ echo "[dna-context-check] Session: ${TOKENS} tokens used (${PCT}% of ${BUDGET} b
 echo "                    Warning at ${WARNING_THRESHOLD}, handoff required at ${HANDOFF_THRESHOLD}"
 
 if [ "$TOKENS" -ge "$HANDOFF_THRESHOLD" ]; then
+  FEATURE_DIR="${FEATURE_DIR:-.exploration}"
   echo
   echo "[dna-context-check] HANDOFF_REQUIRED. write a session handoff NOW before continuing."
-  echo "  Required artifact (appended to $FEATURE_DIR/handoff.md if feature-scoped, else .exploration/HANDOFF-\$(date +%F).md):"
+  echo "  Required artifact (appended to $FEATURE_DIR/handoff.md if feature-scoped, else .exploration/HANDOFF-$(date +%F).md):"
   echo "    - Done: (what shipped this session)"
   echo "    - Next: (if the next prompt is X, do Y)"
   echo "    - Blocked: (open questions, decisions awaiting user)"
   echo "    - Files touched: (so the next instance knows where to read)"
+  echo ""
+  echo "  Memory: if claude-mem is installed, it will auto-persist this session when you run /clear."
+  echo "    Next session: run /mem-search to surface this handoff's context before opening handoff.md."
+  echo "    Install once per machine: npx claude-mem install"
   exit 2
 elif [ "$TOKENS" -ge "$WARNING_THRESHOLD" ]; then
   echo

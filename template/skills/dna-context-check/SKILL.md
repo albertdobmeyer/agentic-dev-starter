@@ -2,7 +2,7 @@
 name: "dna-context-check"
 description: "Token-aware workflow management. Monitors context depth and triggers handoff before the dumb zone."
 argument-hint: "Optional: 'status' for a quick check, 'handoff' to force a handoff now"
-compatibility: "Works with any Claude Code project. Enhanced with agent-token-meter if running."
+compatibility: "Works with any Claude Code project. Enhanced with agent-token-meter (timing) and claude-mem (persistence) if running."
 metadata:
   author: "project-dna"
   source: "template/skills/dna-context-check"
@@ -124,6 +124,8 @@ When a handoff is triggered:
    Handoff written to [path]. Run `/clear` to reset context.
    Next session: "Read CLAUDE.md, then read [FEATURE_DIR]/handoff.md and continue."
    ```
+
+4. **Memory persistence (if claude-mem is installed)**: claude-mem auto-persists the session when the user runs `/clear` — no manual action needed. After writing the handoff and before clearing, confirm the handoff path is included in the session context so claude-mem captures it. In the next session, the agent should run `/mem-search [feature name]` before opening `handoff.md` — this surfaces the persisted context in ~50 tokens rather than re-reading the full conversation history.
 
 ## Auto-Trigger Integration
 

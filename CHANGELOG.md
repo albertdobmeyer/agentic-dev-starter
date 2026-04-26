@@ -2,6 +2,17 @@
 
 All notable changes to this kit are documented here. Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) style. Versioning per [SemVer](https://semver.org/).
 
+## [0.9.3] 2026-04-26
+
+### Added
+
+- **claude-mem integration** (companion tool, non-blocking). claude-mem joins agent-token-meter as a highly recommended companion. agent-token-meter tells `dna-context-check` *when* to hand off; claude-mem carries *what* across the boundary -- persisting session state so the next session restores context without re-reading conversation history.
+  - `dna-context-check/run.sh`: HANDOFF_REQUIRED block now surfaces the claude-mem persist/restore flow in its output, with install hint for teams not yet using it.
+  - `dna-context-check/SKILL.md`: Handoff Protocol step 4 documents the memory persistence workflow; compatibility metadata updated to name both companion tools.
+  - `template/agents/dna-verifier.md`: Audit isolation section explicitly prohibits `/mem-search` during fresh-context audits -- memory tools surface builder context and would defeat the bias-firewall principle.
+  - `template/AGENT.md`: Bootstrap self-audit step 8 adds a non-blocking claude-mem install check.
+  - `README.md`, `CLAUDE.md`: companion tools section updated (shipped as a patch preceding this entry).
+
 ## [0.9.2] 2026-04-23
 
 Promotion-ready polish pass. No breaking changes.
