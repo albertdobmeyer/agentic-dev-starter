@@ -29,6 +29,10 @@ bash .cursor/scripts/dna-context-check/run.sh
 
 The script returns UNMEASURED + a recommendation to install token-meter via `npx agent-token-meter`. Treat UNMEASURED as advisory GREEN. proceed, but be conservative and stop at natural boundaries.
 
+## Memory persistence (claude-mem)
+
+If claude-mem is installed, it auto-persists session state when the developer opens a new chat. After a RED handoff, the next session should run `/mem-search [feature name]` before reading `handoff.md` to surface persisted context efficiently. The two tools are complementary: token-meter decides *when* to stop; claude-mem carries *what* into the next session.
+
 ## Refuses
 
 Has authority to say STOP when meter is RED. Do not continue past RED even if mid-task. log the task as in-progress in `docs/05-CONSTRUCTION-SITES.md` with `IN-PROGRESS` status and hand off.

@@ -59,7 +59,7 @@ For each developer joining the team, send this message:
 >
 > Your agent handles per-machine installs (Spec-Kit CLI, token-meter) and walks you through the handoff docs. Requires: Claude Code, `uv`, `git`, Node.js 18+.
 
-The agent runs the Dev Onboarding protocol baked into the target project's `CLAUDE.md`: verifies Spec-Kit CLI and Node on the dev's machine, installs Spec-Kit if missing, tells the dev to start `npx agent-token-meter` in a split pane, walks them through `CONSTITUTION.md` (especially Article 10), `VISION.md`, `SCOPE.md`, `ARCHITECTURE.md` in order, summarizes the feature workflow, and offers to pick up an existing spec if one has a handoff note.
+The agent runs the Dev Onboarding protocol baked into the target project's `CLAUDE.md`: verifies Spec-Kit CLI and Node on the dev's machine, installs Spec-Kit if missing, tells the dev to start `npx agent-token-meter` in a split pane and install claude-mem if not present, walks them through `CONSTITUTION.md` (especially Article 10), `VISION.md`, `SCOPE.md`, `ARCHITECTURE.md` in order, summarizes the feature workflow, and offers to pick up an existing spec if one has a handoff note.
 
 Developers should NOT modify handoff documents on their feature branches. If they find a gap or disagreement, they propose a change to `main` via PR (see section 9).
 
@@ -169,6 +169,21 @@ npx agent-token-meter
 ```
 
 It shows burn rate, context tax, and tells you when to write a handoff and `/clear`.
+
+### Persistent Memory
+
+Install claude-mem once per developer machine:
+
+```bash
+npx claude-mem install
+```
+
+claude-mem automatically captures what happened each session and makes it searchable in the next one. When `dna-context-check` fires a handoff and the developer runs `/clear`, claude-mem persists the session state. At the start of the next session picking up an existing feature:
+
+1. Run `/mem-search [feature name]` to surface the last session's context (~50 tokens)
+2. Then open `specs/NNN-feature/handoff.md` for the structured handoff note
+
+The two tools are complementary: token-meter tells you *when* to hand off; claude-mem carries *what* across the boundary.
 
 ### Session Budget
 

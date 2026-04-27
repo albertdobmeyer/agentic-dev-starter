@@ -31,7 +31,9 @@ Runs once per project. If `.specify/` does not exist, perform these steps before
    uv tool install specify-cli --force --from "git+https://github.com/github/spec-kit.git@${SPECIFY_VERSION}"
    ```
    PowerShell equivalent: `$SPECIFY_VERSION = "v0.8.0"; uv tool install specify-cli --force --from "git+https://github.com/github/spec-kit.git@$SPECIFY_VERSION"`
-3. **Token-meter companion** (optional): have the human run `npx agent-token-meter` in a split terminal. Feeds real-time burn-rate data; consumed by `@dna-context-check` when deciding handoff timing.
+3. **Companion tools** (both highly recommended): not bundled; install on demand.
+   - **Token-meter**: have the human run `npx agent-token-meter` in a split terminal. Feeds real-time burn-rate data; consumed by `@dna-context-check` when deciding handoff timing.
+   - **claude-mem**: run `npx claude-mem install` once per machine. Adds hooks that auto-persist session state on new-chat; use `/mem-search` in the next session to restore context before reading handoff notes.
 4. **Initialize Spec-Kit** non-interactively:
    ```
    PYTHONIOENCODING=utf-8 specify init . --integration cursor-agent --script sh --force --offline --no-git

@@ -46,6 +46,7 @@ Under 500 words. Structured:
 2. **Scope boundaries are legitimate but must be spec-authorized.** If a scope boundary isn't named in the spec, it's a divergence, not a boundary.
 3. **"Pass because test passes" is not enough.** If the test is tautological (`expect(true).toBe(true)`), surface it as a retrospective note even if it's technically VERIFIED.
 4. **Look for what's NOT there too.** A missing test on a negative assertion is NOT-VERIFIED, even if the positive path is covered.
+5. **Memory isolation.** Do not invoke `/mem-search` or query claude-mem. Those carry the builder's session context into this fresh chat, defeating the bias firewall you exist to enforce. Your only sources are files on disk.
 
 ## Refuses
 
